@@ -329,3 +329,30 @@ if (yearElement) {
   yearElement.textContent = new Date().getFullYear();
 }
 
+// ===== FETCH AND DISPLAY ACTIVE NOTICE =====
+const noticeCard = document.getElementById('noticeCard');
+const noticeTitleEl = document.getElementById('noticeTitle');
+const noticeContentEl = document.getElementById('noticeContent');
+
+if (noticeCard && noticeTitleEl && noticeContentEl) {
+  async function loadActiveNotice() {
+    try {
+      const response = await fetch('http://localhost:3000/api/notices/active');
+      const data = await response.json();
+
+      if (data.success && data.notice) {
+        noticeTitleEl.innerHTML = `<strong>${data.notice.title}</strong>`;
+        noticeContentEl.textContent = data.notice.content;
+      } else {
+        noticeTitleEl.innerHTML = '<strong>No Active Notice</strong>';
+        noticeContentEl.textContent = 'Check back later for updates and announcements.';
+      }
+    } catch (error) {
+      // Fallback notice if server unavailable
+      noticeTitleEl.innerHTML = '<strong>Membership Drive 2026</strong>';
+      noticeContentEl.textContent = 'Applications now open for new members. Join our growing community of entrepreneurs!';
+    }
+  }
+
+  loadActiveNotice();
+}

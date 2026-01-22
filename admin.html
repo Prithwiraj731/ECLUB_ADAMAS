@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Dashboard - Adamas University Entrepreneurship Club">
+    <title>Admin Dashboard - E-CLUB</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        :root {
+            --sidebar-width: 260px;
+        }
+
+        body {
+            background-color: var(--off-white);
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 2rem 0;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 2rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .sidebar-header img {
+            height: 50px;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-header p {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin: 0;
+        }
+
+        .sidebar-nav {
+            padding: 1.5rem 0;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            color: var(--white);
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary-color);
+        }
+
+        .sidebar-nav a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border-radius: var(--radius-md);
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: var(--primary-color);
+        }
+
+        /* Main Content */
+        .admin-main {
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--light-grey);
+        }
+
+        .admin-header h1 {
+            color: var(--secondary-color);
+            margin: 0;
+        }
+
+        .admin-header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .user-info i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        /* Cards */
+        .admin-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .admin-card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--light-grey);
+        }
+
+        /* Form Styles */
+        .admin-form .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .admin-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .admin-form input,
+        .admin-form textarea {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid var(--light-grey);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-form input:focus,
+        .admin-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(144, 197, 79, 0.15);
+        }
+
+        .admin-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-check input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary-color);
+        }
+
+        /* Table */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--light-grey);
+        }
+
+        .admin-table th {
+            color: var(--secondary-color);
+            font-weight: 600;
+            background: var(--off-white);
+        }
+
+        .admin-table tr:hover {
+            background: var(--off-white);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn-success {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #7fb33f;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .status-inactive {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* Tabs */
+        .admin-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 0;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: var(--light-grey);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:first-child {
+            border-radius: var(--radius-md) 0 0 0;
+        }
+
+        .tab-btn:last-child {
+            border-radius: 0 var(--radius-md) 0 0;
+        }
+
+        .tab-btn.active {
+            background: var(--white);
+            color: var(--secondary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .admin-main {
+                margin-left: 0;
+            }
+
+            .sidebar-footer {
+                position: relative;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <img src="assets/logo.png" alt="E-Club Logo">
+            <h2>Admin Panel</h2>
+            <p>E-Club Management</p>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="active" data-tab="events">
+                <i class="fas fa-calendar-alt"></i> Manage Events
+            </a>
+            <a href="#" data-tab="notices">
+                <i class="fas fa-bullhorn"></i> Manage Notices
+            </a>
+            <a href="index.html">
+                <i class="fas fa-home"></i> View Website
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="#" class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="admin-header">
+            <h1>Admin Dashboard</h1>
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span id="adminName">Admin</span>
+            </div>
+        </div>
+
+        <!-- Events Tab -->
+        <div id="eventsTab" class="tab-content active">
+            <div class="admin-card">
+                <h3><i class="fas fa-plus-circle"></i> Publish New Event</h3>
+
+                <div id="eventAlert" class="alert"></div>
+
+                <form id="eventForm" class="admin-form">
+                    <div class="form-group">
+                        <label for="eventTitle">Event Title *</label>
+                        <input type="text" id="eventTitle" name="title" required placeholder="Enter event title">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventDate">Date</label>
+                            <input type="text" id="eventDate" name="date" placeholder="e.g., January 25, 2026">
+                        </div>
+                        <div class="form-group">
+                            <label for="eventLocation">Location</label>
+                            <input type="text" id="eventLocation" name="location" placeholder="e.g., Main Auditorium">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventDescription">Description *</label>
+                        <textarea id="eventDescription" name="description" required
+                            placeholder="Enter event description..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventImage">Image URL (optional)</label>
+                        <input type="url" id="eventImage" name="image_url" placeholder="https://example.com/image.jpg">
+                    </div>
+
+                    <div class="form-group form-check">
+                        <input type="checkbox" id="eventFeatured" name="is_featured">
+                        <label for="eventFeatured">Feature this event on homepage</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Publish Event
+                    </button>
+                </form>
+            </div>
+
+            <div class="admin-card">
+                <h3><i class="fas fa-list"></i> All Events</h3>
+                <div id="eventsList">
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-times"></i>
+                        <p>Loading events...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notices Tab -->
+        <div id="noticesTab" class="tab-content">
+            <div class="admin-card">
+                <h3><i class="fas fa-plus-circle"></i> Create New Notice</h3>
+
+                <div id="noticeAlert" class="alert"></div>
+
+                <form id="noticeForm" class="admin-form">
+                    <div class="form-group">
+                        <label for="noticeTitle">Notice Title *</label>
+                        <input type="text" id="noticeTitle" name="title" required placeholder="Enter notice title">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="noticeContent">Notice Content *</label>
+                        <textarea id="noticeContent" name="content" required
+                            placeholder="Enter notice content..."></textarea>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <input type="checkbox" id="noticeActive" name="is_active">
+                        <label for="noticeActive">Set as active notice (shows on homepage)</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Create Notice
+                    </button>
+                </form>
+            </div>
+
+            <div class="admin-card">
+                <h3><i class="fas fa-list"></i> All Notices</h3>
+                <div id="noticesList">
+                    <div class="empty-state">
+                        <i class="fas fa-bell-slash"></i>
+                        <p>Loading notices...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+
+        // Check authentication
+        if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.href = 'admin-login.html';
+        }
+
+        // Set admin name
+        document.getElementById('adminName').textContent = sessionStorage.getItem('adminUsername') || 'Admin';
+
+        // Tab switching
+        document.querySelectorAll('.sidebar-nav a[data-tab]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const tab = e.currentTarget.dataset.tab;
+
+                // Update active nav
+                document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+
+                // Show tab content
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                document.getElementById(`${tab}Tab`).classList.add('active');
+            });
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.removeItem('adminLoggedIn');
+            sessionStorage.removeItem('adminUsername');
+            window.location.href = 'admin-login.html';
+        });
+
+        // ===== EVENTS =====
+        async function loadEvents() {
+            try {
+                const response = await fetch(`${API_URL}/events`);
+                const data = await response.json();
+
+                if (data.success && data.events.length > 0) {
+                    const html = `
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Date</th>
+                                    <th>Location</th>
+                                    <th>Featured</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.events.map(event => `
+                                    <tr>
+                                        <td><strong>${event.title}</strong></td>
+                                        <td>${event.date || 'Not set'}</td>
+                                        <td>${event.location || 'Not set'}</td>
+                                        <td>
+                                            <span class="status-badge ${event.is_featured ? 'status-active' : 'status-inactive'}">
+                                                ${event.is_featured ? 'Yes' : 'No'}
+                                            </span>
+                                        </td>
+                                        <td class="table-actions">
+                                            <button class="btn btn-small btn-danger" onclick="deleteEvent('${event._id}')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                    document.getElementById('eventsList').innerHTML = html;
+                } else {
+                    document.getElementById('eventsList').innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-calendar-times"></i>
+                            <p>No events found. Create your first event!</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('eventsList').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Error loading events. Make sure the server is running.</p>
+                    </div>
+                `;
+            }
+        }
+
+        document.getElementById('eventForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const alert = document.getElementById('eventAlert');
+
+            const eventData = {
+                title: form.title.value,
+                description: form.description.value,
+                date: form.date.value,
+                location: form.location.value,
+                image_url: form.image_url.value,
+                is_featured: form.is_featured.checked
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/events`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(eventData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert.className = 'alert alert-success show';
+                    alert.innerHTML = '<i class="fas fa-check-circle"></i> Event published successfully!';
+                    form.reset();
+                    loadEvents();
+                } else {
+                    alert.className = 'alert alert-error show';
+                    alert.innerHTML = '<i class="fas fa-times-circle"></i> ' + data.message;
+                }
+            } catch (error) {
+                alert.className = 'alert alert-error show';
+                alert.innerHTML = '<i class="fas fa-times-circle"></i> Server error. Please try again.';
+            }
+
+            setTimeout(() => alert.classList.remove('show'), 5000);
+        });
+
+        async function deleteEvent(id) {
+            if (!confirm('Are you sure you want to delete this event?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/events/${id}`, { method: 'DELETE' });
+                const data = await response.json();
+
+                if (data.success) {
+                    loadEvents();
+                } else {
+                    alert('Error deleting event');
+                }
+            } catch (error) {
+                alert('Server error');
+            }
+        }
+
+        // ===== NOTICES =====
+        async function loadNotices() {
+            try {
+                const response = await fetch(`${API_URL}/notices`);
+                const data = await response.json();
+
+                if (data.success && data.notices.length > 0) {
+                    const html = `
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Content</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.notices.map(notice => `
+                                    <tr>
+                                        <td><strong>${notice.title}</strong></td>
+                                        <td>${notice.content.substring(0, 50)}...</td>
+                                        <td>
+                                            <span class="status-badge ${notice.is_active ? 'status-active' : 'status-inactive'}">
+                                                ${notice.is_active ? 'Active' : 'Inactive'}
+                                            </span>
+                                        </td>
+                                        <td class="table-actions">
+                                            <button class="btn btn-small ${notice.is_active ? 'btn-danger' : 'btn-success'}" 
+                                                    onclick="toggleNotice('${notice._id}', ${!notice.is_active})">
+                                                <i class="fas fa-${notice.is_active ? 'eye-slash' : 'eye'}"></i>
+                                            </button>
+                                            <button class="btn btn-small btn-danger" onclick="deleteNotice('${notice._id}')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                    document.getElementById('noticesList').innerHTML = html;
+                } else {
+                    document.getElementById('noticesList').innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-bell-slash"></i>
+                            <p>No notices found. Create your first notice!</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('noticesList').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Error loading notices. Make sure the server is running.</p>
+                    </div>
+                `;
+            }
+        }
+
+        document.getElementById('noticeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const alert = document.getElementById('noticeAlert');
+
+            const noticeData = {
+                title: form.title.value,
+                content: form.content.value,
+                is_active: form.is_active.checked
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/notices`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(noticeData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert.className = 'alert alert-success show';
+                    alert.innerHTML = '<i class="fas fa-check-circle"></i> Notice created successfully!';
+                    form.reset();
+                    loadNotices();
+                } else {
+                    alert.className = 'alert alert-error show';
+                    alert.innerHTML = '<i class="fas fa-times-circle"></i> ' + data.message;
+                }
+            } catch (error) {
+                alert.className = 'alert alert-error show';
+                alert.innerHTML = '<i class="fas fa-times-circle"></i> Server error. Please try again.';
+            }
+
+            setTimeout(() => alert.classList.remove('show'), 5000);
+        });
+
+        async function toggleNotice(id, isActive) {
+            try {
+                const response = await fetch(`${API_URL}/notices/${id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ is_active: isActive })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    loadNotices();
+                }
+            } catch (error) {
+                alert('Server error');
+            }
+        }
+
+        async function deleteNotice(id) {
+            if (!confirm('Are you sure you want to delete this notice?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/notices/${id}`, { method: 'DELETE' });
+                const data = await response.json();
+
+                if (data.success) {
+                    loadNotices();
+                } else {
+                    alert('Error deleting notice');
+                }
+            } catch (error) {
+                alert('Server error');
+            }
+        }
+
+        // Initial load
+        loadEvents();
+        loadNotices();
+    </script>
+</body>
+
+</html>
