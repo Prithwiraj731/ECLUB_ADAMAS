@@ -334,25 +334,51 @@ const noticeCard = document.getElementById('noticeCard');
 const noticeTitleEl = document.getElementById('noticeTitle');
 const noticeContentEl = document.getElementById('noticeContent');
 
-if (noticeCard && noticeTitleEl && noticeContentEl) {
-  async function loadActiveNotice() {
-    try {
-      const response = await fetch('http://localhost:3000/api/notices/active');
-      const data = await response.json();
+// Main notice section elements
+const noticeTitleMain = document.getElementById('noticeTitleMain');
+const noticeContentMain = document.getElementById('noticeContentMain');
+const noticeDateMain = document.getElementById('noticeDateMain');
 
-      if (data.success && data.notice) {
-        noticeTitleEl.innerHTML = `<strong>${data.notice.title}</strong>`;
-        noticeContentEl.textContent = data.notice.content;
-      } else {
-        noticeTitleEl.innerHTML = '<strong>No Active Notice</strong>';
-        noticeContentEl.textContent = 'Check back later for updates and announcements.';
-      }
-    } catch (error) {
-      // Fallback notice if server unavailable
-      noticeTitleEl.innerHTML = '<strong>Membership Drive 2026</strong>';
-      noticeContentEl.textContent = 'Applications now open for new members. Join our growing community of entrepreneurs!';
+async function loadActiveNotice() {
+  const fallbackTitle = 'Membership Drive 2026';
+  const fallbackContent = 'Applications now open for new members. Join our growing community of entrepreneurs!';
+  const fallbackDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  try {
+    const response = await fetch('http://localhost:3000/api/notices/active');
+    const data = await response.json();
+
+    if (data.success && data.notice) {
+      const noticeTitle = data.notice.title;
+      const noticeContent = data.notice.content;
+      const noticeDate = data.notice.created_at
+        ? new Date(data.notice.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+        : fallbackDate;
+
+      // Update mini-card
+      if (noticeTitleEl) noticeTitleEl.innerHTML = `<strong>${noticeTitle}</strong>`;
+      if (noticeContentEl) noticeContentEl.textContent = noticeContent;
+
+      // Update main notice section
+      if (noticeTitleMain) noticeTitleMain.textContent = noticeTitle;
+      if (noticeContentMain) noticeContentMain.textContent = noticeContent;
+      if (noticeDateMain) noticeDateMain.textContent = noticeDate;
+    } else {
+      // No active notice
+      if (noticeTitleEl) noticeTitleEl.innerHTML = `<strong>${fallbackTitle}</strong>`;
+      if (noticeContentEl) noticeContentEl.textContent = fallbackContent;
+      if (noticeTitleMain) noticeTitleMain.textContent = fallbackTitle;
+      if (noticeContentMain) noticeContentMain.textContent = fallbackContent;
+      if (noticeDateMain) noticeDateMain.textContent = fallbackDate;
     }
+  } catch (error) {
+    // Fallback notice if server unavailable
+    if (noticeTitleEl) noticeTitleEl.innerHTML = `<strong>${fallbackTitle}</strong>`;
+    if (noticeContentEl) noticeContentEl.textContent = fallbackContent;
+    if (noticeTitleMain) noticeTitleMain.textContent = fallbackTitle;
+    if (noticeContentMain) noticeContentMain.textContent = fallbackContent;
+    if (noticeDateMain) noticeDateMain.textContent = fallbackDate;
   }
-
-  loadActiveNotice();
 }
+
+loadActiveNotice();
