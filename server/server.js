@@ -16,16 +16,37 @@ const DB_NAME = 'eclub';
 
 let db;
 
-// Connect to MongoDB
-async function connectDB() {
-    try {
-        const client = new MongoClient(MONGODB_URI);
-        await client.connect();
-        db = client.db(DB_NAME);
-        console.log('✅ Connected to MongoDB');
-    } catch (error) {
-        console.error('❌ MongoDB connection error:', error);
-        process.exit(1);
+// Connect to MongoDB with retry logic
+async function connectDB(retries = 3) {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+        try {
+            console.log(`🔄 Attempting MongoDB connection (attempt ${attempt}/${retries})...`);
+            const client = new MongoClient(MONGODB_URI, {
+                tls: true,
+                tlsAllowInvalidCertificates: false,
+                serverSelectionTimeoutMS: 10000,
+                connectTimeoutMS: 10000,
+                retryWrites: true,
+                retryReads: true
+            });
+            await client.connect();
+            db = client.db(DB_NAME);
+            console.log('✅ Connected to MongoDB');
+            return;
+        } catch (error) {
+            console.error(`❌ MongoDB connection attempt ${attempt} failed:`, error.message);
+            if (attempt === retries) {
+                console.error('❌ All connection attempts failed. Please check:');
+                console.error('   1. Your internet connection');
+                console.error('   2. MongoDB Atlas cluster status');
+                console.error('   3. IP whitelist on MongoDB Atlas (add your current IP)');
+                console.error('   4. Database credentials');
+                process.exit(1);
+            }
+            // Wait before retrying
+            console.log(`⏳ Waiting 3 seconds before retry...`);
+            await new Promise(resolve => setTimeout(resolve, 3000));
+        }
     }
 }
 
