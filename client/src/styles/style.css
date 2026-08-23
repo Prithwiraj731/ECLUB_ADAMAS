@@ -2768,18 +2768,3 @@ p {
   color: var(--primary-color);
   margin-bottom: 1rem;
 }
-
-/* ===== SMOOTH CURSOR SUPPORT ===== */
-@media (any-hover: hover) and (any-pointer: fine) {
-  body {
-    cursor: none !important;
-  }
-
-  a, button, [role="button"], .filter-pill, .star-btn, .luxury-action-pill, .btn {
-    cursor: none !important;
-  }
-
-  input, textarea, select {
-    cursor: text !important;
-  }
-}
