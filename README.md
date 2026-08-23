@@ -1,199 +1,127 @@
-# 🚀 Adamas University Entrepreneurship Club Website
+# 🚀 Adamas University Entrepreneurship Club (E-CLUB) — Full-Stack Platform
 
-A modern, professional website for the Adamas University Entrepreneurship Club that embodies innovation, leadership, and startup culture.
+A modern, production-grade full-stack web application for the **Adamas University Entrepreneurship Club**, built with **React (Vite)**, **Node.js (Express)**, and **Supabase (PostgreSQL & Auth)**.
 
 ![Adamas University Entrepreneurship Club Logo](assets/logo.png)
 
-## ✨ Features
+---
 
-- **🎬 Automatic Hero Slider** - Full-screen image carousel with smooth transitions
-- **📱 Fully Responsive** - Perfect display on mobile, tablet, and desktop
-- **🎨 Professional Design** - Clean, minimal UI with strict color scheme adherence
-- **⚡ Smooth Animations** - Engaging hover effects and scroll animations
-- **🔍 SEO Optimized** - Semantic HTML5 and proper meta tags
-- **♿ Accessible** - WCAG 2.1 compliant with ARIA labels
-- **📋 Contact Form** - Client-side validation ready for backend integration
+## 🎨 Official Adamas University Color Scheme
 
-## 🎨 Color Scheme
-
-- **Primary:** `#90c54f` (Growth, Innovation)
-- **Secondary:** `#366558` (Trust, Professionalism)
-- **Text & Neutrals:** Dark grey, light grey, off-white
-
-## 📁 Project Structure
-
-```
-ECLUB/
-├── index.html          # Homepage with all main sections
-├── about.html          # Mission, vision, objectives, team
-├── contact.html        # Contact form and FAQs
-├── css/
-│   └── style.css       # Complete design system
-├── js/
-│   └── main.js         # All JavaScript functionality
-└── assets/
-    ├── logo.png        # Club logo
-    └── hero/           # Hero slider images
-        ├── hero1.png
-        ├── hero2.png
-        ├── hero3.png
-        └── hero4.png
-```
-
-## 🚀 Quick Start
-
-### Local Development
-
-1. **Clone or download the project**
-   ```bash
-   cd c:\Users\USER\Desktop\ECLUB
-   ```
-
-2. **Start a local server**
-   
-   Using Python:
-   ```bash
-   python -m http.server 8000
-   ```
-   
-   Using Node.js (http-server):
-   ```bash
-   npx http-server -p 8000
-   ```
-
-3. **Open in browser**
-   ```
-   http://localhost:8000
-   ```
-
-## 🎯 Pages
-
-### 🏠 Homepage (`index.html`)
-- Full-screen hero with automatic image slider
-- About the Club section
-- Featured Event showcase
-- Initiatives grid (6 programs)
-- Contact form
-- Footer with social links
-
-### 📖 About Us (`about.html`)
-- Mission & Vision statements
-- 6 Core Objectives
-- What We Offer section
-- Team placeholders (6 roles)
-- Join CTA
-
-### 📧 Contact (`contact.html`)
-- Enhanced contact form
-- Detailed contact information
-- FAQ section (6 questions)
-- Campus map placeholder
-
-## 🛠️ Customization
-
-### Update Club Logo
-Replace `assets/logo.png` with your logo (recommended: 50px height)
-
-### Change Hero Images
-Replace images in `assets/hero/` folder:
-- `hero1.png`, `hero2.png`, `hero3.png`, `hero4.png`
-- Recommended size: 1920x1080 or higher
-
-### Edit Text Content
-All text is in HTML files and can be easily modified:
-- **Headline:** `index.html` line 72
-- **Contact Info:** Search for `eclub@adamasuniversity.ac.in`
-- **Team Names:** `about.html` starting line 160
-
-### Modify Colors
-Edit CSS variables in `css/style.css` (lines 9-13):
-```css
---primary-color: #90c54f;
---secondary-color: #366558;
-```
-
-### Update Social Media Links
-Replace `#` placeholders in footer sections with actual URLs
-
-## 🌐 Deployment
-
-### GitHub Pages
-1. Push code to GitHub repository
-2. Go to Settings → Pages
-3. Select branch and folder
-4. Your site will be live at `username.github.io/repo-name`
-
-### Netlify
-1. Drag and drop the `ECLUB` folder to Netlify
-2. Site will be deployed instantly
-3. Configure custom domain if needed
-
-### Traditional Web Host
-1. Upload files via FTP/SFTP
-2. Maintain folder structure
-3. Set `index.html` as the default page
-
-## 📋 Technology Stack
-
-- **HTML5** - Semantic structure
-- **CSS3** - Flexbox, Grid, Custom Properties
-- **JavaScript (ES6)** - Vanilla JS, no dependencies
-- **Google Fonts** - Inter & Poppins
-- **Font Awesome 6.4** - Professional icons
-
-## ✅ Browser Support
-
-- ✅ Chrome (latest)
-- ✅ Firefox (latest)
-- ✅ Safari (latest)
-- ✅ Edge (latest)
-- ✅ Mobile browsers (iOS Safari, Chrome Mobile)
-
-## 📱 Responsive Breakpoints
-
-- **Mobile:** < 768px
-- **Tablet:** 768px - 1024px
-- **Desktop:** > 1024px
-
-## 🎓 Features Implemented
-
-### Header & Navigation
-- ✅ Sticky header with scroll effect
-- ✅ Mobile hamburger menu
-- ✅ Active link indicators
-- ✅ Smooth scrolling
-
-### Hero Section
-- ✅ Full viewport height (100vh)
-- ✅ Automatic image slider (5s intervals)
-- ✅ Fade transitions
-- ✅ CTA buttons
-
-### Content Sections
-- ✅ About with icon highlights
-- ✅ Featured event showcase
-- ✅ Initiatives grid
-- ✅ Contact form with validation
-- ✅ Footer with social links
-
-### Interactions
-- ✅ Hover animations on cards
-- ✅ Button hover effects
-- ✅ Scroll-triggered animations
-- ✅ Form validation
-
-## 📞 Support & Contact
-
-For issues or questions about this website:
-- Email: eclub@adamasuniversity.ac.in
-- Phone: +91 (033) 2437-9999
-
-## 📄 License
-
-© 2026 Adamas University Entrepreneurship Club. All rights reserved.
+- **Primary Accent (Lime Green):** `#7abd24` (Innovation, Growth, Vitality)
+- **Primary Hover:** `#68a61d`
+- **Secondary Brand (Royal Blue):** `#0056b3` (Excellence, Authority, Trust)
+- **Deep Navy Tone:** `#003875` (Hero Gradients, Dark Surfaces)
+- **Secondary Hover:** `#004494`
+- **Neutrals:** Slate Dark (`#1e293b`), Slate Muted (`#64748b`), Off-White (`#f8fafc`), Clean White (`#ffffff`)
 
 ---
 
-**Built with ❤️ for the Adamas University Entrepreneurship Club**
+## ✨ Full-Stack Architecture
 
-*Empowering the next generation of entrepreneurs through innovation, collaboration, and leadership development.*
+```
+ECLUB/
+├── client/                     # React Frontend (Vite + React Router)
+│   ├── public/
+│   │   └── assets/             # Logos, hero carousel images, event posters
+│   ├── src/
+│   │   ├── components/         # Header, Footer, HeroSlider, NoticeBanner, EventSection...
+│   │   ├── pages/              # Home, About, Contact, AdminLogin, AdminDashboard
+│   │   ├── context/            # AuthContext (Admin authentication & session)
+│   │   ├── lib/                # Supabase client connector
+│   │   ├── styles/             # Adamas CSS variables & futuristic animations
+│   │   ├── App.jsx             # Top-level routing
+│   │   └── main.jsx            # Entry point
+│   ├── index.html
+│   └── vite.config.js          # Proxy configuration to backend (:5000)
+│
+├── server/                     # Node.js + Express API Server
+│   ├── src/
+│   │   ├── config/             # Supabase & Mock database configuration
+│   │   ├── controllers/        # Events, Notices, Contact, Auth handlers
+│   │   └── routes/             # REST API routers (/api/*)
+│   ├── server.js               # Express server entry point
+│   ├── .env.example            # Environment variables template
+│   └── package.json
+│
+├── supabase/
+│   └── schema.sql              # Supabase PostgreSQL schema, RLS policies & initial seed
+└── package.json                # Root monorepo concurrent scripts
+```
+
+---
+
+## ⚡ Quick Start
+
+### 1. Install Dependencies
+Run from the project root:
+```bash
+npm run install:all
+```
+*(Or run `npm install` inside both `client/` and `server/`)*
+
+### 2. Start Local Development
+Run both the React frontend and Node.js backend concurrently:
+```bash
+npm run dev
+```
+
+- **Frontend Application:** `http://localhost:5173`
+- **Backend API:** `http://localhost:5000`
+- **Health Check:** `http://localhost:5000/api/health`
+
+---
+
+## 🔐 Supabase Configuration (Optional for Live Database)
+
+The application includes an **in-memory database fallback** so it works immediately out of the box without any setup.
+
+To connect your own **live Supabase project**:
+
+1. Create a free project at [supabase.com](https://supabase.com).
+2. Go to **SQL Editor** and execute the script in [`supabase/schema.sql`](supabase/schema.sql).
+3. In your Supabase Dashboard, navigate to **Project Settings → API** and copy:
+   - `Project URL`
+   - `anon public key`
+   - `service_role key`
+4. Update `server/.env`:
+   ```env
+   SUPABASE_URL=https://your-project-ref.supabase.co
+   SUPABASE_ANON_KEY=your-supabase-anon-key
+   SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+   ```
+5. Restart your server (`npm run dev`).
+
+---
+
+## 🔑 Default Admin Credentials
+
+- **Portal URL:** `http://localhost:5173/admin`
+- **Username:** `admin`
+- **Password:** `admin123`
+
+---
+
+## 📡 API Endpoints Reference
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/auth/login` | Authenticate admin and receive JWT session |
+| `GET` | `/api/events` | List all events |
+| `POST` | `/api/events` | Create a new event *(Admin)* |
+| `DELETE` | `/api/events/:id` | Delete an event *(Admin)* |
+| `GET` | `/api/notices/active` | Get currently active notice for homepage |
+| `GET` | `/api/notices` | List all notices |
+| `POST` | `/api/notices` | Create a new notice *(Admin)* |
+| `PATCH` | `/api/notices/:id` | Toggle notice active/inactive status *(Admin)* |
+| `DELETE` | `/api/notices/:id` | Delete a notice *(Admin)* |
+| `POST` | `/api/contact` | Submit inquiry from Contact page |
+| `GET` | `/api/contact` | List all inquiries *(Admin)* |
+| `DELETE` | `/api/contact/:id` | Delete inquiry *(Admin)* |
+
+---
+
+## 📄 License & Credits
+
+© 2026 **Adamas University Entrepreneurship Club**. All rights reserved.
+Built with ❤️ to foster innovation, entrepreneurship, and startup culture.

@@ -1,0 +1,316 @@
+/* ===================================
+   LUXURIOUS ANIMATIONS & ENHANCEMENTS
+   Minimalist & Premium Motion Design System
+   =================================== */
+
+/* ===== ENHANCED SCROLL ANIMATIONS ===== */
+
+/* Reveal on scroll - base class */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Reveal from left */
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-left.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Reveal from right */
+.reveal-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-right.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Scale reveal */
+.reveal-scale {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-scale.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Staggered children animation */
+.stagger-children > * {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stagger-children.active > *:nth-child(1) {
+    transition-delay: 0.1s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stagger-children.active > *:nth-child(2) {
+    transition-delay: 0.2s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stagger-children.active > *:nth-child(3) {
+    transition-delay: 0.3s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stagger-children.active > *:nth-child(4) {
+    transition-delay: 0.4s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stagger-children.active > *:nth-child(5) {
+    transition-delay: 0.5s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stagger-children.active > *:nth-child(6) {
+    transition-delay: 0.6s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== ENHANCED BUTTONS ===== */
+
+.btn {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease;
+    z-index: -1;
+}
+
+.btn:hover::before {
+    width: 320px;
+    height: 320px;
+}
+
+/* ===== ENHANCED SECTION HEADERS ===== */
+
+.section-header h2 {
+    position: relative;
+    display: inline-block;
+}
+
+.section-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-header:hover h2::after {
+    width: 80px;
+}
+
+/* ===== ENHANCED ABOUT SECTION ===== */
+
+.about-image {
+    position: relative;
+}
+
+.about-image::before {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: -14px;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--primary-color);
+    border-radius: var(--radius-lg);
+    z-index: -1;
+    transition: all 0.4s ease;
+    opacity: 0.8;
+}
+
+.about-image:hover::before {
+    top: -8px;
+    left: -8px;
+    opacity: 1;
+}
+
+.about-image img {
+    transition: transform 0.5s ease;
+}
+
+.about-image:hover img {
+    transform: scale(1.015);
+}
+
+/* ===== ENHANCED HIGHLIGHT ITEMS ===== */
+
+.highlight-item {
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.highlight-item:hover {
+    border-color: rgba(139, 13, 26, 0.35);
+    box-shadow: 0 10px 30px rgba(11, 11, 11, 0.08);
+    transform: translateY(-4px);
+}
+
+.highlight-icon {
+    transition: all 0.35s ease;
+}
+
+.highlight-item:hover .highlight-icon {
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(139, 13, 26, 0.35);
+}
+
+/* ===== ENHANCED EVENT CARD ===== */
+
+.event-card {
+    position: relative;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(11, 11, 11, 0.1), 0 0 0 1px rgba(139, 13, 26, 0.3);
+}
+
+.event-poster img {
+    transition: transform 0.5s ease;
+}
+
+.event-card:hover .event-poster img {
+    transform: scale(1.02);
+}
+
+/* ===== ENHANCED MINI CARDS ===== */
+
+.mini-card {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mini-card:hover {
+    transform: translateX(6px);
+    box-shadow: 0 12px 30px rgba(11, 11, 11, 0.08);
+}
+
+/* ===== ENHANCED INITIATIVE CARDS ===== */
+
+.initiative-card {
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.initiative-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(11, 11, 11, 0.12);
+}
+
+.initiative-icon i {
+    transition: transform 0.4s ease;
+}
+
+.initiative-card:hover .initiative-icon i {
+    transform: scale(1.1);
+}
+
+/* ===== ENHANCED CONTACT FORM ===== */
+
+.form-group input,
+.form-group textarea {
+    transition: all 0.25s ease;
+}
+
+.form-group label {
+    transition: color 0.25s ease;
+}
+
+.form-group:focus-within label {
+    color: var(--primary-color);
+}
+
+/* ===== ENHANCED INFO ITEMS ===== */
+
+.info-item {
+    transition: all 0.3s ease;
+}
+
+.info-item:hover {
+    transform: translateX(6px);
+}
+
+.info-icon {
+    transition: all 0.3s ease;
+}
+
+.info-item:hover .info-icon {
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(139, 13, 26, 0.35);
+}
+
+/* ===== CHARACTER FLOAT ANIMATION ===== */
+@keyframes floatCharacter {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
