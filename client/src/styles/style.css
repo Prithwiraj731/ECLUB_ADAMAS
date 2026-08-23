@@ -77,6 +77,7 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   background-color: var(--secondary-color);
+  cursor: auto;
 }
 
 body {
@@ -87,6 +88,7 @@ body {
   background-color: var(--off-white);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: auto;
 }
 
 img {
@@ -98,14 +100,20 @@ img {
 a {
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
   transition: var(--transition-fast);
 }
 
-button {
-  border: none;
-  background: none;
+button, [role="button"], .btn {
   cursor: pointer;
   font-family: inherit;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  cursor: text;
 }
 
 /* ===== TYPOGRAPHY ===== */

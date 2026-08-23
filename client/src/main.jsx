@@ -8,6 +8,12 @@ import App from './App';
 import './styles/style.css';
 import './styles/animations.css';
 
+// Ensure standard cursor is restored
+if (typeof document !== 'undefined') {
+  document.body.style.cursor = 'auto';
+  document.documentElement.style.cursor = 'auto';
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
