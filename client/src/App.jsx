@@ -9,7 +9,6 @@ import Contact from './pages/Contact';
 import RakhiStalls from './pages/RakhiStalls';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
-import SmoothCursor from './components/SmoothCursor';
 
 export default function App() {
   const location = useLocation();
@@ -17,9 +16,6 @@ export default function App() {
 
   return (
     <div className="app-container">
-      {/* Physics-based smooth cursor */}
-      <SmoothCursor />
-
       {/* Hide public header on admin pages */}
       {!isAdminRoute && <Header />}
 
