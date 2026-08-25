@@ -58,12 +58,12 @@ const mockStore = {
   contacts: [],
   stalls: [
     {
-        "id": "stall_01",
-        "stall_number": "01",
+        "id": "stall_1",
+        "stall_number": "1",
         "name": "Tangeled Treasures",
         "category": "Rakhi & Festive Products",
         "founders": "Saanwi Singh",
-        "department": "CSE (SOET) \u2022 3rd Year",
+        "department": "CSE (SOET) • 3rd Year",
         "description": "Handmade crochet products including unique Rakhis, keyrings, charms, and other cute accessories, crafted with love and perfect for gifting.",
         "instagram": "@tangeled_treasures",
         "email": "saanwi1.singh@stuadamasuniversity.ac.in",
@@ -72,12 +72,12 @@ const mockStore = {
         "created_at": "2026-08-25T10:00:00.000Z"
     },
     {
-        "id": "stall_02",
-        "stall_number": "02",
+        "id": "stall_2",
+        "stall_number": "2",
         "name": "Phool & Dhaga",
         "category": "Rakhi & Festive Products",
         "founders": "Sania Alam",
-        "department": "Forensic science (School of basic and applied science) \u2022 3rd Year",
+        "department": "Forensic science (School of basic and applied science) • 3rd Year",
         "description": "Handmade, eco-friendly crochet products including Rakhis, festive flowers, keychains, and mini pouches. Thoughtfully crafted as cute, affordable, and sustainable gifts using reusable/minimal-waste packaging.",
         "instagram": "moon._child_",
         "email": "drkhurshid1.alamthaniyaalam@stu.adamasuniversity.ac.in",
@@ -86,12 +86,12 @@ const mockStore = {
         "created_at": "2026-08-25T10:00:00.000Z"
     },
     {
-        "id": "stall_03",
-        "stall_number": "03",
+        "id": "stall_3",
+        "stall_number": "3",
         "name": "The Handmade Heaven",
         "category": "Rakhi & Festive Products",
         "founders": "Aritrika Mandal",
-        "department": "B.tech Biotechnology (School of Life Science and Biotechnology) \u2022 3rd Year",
+        "department": "B.tech Biotechnology (School of Life Science and Biotechnology) • 3rd Year",
         "description": "We will be giving handmade scented candle,handcrafted Crochet items and beautiful resin jewellery",
         "instagram": "@llamas_aromaticas @stitch_gardenbyparna @anne_shique",
         "email": "aritrika1.mandal@stu.adamasuniversity.ac. in",
@@ -100,26 +100,26 @@ const mockStore = {
         "created_at": "2026-08-25T10:00:00.000Z"
     },
     {
-        "id": "stall_04",
-        "stall_number": "04",
+        "id": "stall_4",
+        "stall_number": "4",
         "name": "Knitflix and chill X Clyra",
         "category": "Eco Friendly & Sustainable Items",
         "founders": "Tiyasha Sen and Subarna Dasgupta",
-        "department": "Media Studies (School of Media and Communication) \u2022 3rd Year",
+        "department": "Media Studies (School of Media and Communication) • 3rd Year",
         "description": "We offer a variety of handmade crochet, fuzzy wire, and clay products, including jewellery, keychains, rakhis, handmade flowers, charms, and other unique handcrafted items. Each product is creatively designed and made with care, making them perfect for gifting or adding a personal touch to your everyday style.",
         "instagram": "https://www.instagram.com/knitflix_chill?igsi=dWF3ZnJ4MWxwYWty and https://www.instagram.com/cly_raofficial?igsi=NzM2dTA2YjR3N3Rq",
         "email": "subarna1.dasgupta@stu.adamasuniversity.ac.in and tiyasha1.sen@stu.adamasuniversity.ac.in",
-        "contact": "9242410989 and 9123776106",
+        "contact": "92424109899123776106",
         "image_url": "/assets/hero/hero3.png",
         "created_at": "2026-08-25T10:00:00.000Z"
     },
     {
-        "id": "stall_05",
-        "stall_number": "05",
+        "id": "stall_5",
+        "stall_number": "5",
         "name": "Stixsy",
         "category": "Rakhi & Festive Products",
         "founders": "Abuzar Alam",
-        "department": "B.Tech (Civil Engineering) (SOET) \u2022 3rd Year",
+        "department": "B.Tech (Civil Engineering) (SOET) • 3rd Year",
         "description": "STIXSY is a premium merchandise brand offering high-quality vinyl stickers, sticker packs, A4 posters and premium art prints in various themes, including pop culture, sports, anime, music, fashion, gaming and lifestyle. Their products focus on durable materials, premium printing and aesthetic designs for personalizing everyday items and spaces.",
         "instagram": "https://www.instagram.com/stixsyyyy?igsi=MXJxYjYzMmMxOXE4MA==",
         "email": "abuzar1.alam@stu.adamasuniversity.ac.in",
@@ -128,12 +128,12 @@ const mockStore = {
         "created_at": "2026-08-25T10:00:00.000Z"
     },
     {
-        "id": "stall_06",
-        "stall_number": "06",
+        "id": "stall_6",
+        "stall_number": "6",
         "name": "Rakhi wala corner",
         "category": "Rakhi & Festive Products",
         "founders": "Komal Bothra",
-        "department": "BA psychology (SOHMS) \u2022 1st Year",
+        "department": "BA psychology (SOHMS) • 1st Year",
         "description": "Rakhi and related to rakhi festive and hampers",
         "instagram": "https://www.instagram.com/_ft.komal._?igsi=dm5uNGkza2U1eWtw",
         "email": "komal.bothra@stu.adamasuniversity.ac.in",
@@ -142,13 +142,13 @@ const mockStore = {
         "created_at": "2026-08-25T10:00:00.000Z"
     },
     {
-        "id": "stall_07",
-        "stall_number": "07",
+        "id": "stall_7",
+        "stall_number": "7",
         "name": "Fusion Clock",
         "category": "Homemade Food & Bakery",
         "founders": "Falguni Yadav",
-        "department": "M.Tech DSDT (SOET) \u2022 1st Year",
-        "description": "A delicious homemade cake, freshly baked with love and care. Soft, moist, fluffy, and full of rich, comforting flavor\u2014perfect for birthdays, celebrations, or simply enjoying a sweet treat at home.",
+        "department": "M.Tech DSDT (SOET) • 1st Year",
+        "description": "A delicious homemade cake, freshly baked with love and care. Soft, moist, fluffy, and full of rich, comforting flavor—perfect for birthdays, celebrations, or simply enjoying a sweet treat at home.",
         "instagram": "https://www.instagram.com/fusionclock22?igsi=dmV6YXIzYnV0Zmxy",
         "email": "falguni01.yadav@stu.adamasuniversity.ac.in",
         "contact": "7501756156",
@@ -156,12 +156,12 @@ const mockStore = {
         "created_at": "2026-08-25T10:00:00.000Z"
     },
     {
-        "id": "stall_08",
-        "stall_number": "08",
+        "id": "stall_8",
+        "stall_number": "8",
         "name": "Sweet Stiches",
         "category": "Rakhi & Festive Products",
         "founders": "Tridipa Laskar",
-        "department": "Management (School Of Business) \u2022 3rd Year",
+        "department": "Management (School Of Business) • 3rd Year",
         "description": "We sell Crochet Items, Key chains, Bandana, Rakhi Items and many more",
         "instagram": "https://www.instagram.com/girlinloops?igsi=c2VnbTF1d3U2cmVr",
         "email": "tridipa1.laskar@stu.adamasuniversity.ac.in",
@@ -170,12 +170,12 @@ const mockStore = {
         "created_at": "2026-08-25T10:00:00.000Z"
     },
     {
-        "id": "stall_09",
-        "stall_number": "09",
+        "id": "stall_9",
+        "stall_number": "9",
         "name": "Crunch &Crumbs",
         "category": "Homemade Food & Bakery",
         "founders": "Sayantani Chanda",
-        "department": "Psychology (SOHMS) \u2022 2nd Year",
+        "department": "Psychology (SOHMS) • 2nd Year",
         "description": "Sandwiches, deepfries, cakes, puddings",
         "instagram": "sayantani.chanda_",
         "email": "sayantani2.chanda@stu.adamasuniversity.ac.in",
@@ -189,9 +189,9 @@ const mockStore = {
         "name": "The Flavour junction",
         "category": "Homemade Food & Bakery",
         "founders": "Rajnandini Kundu",
-        "department": "B.tech Biotechnology (School of life science and biotechnology) \u2022 3rd Year",
+        "department": "B.tech Biotechnology (School of life science and biotechnology) • 3rd Year",
         "description": "We will sell byob,chats, sundae ice cream and cold drink",
-        "instagram": "",
+        "instagram": "No",
         "email": "rajnandini1.kundu@stu.adamasuniversity.ac.in",
         "contact": "7003856128",
         "image_url": "/assets/hero/hero2.png",
@@ -203,9 +203,9 @@ const mockStore = {
         "name": "Handmade & more",
         "category": "Eco Friendly & Sustainable Items",
         "founders": "Prabreesha Dutta",
-        "department": "BIotechnology (SOLB) \u2022 3rd Year",
+        "department": "BIotechnology (SOLB) • 3rd Year",
         "description": "Customized jewellery & gifts, handmade accesaories",
-        "instagram": "",
+        "instagram": "NA",
         "email": "prabreesha1.dutta@stuadamasuniversity",
         "contact": "9883156225",
         "image_url": "/assets/hero/hero3.png",
@@ -217,7 +217,7 @@ const mockStore = {
         "name": "MADE WRAPPED",
         "category": "Rakhi & Festive Products",
         "founders": "PARAMITA MONDAL",
-        "department": "ALLIED HEALTH SCIENCES (SOHMS) \u2022 4th Year",
+        "department": "ALLIED HEALTH SCIENCES (SOHMS) • 4th Year",
         "description": "HANDMADE RIBBON ROSE BOUQUETS , CROCHET ACCESSORIES , HAMPERS , BOOKMARKS ETC",
         "instagram": "made_wrapped",
         "email": "paramita.mondal@stu.adamasuniversity.ac.in",
@@ -231,11 +231,11 @@ const mockStore = {
         "name": "kNOT your BRO",
         "category": "Homemade Food & Bakery",
         "founders": "Armaan Kumar Singh",
-        "department": "CSE (SOET) \u2022 4th Year",
+        "department": "CSE (SOET) • 4th Year",
         "description": "Homemade cakes, burgers, snacks, meals and sweet treats, made with love at home",
         "instagram": "https://www.instagram.com/seemaplantsandprints?igsi=cXp4bHl4eWh2Zmc5",
         "email": "arman.singh@stu.adamasuniversity.ac.in",
-        "contact": "87574 77197",
+        "contact": "8757477197",
         "image_url": "/assets/hero/hero2.png",
         "created_at": "2026-08-25T10:00:00.000Z"
     },
@@ -245,7 +245,7 @@ const mockStore = {
         "name": "Bring your own babe",
         "category": "Homemade Food & Bakery",
         "founders": "Shana kashish",
-        "department": "Commerce (Business) \u2022 2nd Year",
+        "department": "Commerce (Business) • 2nd Year",
         "description": "Our BYOB (Bring Your Own Bag) stall offers a fun and customizable snacking experience. Customers can bring their own chips packet or bag, which we transform into a loaded snack by adding fresh vegetables, toppings, sauces and seasonings according to their choice. The concept is interactive, affordable and allows everyone to create their own customized snack.",
         "instagram": "byob_ae",
         "email": "shana.kashish@stu.adamasuniversity.ac.in",
@@ -259,7 +259,7 @@ const mockStore = {
         "name": "Woven by Nilu:\"The Rakhi Edition\"",
         "category": "Rakhi & Festive Products",
         "founders": "Nilanjana Sinha",
-        "department": "SoMC Bsc animation,graphics and media technology \u2022 1st Year",
+        "department": "SoMC Bsc animation,graphics and media technology • 1st Year",
         "description": "I sell crochet products at very affordable price specially Rakhis,keychains, hair clips,bookmarkers etc....all are make up of wool ..",
         "instagram": "aira_nilanjana",
         "email": "nilanjana2.sinha@stu.adamasuniversity.ac.in",
@@ -273,7 +273,7 @@ const mockStore = {
         "name": "SOM Perfumes",
         "category": "Rakhi & Festive Products",
         "founders": "Esha Ghosh",
-        "department": "Bsc in Animation Graphics Design and Media Technology (Media and Communication) \u2022 3rd Year",
+        "department": "Bsc in Animation Graphics Design and Media Technology (Media and Communication) • 3rd Year",
         "description": "It's Purely handcrafted Soaps, Perfumes and Attars, with different varieties of fragrances, dupes of Big brands, our own new fragrances, every type of smells available",
         "instagram": "https://www.instagram.com/_scent_o_mania_?igsi=amVpMDJvZnQ4amN2",
         "email": "esha1.ghosh@stu.adamas.university.ac.in",
@@ -287,7 +287,7 @@ const mockStore = {
         "name": "The Pure Bake",
         "category": "Homemade Food & Bakery",
         "founders": "Priyanshi Bansal",
-        "department": "Forensic science (SOBAS) \u2022 3rd Year",
+        "department": "Forensic science (SOBAS) • 3rd Year",
         "description": "A variety of homemade bakery items including cakes, brownies and cookies!",
         "instagram": "@thepurebake",
         "email": "priyanshi1.bansal@stu.adamasuniversity.ac.in",
@@ -301,7 +301,7 @@ const mockStore = {
         "name": "HOUSE OF KIOKU",
         "category": "Merchandise",
         "founders": "KANISHK KUMAR RAI",
-        "department": "BTECH CSE(AI/ML) (SOET) \u2022 3rd Year",
+        "department": "BTECH CSE(AI/ML) (SOET) • 3rd Year",
         "description": "POSTERS,POLAROIDS AND KEYCHAINS",
         "instagram": "HOUSE OF KIOKU",
         "email": "kanishk1.rai@stu.adamasuniversity.ac.in",
@@ -315,7 +315,7 @@ const mockStore = {
         "name": "Food affairs",
         "category": "Homemade Food & Bakery",
         "founders": "Archita Koley",
-        "department": "Allied health and medical science (SOHMS) \u2022 1st Year",
+        "department": "Allied health and medical science (SOHMS) • 1st Year",
         "description": "Eggless cupcakes, mojito, paprichat ,gulaab jamun",
         "instagram": "ku.hu_08",
         "email": "archita2.koley@stu.adamasuniversity.ac.in",
@@ -329,9 +329,9 @@ const mockStore = {
         "name": "Bite Buzz",
         "category": "Homemade Food & Bakery",
         "founders": "Sanchita Jana",
-        "department": "Allied  health science (SOHMS) \u2022 1st Year",
+        "department": "Allied  health science (SOHMS) • 1st Year",
         "description": "Dragon chicken,Medu Vada, Aam panna",
-        "instagram": "",
+        "instagram": "NA",
         "email": "sanchita2.jana@stu.adamasuniversity",
         "contact": "8509482008",
         "image_url": "/assets/hero/hero2.png",
@@ -343,7 +343,7 @@ const mockStore = {
         "name": "TEAM DIAMOND CHATORE",
         "category": "Homemade Food & Bakery",
         "founders": "SAIKAT BERA",
-        "department": "Allied health sciences (BMLT) (SOHMS) \u2022 4th Year",
+        "department": "Allied health sciences (BMLT) (SOHMS) • 4th Year",
         "description": "Tea, verieties of chat,",
         "instagram": "_team_diamond_2327",
         "email": "saikat.bera@stu.adamasuniversity.ac.in",
@@ -357,7 +357,7 @@ const mockStore = {
         "name": "Two Peas & A Plate",
         "category": "Homemade Food & Bakery",
         "founders": "Srijani Basu",
-        "department": "Law (School of law and justice) \u2022 3rd Year",
+        "department": "Law (School of law and justice) • 3rd Year",
         "description": "Our food is entirely homemade and healthy with taste!!",
         "instagram": "https://www.instagram.com/prioshi_dey?igsi=MWl5Y3RmNWVzNjA1Yg%3D%3D&utm_source=qr",
         "email": "srijani1.basu@stu.adamasuniversity.ac.in",
@@ -368,10 +368,108 @@ const mockStore = {
     {
         "id": "stall_23",
         "stall_number": "23",
+        "name": "Charmnco",
+        "category": "Rakhi & Festive Products",
+        "founders": "Saptarshi Kundu",
+        "department": "CSE (SOET) • 2nd Year",
+        "description": "Our stall offers a curated collection of cute, trendy, and affordable accessories, including jewellery, bracelets, hair clutches/claw clips, and other stylish little essentials. Perfect for adding a simple touch of charm to your everyday look or gifting someone special.",
+        "instagram": "@charmnco.official",
+        "email": "saptarshi1.kundu@stu.adamasuniversity.ac.in",
+        "contact": "9330250860",
+        "image_url": "/assets/rakhi.jpeg",
+        "created_at": "2026-08-25T10:00:00.000Z"
+    },
+    {
+        "id": "stall_24",
+        "stall_number": "24",
+        "name": "Faces and Fun",
+        "category": "Rakhi & Festive Products",
+        "founders": "Prapti Biswas",
+        "department": "BSc Forensic Science (SOBAS) • 1st Year",
+        "description": "Face Painting",
+        "instagram": "",
+        "email": "prapti.biswas@stu.adamasuniversity.ac.in",
+        "contact": "9051625436",
+        "image_url": "/assets/rakhi.jpeg",
+        "created_at": "2026-08-25T10:00:00.000Z"
+    },
+    {
+        "id": "stall_25",
+        "stall_number": "25",
+        "name": "Bloom with Clay",
+        "category": "Eco Friendly & Sustainable Items",
+        "founders": "Disha Saha",
+        "department": "Chemistry (Sobas) • 2nd Year",
+        "description": "We will sell sustainable decorated pots with plants and sustainable candles",
+        "instagram": "Null",
+        "email": "disha2.saha@stu.adamasuniversity.ac.in",
+        "contact": "7439299433",
+        "image_url": "/assets/hero/hero3.png",
+        "created_at": "2026-08-25T10:00:00.000Z"
+    },
+    {
+        "id": "stall_26",
+        "stall_number": "26",
+        "name": "আবার খাবো",
+        "category": "Homemade Food & Bakery",
+        "founders": "Saptarnab Karmakar",
+        "department": "Environmental science and sustainability (SOBAS) • 1st Year",
+        "description": "Homemade food",
+        "instagram": "",
+        "email": "saptarnab1.karmakar@stu.adamasuniversity.ac.in",
+        "contact": "6289091985",
+        "image_url": "/assets/hero/hero2.png",
+        "created_at": "2026-08-25T10:00:00.000Z"
+    },
+    {
+        "id": "stall_27",
+        "stall_number": "27",
+        "name": "Kissewala: Film and Drama Club",
+        "category": "Eco Friendly & Sustainable Items",
+        "founders": "Debjeet Kundu",
+        "department": "CSE (SOET) • 2nd Year",
+        "description": "Creative reels and story making",
+        "instagram": "kissewalaofcl_au",
+        "email": "debjeet1.kundu@stu.adamasuniversity.ac.in",
+        "contact": "9073304565",
+        "image_url": "/assets/hero/hero3.png",
+        "created_at": "2026-08-25T10:00:00.000Z"
+    },
+    {
+        "id": "stall_28",
+        "stall_number": "28",
+        "name": "Swaad and Sehat",
+        "category": "Homemade Food & Bakery",
+        "founders": "Ishita Das",
+        "department": "Chemistry (School of Basic and Applied Sciences) • 2nd Year",
+        "description": "We will be selling homemade healthy snacks along with handmade, creative bookmarks",
+        "instagram": "",
+        "email": "ishita2.das@stu.adamasuniversity.ac.in",
+        "contact": "7044228990",
+        "image_url": "/assets/hero/hero2.png",
+        "created_at": "2026-08-25T10:00:00.000Z"
+    },
+    {
+        "id": "stall_29",
+        "stall_number": "29",
+        "name": "Momolicious!",
+        "category": "Homemade Food & Bakery",
+        "founders": "RINI KARAK",
+        "department": "GEOGRAPHY (SOBAS) • 2nd Year",
+        "description": "Momo",
+        "instagram": "",
+        "email": "rini2.karak@stu.adamasuniversity.ac.in",
+        "contact": "6290406354",
+        "image_url": "/assets/hero/hero2.png",
+        "created_at": "2026-08-25T10:00:00.000Z"
+    },
+    {
+        "id": "stall_30",
+        "stall_number": "30",
         "name": "Blisbees",
         "category": "Merchandise",
         "founders": "Aaditya Singh",
-        "department": "BTech Cse (SOET) \u2022 2nd year",
+        "department": "BTech Cse (SOET) • 2nd year",
         "description": "Diecast car, 3d car frame and gifting items",
         "instagram": "https://www.instagram.com/blisbees?igsi=OXAyaWhmeDJyN3Vr",
         "email": "aditya6.singh@stu.adamasuniversity.ac.in",
@@ -384,24 +482,31 @@ const mockStore = {
   admins: [
     {
       id: 'a1',
-      username: process.env.ADMIN_USERNAME || 'admin',
-      password: process.env.ADMIN_PASSWORD || 'admin123',
-      role: 'superadmin'
+      username: 'admin',
+      // Password hash for: admin123
+      password_hash: '$2a$10$rCv1N5l2M18eF.8O4.4WpuNzgK4rLhD3LpZ3M5.aT8a6q8hL.Lgq2',
+      email: 'admin@adamas.ac.in',
+      role: 'superadmin',
+      created_at: new Date().toISOString()
     }
   ]
 };
 
+// Initialize real Supabase client if valid credentials are provided
 if (supabaseUrl && supabaseKey && supabaseUrl.startsWith('http') && !supabaseUrl.includes('your-project-ref')) {
   try {
-    supabase = createClient(supabaseUrl, supabaseKey);
+    supabase = createClient(supabaseUrl, supabaseKey, {
+      auth: { persistSession: false }
+    });
     isMock = false;
-    console.log('✅ Supabase client initialized with live database connection.');
-  } catch (error) {
-    console.warn('⚠️ Supabase initialization failed, falling back to in-memory store:', error.message);
+    console.log('⚡ Connected to real Supabase database successfully.');
+  } catch (err) {
+    console.warn('⚠️ Could not initialize Supabase client, using in-memory mock store:', err.message);
     isMock = true;
   }
 } else {
-  console.log('ℹ️ Supabase credentials not set in .env. Running in in-memory Mock Data mode for development.');
+  console.log('ℹ️ Running with in-memory database store (Supabase credentials not configured in server/.env).');
+  isMock = true;
 }
 
 module.exports = {
