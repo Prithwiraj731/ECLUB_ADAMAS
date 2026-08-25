@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import RakhiStalls from './pages/RakhiStalls';
+import RateStall from './pages/RateStall';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 
@@ -24,8 +25,19 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          
+          {/* Public Stalls Directory & Showcase */}
           <Route path="/rakhi-stalls" element={<RakhiStalls />} />
-          <Route path="/bazaar-rating" element={<RakhiStalls />} />
+          <Route path="/stalls" element={<RakhiStalls />} />
+
+          {/* Dedicated Individual Stall QR Code Rating Pages */}
+          <Route path="/rate/:stallId" element={<RateStall />} />
+          <Route path="/rate" element={<RateStall />} />
+          <Route path="/rate-stall/:stallId" element={<RateStall />} />
+          <Route path="/rate-stall" element={<RateStall />} />
+          <Route path="/bazaar-rating" element={<RateStall />} />
+
+          {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route
             path="/admin"
@@ -35,6 +47,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
           {/* Catch-all redirect */}
           <Route path="*" element={<Home />} />
         </Routes>

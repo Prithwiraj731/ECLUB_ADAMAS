@@ -2,13 +2,16 @@ const express = require('express');
 const router = express.Router();
 const stallsController = require('../controllers/stallsController');
 
-// Public routes for visitors
-router.get('/', stallsController.getAllStalls);
-router.post('/review', stallsController.submitReview);
-
-// Admin routes for E-Club committee
+// Admin / Leaderboard & Reviews routes (declared first to avoid route parameter collision)
 router.get('/leaderboard', stallsController.getLeaderboard);
 router.get('/reviews', stallsController.getAllReviews);
+
+// Public routes for visitors
+router.get('/', stallsController.getAllStalls);
+router.get('/:idOrNumber', stallsController.getStallByIdOrNumber);
+router.post('/review', stallsController.submitReview);
+
+// Admin stall management routes
 router.post('/', stallsController.createStall);
 router.delete('/:id', stallsController.deleteStall);
 

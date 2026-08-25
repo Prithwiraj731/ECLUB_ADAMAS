@@ -123,10 +123,10 @@ export default function Contact() {
             style={{
               background: 'var(--white)',
               borderRadius: 'var(--radius-lg)',
-              padding: '2rem',
+              padding: 'clamp(1.25rem, 3.5vw, 2.25rem)',
               boxShadow: 'var(--shadow-md)',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
               gap: '2rem',
               alignItems: 'center',
             }}

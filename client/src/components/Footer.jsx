@@ -34,6 +34,7 @@ export default function Footer() {
             <ul>
               <li><Link to="/">Home</Link></li>
               <li><Link to="/about">About E-Club</Link></li>
+              <li><Link to="/rakhi-stalls">Rakhi Bazaar Stalls</Link></li>
               <li><a href="/#events">Upcoming Events</a></li>
               <li><a href="/#initiatives">Flagship Initiatives</a></li>
               <li><Link to="/contact">Get in Touch</Link></li>

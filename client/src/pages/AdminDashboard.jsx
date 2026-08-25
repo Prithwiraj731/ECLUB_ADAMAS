@@ -1,27 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { QRCodeSVG } from 'qrcode.react';
 import { useAuth } from '../context/AuthContext';
 
 export default function AdminDashboard() {
   const { admin, logout } = useAuth();
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState('stalls'); // 'stalls', 'events', 'notices', 'inquiries'
+  const [activeTab, setActiveTab] = useState('stalls'); // 'stalls', 'qrcodes', 'events', 'notices', 'inquiries'
 
   // Stalls & Voting Leaderboard State
   const [stallsLeaderboard, setStallsLeaderboard] = useState([]);
   const [stallReviews, setStallReviews] = useState([]);
   const [totalVotes, setTotalVotes] = useState(0);
+  const [qrSearch, setQrSearch] = useState('');
   const [stallForm, setStallForm] = useState({
     stall_number: '',
     name: '',
-    category: 'Handcrafted Rakhi & Gifts',
+    category: 'Rakhi & Festive Products',
     founders: '',
+    department: '',
     description: '',
+    instagram: '',
     image_url: '',
   });
   const [stallAlert, setStallAlert] = useState({ success: null, message: '' });
   const [stallLoading, setStallLoading] = useState(false);
+  const [copiedStallNum, setCopiedStallNum] = useState(null);
 
   // Events State
   const [events, setEvents] = useState([]);
@@ -120,7 +125,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // Handle Add Stall Submit
+  // Handle Stall Submit
   const handleStallSubmit = async (e) => {
     e.preventDefault();
     setStallLoading(true);
@@ -135,13 +140,15 @@ export default function AdminDashboard() {
       const data = await res.json();
 
       if (data.success) {
-        setStallAlert({ success: true, message: `Stall "${stallForm.name}" added successfully!` });
+        setStallAlert({ success: true, message: 'Stall successfully added to directory!' });
         setStallForm({
           stall_number: '',
           name: '',
-          category: 'Handcrafted Rakhi & Gifts',
+          category: 'Rakhi & Festive Products',
           founders: '',
+          department: '',
           description: '',
+          instagram: '',
           image_url: '',
         });
         loadStallsLeaderboard();
@@ -149,20 +156,22 @@ export default function AdminDashboard() {
         setStallAlert({ success: false, message: data.message || 'Failed to add stall.' });
       }
     } catch (err) {
-      setStallAlert({ success: false, message: 'Server error while adding stall.' });
+      setStallAlert({ success: false, message: 'Server error while creating stall.' });
     } finally {
       setStallLoading(false);
     }
   };
 
-  // Handle Delete Stall
-  const handleDeleteStall = async (id, name) => {
-    if (!window.confirm(`Are you sure you want to delete stall "${name}"?`)) return;
+  // Delete Stall
+  const handleDeleteStall = async (id, stallName) => {
+    if (!window.confirm(`Are you sure you want to delete stall "${stallName}"?`)) return;
     try {
       const res = await fetch(`/api/stalls/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         loadStallsLeaderboard();
+      } else {
+        alert(data.message || 'Failed to delete stall');
       }
     } catch (e) {
       alert('Failed to delete stall');
@@ -295,35 +304,53 @@ export default function AdminDashboard() {
     navigate('/admin/login');
   };
 
+  const copyRatingLink = (stallNum) => {
+    const url = `${window.location.origin}/rate/${stallNum}`;
+    navigator.clipboard.writeText(url);
+    setCopiedStallNum(stallNum);
+    setTimeout(() => setCopiedStallNum(null), 2000);
+  };
+
+  const filteredQrStalls = stallsLeaderboard.filter((s) => {
+    const q = qrSearch.toLowerCase().trim();
+    if (!q) return true;
+    return (
+      s.name.toLowerCase().includes(q) ||
+      s.stall_number.includes(q) ||
+      (s.founders && s.founders.toLowerCase().includes(q)) ||
+      (s.category && s.category.toLowerCase().includes(q))
+    );
+  });
+
   const topStall = stallsLeaderboard.length > 0 && stallsLeaderboard[0].total_reviews > 0 ? stallsLeaderboard[0] : null;
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--off-white)' }}>
+    <div className="admin-layout-container">
       {/* Sidebar Navigation */}
-      <aside
-        style={{
-          width: '280px',
-          background: 'var(--secondary-color)',
-          color: 'var(--white)',
-          padding: '2rem 1.25rem',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          flexShrink: 0,
-          borderRight: '1px solid rgba(245, 242, 237, 0.1)',
-        }}
-      >
+      <aside className="admin-sidebar no-print">
         <div>
-          <div style={{ textAlign: 'center', paddingBottom: '1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.12)' }}>
-            <img src="/assets/logo.png" alt="Adamas Logo" style={{ height: '44px', margin: '0 auto 0.75rem auto' }} />
-            <h2 style={{ fontSize: '1.15rem', color: 'var(--white)', margin: 0, letterSpacing: '0.5px' }}>E-Club Admin</h2>
-            <p style={{ fontSize: '0.78rem', color: '#A8A39D', margin: '4px 0 0 0' }}>Adamas University</p>
+          <div className="admin-sidebar-brand" style={{ textAlign: 'center', paddingBottom: '1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.12)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
+              <img src="/assets/logo.png" alt="Adamas Logo" style={{ height: '44px', margin: '0 auto 0.75rem auto' }} />
+            </div>
+            <div className="admin-brand-text">
+              <h2 style={{ fontSize: '1.15rem', color: 'var(--white)', margin: 0, letterSpacing: '0.5px' }}>E-Club Admin</h2>
+              <p style={{ fontSize: '0.78rem', color: '#A8A39D', margin: '4px 0 0 0' }}>Adamas University</p>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="admin-mobile-logout btn btn-secondary"
+              style={{ display: 'none', padding: '6px 12px', fontSize: '0.78rem' }}
+            >
+              <i className="fas fa-sign-out-alt"></i> Logout
+            </button>
           </div>
 
-          <nav style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+          <nav className="admin-sidebar-nav" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             {/* Tab 1: Stalls & Voting Leaderboard */}
             <button
               onClick={() => setActiveTab('stalls')}
+              className={activeTab === 'stalls' ? 'active-tab' : ''}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -339,13 +366,37 @@ export default function AdminDashboard() {
                 transition: 'all 0.2s ease',
               }}
             >
-              <i className="fas fa-store" style={{ color: activeTab === 'stalls' ? 'var(--primary-color)' : 'inherit' }}></i>
-              <span>Rakhi Stalls &amp; Voting</span>
+              <i className="fas fa-trophy" style={{ color: activeTab === 'stalls' ? 'var(--primary-color)' : 'inherit' }}></i>
+              <span>Leaderboard &amp; Stalls</span>
             </button>
 
-            {/* Tab 2: Manage Events */}
+            {/* Tab 2: Stall QR Codes Hub */}
+            <button
+              onClick={() => setActiveTab('qrcodes')}
+              className={activeTab === 'qrcodes' ? 'active-tab' : ''}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '0.85rem 1rem',
+                borderRadius: '8px',
+                color: 'var(--white)',
+                background: activeTab === 'qrcodes' ? 'rgba(139, 13, 26, 0.25)' : 'transparent',
+                fontWeight: activeTab === 'qrcodes' ? '700' : '500',
+                borderLeft: activeTab === 'qrcodes' ? '4px solid var(--primary-color)' : '4px solid transparent',
+                textAlign: 'left',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <i className="fas fa-qrcode" style={{ color: activeTab === 'qrcodes' ? 'var(--primary-color)' : 'inherit' }}></i>
+              <span>Stall QR Codes Hub</span>
+            </button>
+
+            {/* Tab 3: Manage Events */}
             <button
               onClick={() => setActiveTab('events')}
+              className={activeTab === 'events' ? 'active-tab' : ''}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -365,9 +416,10 @@ export default function AdminDashboard() {
               <span>Manage Events</span>
             </button>
 
-            {/* Tab 3: Live Notices */}
+            {/* Tab 4: Live Notices */}
             <button
               onClick={() => setActiveTab('notices')}
+              className={activeTab === 'notices' ? 'active-tab' : ''}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -387,9 +439,10 @@ export default function AdminDashboard() {
               <span>Live Notices</span>
             </button>
 
-            {/* Tab 4: Inquiries */}
+            {/* Tab 5: Inquiries */}
             <button
               onClick={() => setActiveTab('inquiries')}
+              className={activeTab === 'inquiries' ? 'active-tab' : ''}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -428,7 +481,7 @@ export default function AdminDashboard() {
                 textDecoration: 'none',
               }}
             >
-              <i className="fas fa-qrcode"></i> View QR Voting Page ↗
+              <i className="fas fa-store"></i> View Stalls Showcase ↗
             </Link>
 
             <Link
@@ -450,7 +503,7 @@ export default function AdminDashboard() {
           </nav>
         </div>
 
-        <div>
+        <div className="admin-sidebar-footer">
           <button
             onClick={handleLogout}
             style={{
@@ -474,20 +527,12 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Panel Content */}
-      <main style={{ flex: 1, padding: '2.5rem', overflowY: 'auto' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '2rem',
-            borderBottom: '2px solid var(--border-light)',
-            paddingBottom: '1rem',
-          }}
-        >
+      <main className="admin-main-panel">
+        <div className="admin-panel-header no-print">
           <div>
             <h1 style={{ color: 'var(--secondary-color)', fontSize: '1.85rem', fontWeight: '800', margin: 0 }}>
-              {activeTab === 'stalls' && 'Rakhi Startup Bazaar • Stalls & Live Voting Leaderboard'}
+              {activeTab === 'stalls' && 'Rakhi Startup Bazaar • 23 Stalls Leaderboard'}
+              {activeTab === 'qrcodes' && 'Stall QR Code Hub & Physical Standees'}
               {activeTab === 'events' && 'Events Management'}
               {activeTab === 'notices' && 'Live Notices Management'}
               {activeTab === 'inquiries' && 'Contact Inquiries & Submissions'}
@@ -497,68 +542,80 @@ export default function AdminDashboard() {
             </p>
           </div>
 
-          <button
-            onClick={() => {
-              if (activeTab === 'stalls') {
-                loadStallsLeaderboard();
-                loadStallReviews();
-              } else if (activeTab === 'events') {
-                loadEvents();
-              } else if (activeTab === 'notices') {
-                loadNotices();
-              } else {
-                loadInquiries();
-              }
-            }}
-            className="btn btn-secondary"
-            style={{ padding: '0.55rem 1.25rem', fontSize: '0.88rem' }}
-          >
-            <i className="fas fa-sync-alt" style={{ marginRight: '6px' }}></i> Refresh
-          </button>
+          <div className="admin-header-actions" style={{ display: 'flex', gap: '10px' }}>
+            {activeTab === 'qrcodes' && (
+              <button
+                onClick={() => window.print()}
+                className="btn btn-primary"
+                style={{ padding: '0.55rem 1.25rem', fontSize: '0.88rem' }}
+              >
+                <i className="fas fa-print" style={{ marginRight: '6px' }}></i> Print All QR Cards
+              </button>
+            )}
+            <button
+              onClick={() => {
+                if (activeTab === 'stalls' || activeTab === 'qrcodes') {
+                  loadStallsLeaderboard();
+                  loadStallReviews();
+                } else if (activeTab === 'events') {
+                  loadEvents();
+                } else if (activeTab === 'notices') {
+                  loadNotices();
+                } else {
+                  loadInquiries();
+                }
+              }}
+              className="btn btn-secondary"
+              style={{ padding: '0.55rem 1.25rem', fontSize: '0.88rem' }}
+            >
+              <i className="fas fa-sync-alt" style={{ marginRight: '6px' }}></i> Refresh
+            </button>
+          </div>
         </div>
 
         {/* Tab 1: Rakhi Stalls & Voting Leaderboard */}
         {activeTab === 'stalls' && (
           <div>
             {/* Top Metric Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
+            <div className="admin-metric-cards-grid">
               <div style={{ background: 'var(--white)', padding: '1.5rem', borderRadius: '16px', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
-                <p style={{ margin: '0 0 6px 0', fontSize: '0.82rem', fontWeight: '700', color: 'var(--text-light)', textTransform: 'uppercase' }}>Total Stalls</p>
+                <p style={{ margin: '0 0 6px 0', fontSize: '0.82rem', fontWeight: '700', color: 'var(--text-light)', textTransform: 'uppercase' }}>Registered Stalls</p>
                 <h3 style={{ margin: 0, fontSize: '2rem', color: 'var(--secondary-color)', fontWeight: '900' }}>{stallsLeaderboard.length}</h3>
               </div>
 
               <div style={{ background: 'var(--white)', padding: '1.5rem', borderRadius: '16px', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
-                <p style={{ margin: '0 0 6px 0', fontSize: '0.82rem', fontWeight: '700', color: 'var(--text-light)', textTransform: 'uppercase' }}>Total Votes Cast</p>
+                <p style={{ margin: '0 0 6px 0', fontSize: '0.82rem', fontWeight: '700', color: 'var(--text-light)', textTransform: 'uppercase' }}>Total QR Votes Cast</p>
                 <h3 style={{ margin: 0, fontSize: '2rem', color: 'var(--primary-color)', fontWeight: '900' }}>{totalVotes}</h3>
               </div>
 
               <div style={{ background: 'var(--white)', padding: '1.5rem', borderRadius: '16px', border: '1px solid var(--border-light)', borderLeft: '4px solid var(--primary-color)', boxShadow: 'var(--shadow-sm)' }}>
                 <p style={{ margin: '0 0 6px 0', fontSize: '0.82rem', fontWeight: '700', color: 'var(--primary-color)', textTransform: 'uppercase' }}>🏆 Leading Contender</p>
                 <h4 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--secondary-color)', fontWeight: '800' }}>
-                  {topStall ? `${topStall.name} (${topStall.avg_rating}★)` : 'No ratings submitted yet'}
+                  {topStall ? `${topStall.name} (#${topStall.stall_number} • ${topStall.avg_rating}★)` : 'No ratings submitted yet'}
                 </h4>
               </div>
             </div>
 
             {/* Live Leaderboard Table */}
-            <div style={{ background: 'var(--white)', padding: '2rem', borderRadius: '18px', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', marginBottom: '2.5rem' }}>
+            <div className="admin-card">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
                 <h3 style={{ color: 'var(--secondary-color)', margin: 0, fontSize: '1.3rem' }}>
                   <i className="fas fa-trophy" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i>
-                  Ranked Stall Leaderboard (Committee Selection)
+                  Ranked Stall Leaderboard (23 Official University Stalls)
                 </h3>
               </div>
 
-              <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+              <div className="table-responsive">
+                <table style={{ width: '100%', minWidth: '650px', borderCollapse: 'collapse', textAlign: 'left' }}>
                   <thead>
                     <tr style={{ background: '#FAF8F5', borderBottom: '2px solid var(--border-light)' }}>
                       <th style={{ padding: '12px 16px', fontSize: '0.85rem', color: 'var(--secondary-color)' }}>Rank</th>
                       <th style={{ padding: '12px 16px', fontSize: '0.85rem', color: 'var(--secondary-color)' }}>Stall #</th>
-                      <th style={{ padding: '12px 16px', fontSize: '0.85rem', color: 'var(--secondary-color)' }}>Stall Name &amp; Category</th>
-                      <th style={{ padding: '12px 16px', fontSize: '0.85rem', color: 'var(--secondary-color)' }}>Founders</th>
+                      <th style={{ padding: '12px 16px', fontSize: '0.85rem', color: 'var(--secondary-color)' }}>Stall Name &amp; Segment</th>
+                      <th style={{ padding: '12px 16px', fontSize: '0.85rem', color: 'var(--secondary-color)' }}>Founders &amp; Dept</th>
                       <th style={{ padding: '12px 16px', fontSize: '0.85rem', color: 'var(--secondary-color)' }}>Average Score</th>
                       <th style={{ padding: '12px 16px', fontSize: '0.85rem', color: 'var(--secondary-color)' }}>Total Votes</th>
+                      <th style={{ padding: '12px 16px', fontSize: '0.85rem', color: 'var(--secondary-color)' }}>QR Link</th>
                       <th style={{ padding: '12px 16px', fontSize: '0.85rem', color: 'var(--secondary-color)' }}>Actions</th>
                     </tr>
                   </thead>
@@ -573,13 +630,30 @@ export default function AdminDashboard() {
                           <strong style={{ color: 'var(--secondary-color)' }}>{stall.name}</strong>
                           <div style={{ fontSize: '0.78rem', color: 'var(--text-light)', marginTop: '2px' }}>{stall.category}</div>
                         </td>
-                        <td style={{ padding: '14px 16px', fontSize: '0.9rem', color: 'var(--text-light)' }}>{stall.founders || '—'}</td>
+                        <td style={{ padding: '14px 16px', fontSize: '0.85rem', color: 'var(--text-light)' }}>
+                          <div style={{ color: 'var(--secondary-color)', fontWeight: '600' }}>{stall.founders || '—'}</div>
+                          <div style={{ fontSize: '0.75rem' }}>{stall.department || ''}</div>
+                        </td>
                         <td style={{ padding: '14px 16px' }}>
                           <span style={{ background: stall.avg_rating >= 4 ? 'rgba(139, 13, 26, 0.12)' : '#FAF8F5', color: stall.avg_rating >= 4 ? 'var(--primary-color)' : 'var(--secondary-color)', padding: '4px 10px', borderRadius: '12px', fontWeight: '800', fontSize: '0.9rem' }}>
                             ★ {stall.avg_rating} / 5.0
                           </span>
                         </td>
                         <td style={{ padding: '14px 16px', fontWeight: '700' }}>{stall.total_reviews} reviews</td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <button
+                            onClick={() => copyRatingLink(stall.stall_number)}
+                            className="btn btn-secondary"
+                            style={{ padding: '4px 8px', fontSize: '0.75rem' }}
+                            title="Copy direct rating URL"
+                          >
+                            {copiedStallNum === stall.stall_number ? (
+                              <span style={{ color: '#16a34a' }}>✓ Copied</span>
+                            ) : (
+                              <span><i className="fas fa-copy"></i> Copy Link</span>
+                            )}
+                          </button>
+                        </td>
                         <td style={{ padding: '14px 16px' }}>
                           <button
                             onClick={() => handleDeleteStall(stall.id, stall.name)}
@@ -597,9 +671,9 @@ export default function AdminDashboard() {
             </div>
 
             {/* Add New Stall Form */}
-            <div style={{ background: 'var(--white)', padding: '2rem', borderRadius: '18px', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', marginBottom: '2.5rem' }}>
+            <div className="admin-card">
               <h3 style={{ color: 'var(--secondary-color)', marginBottom: '1.25rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.75rem' }}>
-                <i className="fas fa-plus-circle" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> Add New Stall
+                <i className="fas fa-plus-circle" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> Add Additional Stall
               </h3>
 
               {stallAlert.message && (
@@ -609,13 +683,13 @@ export default function AdminDashboard() {
               )}
 
               <form onSubmit={handleStallSubmit}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 2fr', gap: '1.25rem', marginBottom: '1rem' }}>
+                <div className="admin-form-grid-3">
                   <div className="form-group">
                     <label>Stall Number *</label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. 07"
+                      placeholder="e.g. 24"
                       value={stallForm.stall_number}
                       onChange={(e) => setStallForm({ ...stallForm, stall_number: e.target.value })}
                     />
@@ -626,7 +700,7 @@ export default function AdminDashboard() {
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Clay & Craft Creations"
+                      placeholder="e.g. Artisan Jewels"
                       value={stallForm.name}
                       onChange={(e) => setStallForm({ ...stallForm, name: e.target.value })}
                     />
@@ -637,31 +711,41 @@ export default function AdminDashboard() {
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Handcrafted Rakhi & Gifts"
+                      placeholder="e.g. Rakhi & Festive Products"
                       value={stallForm.category}
                       onChange={(e) => setStallForm({ ...stallForm, category: e.target.value })}
                     />
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1rem' }}>
+                <div className="admin-form-grid-equal-3">
                   <div className="form-group">
-                    <label>Founders / Team Members</label>
+                    <label>Founders / Team</label>
                     <input
                       type="text"
-                      placeholder="e.g. Tanmoy Pal, Priya Ghosh"
+                      placeholder="e.g. Rahul Sen"
                       value={stallForm.founders}
                       onChange={(e) => setStallForm({ ...stallForm, founders: e.target.value })}
                     />
                   </div>
 
                   <div className="form-group">
-                    <label>Product Photo Path / Image URL</label>
+                    <label>Department / School</label>
                     <input
                       type="text"
-                      placeholder="e.g. /assets/hero/hero1.png"
-                      value={stallForm.image_url}
-                      onChange={(e) => setStallForm({ ...stallForm, image_url: e.target.value })}
+                      placeholder="e.g. CSE (SOET) • 3rd Year"
+                      value={stallForm.department}
+                      onChange={(e) => setStallForm({ ...stallForm, department: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Instagram Handle</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. @artisanjewels"
+                      value={stallForm.instagram}
+                      onChange={(e) => setStallForm({ ...stallForm, instagram: e.target.value })}
                     />
                   </div>
                 </div>
@@ -683,7 +767,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Live Review Feed */}
-            <div style={{ background: 'var(--white)', padding: '2rem', borderRadius: '18px', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
+            <div className="admin-card">
               <h3 style={{ color: 'var(--secondary-color)', marginBottom: '1.25rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.75rem' }}>
                 <i className="fas fa-comments" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i>
                 Live Visitor Ratings &amp; Feedback Feed ({stallReviews.length})
@@ -691,7 +775,7 @@ export default function AdminDashboard() {
 
               {stallReviews.length === 0 ? (
                 <p style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-light)' }}>
-                  No reviews submitted yet. When visitors scan QR codes and rate stalls, their private feedback will appear here in real-time.
+                  No reviews submitted yet. When visitors scan on-ground stall QR codes, their private ratings will stream here in real-time.
                 </p>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -735,10 +819,157 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Tab 2: Events Management */}
+        {/* Tab 2: Stall QR Codes Hub */}
+        {activeTab === 'qrcodes' && (
+          <div>
+            <div className="admin-card no-print" style={{ marginBottom: '2rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                  <h3 style={{ margin: '0 0 6px 0', color: 'var(--secondary-color)', fontSize: '1.25rem' }}>
+                    <i className="fas fa-qrcode" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i>
+                    Physical Stall Standees &amp; QR Hub
+                  </h3>
+                  <p style={{ margin: 0, color: 'var(--text-light)', fontSize: '0.88rem' }}>
+                    Each stall has a dedicated QR code. Visitors who scan Stall #05's QR code will be routed directly to <code>{window.location.origin}/rate/05</code> to rate only that stall.
+                  </p>
+                </div>
+
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <input
+                    type="text"
+                    placeholder="Filter by stall number or name..."
+                    value={qrSearch}
+                    onChange={(e) => setQrSearch(e.target.value)}
+                    style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid var(--border-light)', fontSize: '0.88rem' }}
+                  />
+                  <button onClick={() => window.print()} className="btn btn-primary">
+                    <i className="fas fa-print"></i> Print QR Standees (A4)
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Standee Cards Grid */}
+            <div className="admin-standees-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.75rem' }}>
+              {filteredQrStalls.map((stall) => {
+                const targetUrl = `${window.location.origin}/rate/${stall.stall_number}`;
+                return (
+                  <div
+                    key={stall.id}
+                    className="stall-standee-card"
+                    style={{
+                      background: 'var(--white)',
+                      borderRadius: '20px',
+                      border: '2px solid rgba(139, 13, 26, 0.25)',
+                      padding: '1.75rem 1.5rem',
+                      textAlign: 'center',
+                      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.06)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      pageBreakInside: 'avoid',
+                    }}
+                  >
+                    <div style={{ width: '100%' }}>
+                      {/* Standee Top Header */}
+                      <div style={{ borderBottom: '2px solid #8B0D1A', paddingBottom: '0.75rem', marginBottom: '1.25rem' }}>
+                        <span style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: '800', color: '#8B0D1A', display: 'block' }}>
+                          ADAMAS UNIVERSITY E-CLUB
+                        </span>
+                        <h4 style={{ margin: '4px 0 0 0', fontSize: '0.95rem', color: '#0B0B0B', fontWeight: '800' }}>
+                          RAKHI STARTUP BAZAAR
+                        </h4>
+                      </div>
+
+                      {/* Stall Number Badge */}
+                      <div
+                        style={{
+                          background: '#8B0D1A',
+                          color: '#F5F2ED',
+                          fontWeight: '900',
+                          fontSize: '1.1rem',
+                          padding: '6px 18px',
+                          borderRadius: '20px',
+                          display: 'inline-block',
+                          marginBottom: '0.75rem',
+                          boxShadow: '0 4px 12px rgba(139, 13, 26, 0.3)',
+                        }}
+                      >
+                        STALL #{stall.stall_number}
+                      </div>
+
+                      <h3 style={{ margin: '0 0 4px 0', fontSize: '1.3rem', fontWeight: '900', color: '#0B0B0B' }}>
+                        {stall.name}
+                      </h3>
+
+                      <p style={{ margin: '0 0 8px 0', fontSize: '0.8rem', color: '#666', fontWeight: '600' }}>
+                        {stall.founders}
+                      </p>
+
+                      <span style={{ display: 'inline-block', background: '#F4EBE1', color: '#8B0D1A', fontSize: '0.72rem', fontWeight: '750', padding: '3px 10px', borderRadius: '10px', marginBottom: '1.25rem' }}>
+                        {stall.category}
+                      </span>
+                    </div>
+
+                    {/* QR Code SVG Frame */}
+                    <div
+                      style={{
+                        padding: '12px',
+                        background: '#FFFFFF',
+                        border: '2px dashed rgba(139, 13, 26, 0.4)',
+                        borderRadius: '16px',
+                        display: 'inline-block',
+                        marginBottom: '1rem',
+                      }}
+                    >
+                      <QRCodeSVG
+                        value={targetUrl}
+                        size={170}
+                        level="H"
+                        includeMargin={true}
+                      />
+                    </div>
+
+                    <div style={{ width: '100%' }}>
+                      <p style={{ margin: '0 0 4px 0', fontSize: '0.82rem', fontWeight: '800', color: '#8B0D1A' }}>
+                        <i className="fas fa-camera"></i> SCAN TO RATE &amp; VOTE
+                      </p>
+                      <p style={{ margin: '0 0 1rem 0', fontSize: '0.7rem', color: '#777', wordBreak: 'break-all' }}>
+                        {targetUrl}
+                      </p>
+
+                      {/* Card Actions (Hidden in Print) */}
+                      <div className="no-print" style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                        <a
+                          href={`/rate/${stall.stall_number}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn btn-secondary"
+                          style={{ padding: '6px 12px', fontSize: '0.75rem' }}
+                        >
+                          <i className="fas fa-external-link-alt"></i> Open
+                        </a>
+                        <button
+                          onClick={() => copyRatingLink(stall.stall_number)}
+                          className="btn btn-secondary"
+                          style={{ padding: '6px 12px', fontSize: '0.75rem' }}
+                        >
+                          {copiedStallNum === stall.stall_number ? '✓ Copied' : 'Copy URL'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Tab 3: Events Management */}
         {activeTab === 'events' && (
           <div>
-            <div style={{ background: 'var(--white)', padding: '2rem', borderRadius: '18px', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', marginBottom: '2.5rem' }}>
+            <div className="admin-card" style={{ marginBottom: '2.5rem' }}>
               <h3 style={{ color: 'var(--secondary-color)', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.75rem' }}>
                 <i className="fas fa-plus-circle" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> Publish New Event
               </h3>
@@ -761,7 +992,7 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                <div className="admin-form-grid-2">
                   <div className="form-group">
                     <label>Date &amp; Time</label>
                     <input
@@ -793,7 +1024,7 @@ export default function AdminDashboard() {
                   ></textarea>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
+                <div className="admin-form-grid-2" style={{ marginBottom: '1.5rem' }}>
                   <div className="form-group">
                     <label>Image URL / Poster Asset</label>
                     <input
@@ -832,7 +1063,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Events List */}
-            <div style={{ background: 'var(--white)', padding: '2rem', borderRadius: '18px', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
+            <div className="admin-card">
               <h3 style={{ color: 'var(--secondary-color)', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.75rem' }}>
                 Existing Published Events ({events.length})
               </h3>
@@ -884,10 +1115,10 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Tab 3: Notices */}
+        {/* Tab 4: Notices */}
         {activeTab === 'notices' && (
           <div>
-            <div style={{ background: 'var(--white)', padding: '2rem', borderRadius: '18px', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)', marginBottom: '2.5rem' }}>
+            <div className="admin-card" style={{ marginBottom: '2.5rem' }}>
               <h3 style={{ color: 'var(--secondary-color)', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.75rem' }}>
                 <i className="fas fa-bullhorn" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> Broadcast Notice
               </h3>
@@ -952,7 +1183,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Notices List */}
-            <div style={{ background: 'var(--white)', padding: '2rem', borderRadius: '18px', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
+            <div className="admin-card">
               <h3 style={{ color: 'var(--secondary-color)', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.75rem' }}>
                 Notice Archives ({notices.length})
               </h3>
@@ -1010,9 +1241,9 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Tab 4: Inquiries */}
+        {/* Tab 5: Inquiries */}
         {activeTab === 'inquiries' && (
-          <div style={{ background: 'var(--white)', padding: '2rem', borderRadius: '18px', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
+          <div className="admin-card">
             <h3 style={{ color: 'var(--secondary-color)', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.75rem' }}>
               <i className="fas fa-inbox" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> Incoming Contact Messages ({inquiries.length})
             </h3>

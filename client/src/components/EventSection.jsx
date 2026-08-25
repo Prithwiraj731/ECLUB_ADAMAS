@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function EventSection() {
   const [events, setEvents] = useState([]);
@@ -108,16 +109,16 @@ export default function EventSection() {
               </div>
 
               <div className="event-cta-group">
+                <Link to="/rakhi-stalls" className="btn btn-primary event-reg-btn">
+                  <i className="fas fa-store"></i> View 23 Stalls Directory →
+                </Link>
                 <a
                   href={regLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-primary event-reg-btn"
+                  className="btn btn-secondary"
                 >
-                  <i className="fas fa-shopping-bag"></i> Register Stall (₹299) →
-                </a>
-                <a href="#contact" className="btn btn-secondary">
-                  Contact Organizers
+                  <i className="fas fa-shopping-bag"></i> Register Stall (₹299)
                 </a>
               </div>
             </div>

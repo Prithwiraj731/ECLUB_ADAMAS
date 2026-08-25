@@ -172,14 +172,14 @@ export default function About() {
             <p>Tangible resources and acceleration benefits for every student who joins our club</p>
           </div>
 
-          <div className="initiatives-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+          <div className="initiatives-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
             {offerings.map((offer, i) => (
-              <div key={i} className="mini-card" style={{ padding: '2rem' }}>
-                <h4>
+              <div key={i} style={{ background: 'var(--white)', padding: '1.75rem 1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
+                <h4 style={{ color: 'var(--secondary-color)', fontSize: '1.1rem', margin: 0, display: 'flex', alignItems: 'center' }}>
                   <i className="fas fa-check-circle" style={{ color: 'var(--primary-color)', marginRight: '10px' }}></i>
                   {offer.title}
                 </h4>
-                <p style={{ marginTop: '0.75rem', lineHeight: '1.6' }}>{offer.description}</p>
+                <p style={{ marginTop: '0.75rem', lineHeight: '1.6', fontSize: '0.9rem' }}>{offer.description}</p>
               </div>
             ))}
           </div>
@@ -194,16 +194,16 @@ export default function About() {
             <p>Meet the visionary mentors and student leaders driving E-Club operations</p>
           </div>
 
-          <div className="initiatives-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+          <div className="initiatives-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
             {team.map((member, i) => (
-              <div key={i} className="highlight-item" style={{ flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '2.5rem 1.5rem' }}>
-                <div className="highlight-icon" style={{ width: '70px', height: '70px', fontSize: '1.75rem', marginBottom: '1rem' }}>
+              <div key={i} className="highlight-item" style={{ flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '1.75rem 1.25rem' }}>
+                <div className="highlight-icon" style={{ width: '64px', height: '64px', fontSize: '1.5rem', marginBottom: '1rem', borderRadius: '16px' }}>
                   <i className={`fas ${member.icon}`}></i>
                 </div>
                 <div className="highlight-text">
-                  <h4 style={{ fontSize: '1.25rem', marginBottom: '0.35rem' }}>{member.name}</h4>
-                  <p style={{ color: 'var(--primary-color)', fontWeight: '600', marginBottom: '0.35rem' }}>{member.role}</p>
-                  <p style={{ fontSize: '0.85rem' }}>{member.department}</p>
+                  <h4 style={{ fontSize: '1.2rem', marginBottom: '0.35rem' }}>{member.name}</h4>
+                  <p style={{ color: 'var(--primary-color)', fontWeight: '700', marginBottom: '0.35rem', fontSize: '0.88rem' }}>{member.role}</p>
+                  <p style={{ fontSize: '0.82rem' }}>{member.department}</p>
                 </div>
               </div>
             ))}

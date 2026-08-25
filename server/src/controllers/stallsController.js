@@ -1,13 +1,13 @@
 const { supabase, isMock, mockStore } = require('../config/supabase');
 const { sendReviewNotification } = require('../services/emailService');
 
-// Public: Get all stalls for the single rating page
+// Public: Get all stalls for the public directory & showcase
 exports.getAllStalls = async (req, res) => {
   try {
     if (isMock) {
       // Sort by stall number
       const stalls = [...mockStore.stalls].sort((a, b) => 
-        (parseInt(a.stall_number) || 0) - (parseInt(b.stall_number) || 0)
+        (parseInt(a.stall_number, 10) || 0) - (parseInt(b.stall_number, 10) || 0)
       );
       return res.json({ success: true, stalls });
     }
@@ -25,7 +25,56 @@ exports.getAllStalls = async (req, res) => {
   }
 };
 
-// Public: Submit a 1-5 Star Rating & Review for a stall
+// Public: Get single stall by ID or stall number (e.g. /api/stalls/01 or /api/stalls/stall_01)
+exports.getStallByIdOrNumber = async (req, res) => {
+  try {
+    const { idOrNumber } = req.params;
+    if (!idOrNumber) {
+      return res.status(400).json({ success: false, message: 'Stall identifier is required.' });
+    }
+
+    const cleanParam = idOrNumber.trim();
+    const cleanPadded = cleanParam.padStart(2, '0');
+
+    if (isMock) {
+      const stall = mockStore.stalls.find(
+        (s) =>
+          s.id === cleanParam ||
+          s.id === `stall_${cleanParam}` ||
+          s.id === `stall_${cleanPadded}` ||
+          s.stall_number === cleanParam ||
+          s.stall_number === cleanPadded ||
+          (parseInt(s.stall_number, 10) === parseInt(cleanParam, 10) && !isNaN(parseInt(cleanParam, 10)))
+      );
+
+      if (!stall) {
+        return res.status(404).json({ success: false, message: `Stall '${idOrNumber}' not found.` });
+      }
+
+      return res.json({ success: true, stall });
+    }
+
+    // Live Supabase lookup
+    const { data: stall, error } = await supabase
+      .from('stalls')
+      .select('*')
+      .or(`id.eq.${cleanParam},stall_number.eq.${cleanParam},stall_number.eq.${cleanPadded}`)
+      .limit(1)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!stall) {
+      return res.status(404).json({ success: false, message: `Stall '${idOrNumber}' not found.` });
+    }
+
+    res.json({ success: true, stall });
+  } catch (err) {
+    console.error('Error fetching single stall:', err);
+    res.status(500).json({ success: false, message: 'Failed to retrieve stall details.' });
+  }
+};
+
+// Public: Submit a 1-5 Star Rating & Review for a specific stall
 exports.submitReview = async (req, res) => {
   try {
     const { stall_id, rating, reviewer_name, reviewer_contact, review_text } = req.body;
@@ -39,20 +88,32 @@ exports.submitReview = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Rating must be between 1 and 5 stars.' });
     }
 
-    let stallName = 'Unknown Stall';
-    let stallNumber = '';
+    let matchedStall = null;
+    const cleanId = String(stall_id).trim();
+    const cleanPadded = cleanId.padStart(2, '0');
 
     if (isMock) {
-      const stall = mockStore.stalls.find((s) => s.id === stall_id);
-      if (!stall) {
-        return res.status(404).json({ success: false, message: 'Stall not found.' });
+      matchedStall = mockStore.stalls.find(
+        (s) =>
+          s.id === cleanId ||
+          s.id === `stall_${cleanId}` ||
+          s.id === `stall_${cleanPadded}` ||
+          s.stall_number === cleanId ||
+          s.stall_number === cleanPadded ||
+          (parseInt(s.stall_number, 10) === parseInt(cleanId, 10) && !isNaN(parseInt(cleanId, 10)))
+      );
+
+      if (!matchedStall) {
+        return res.status(404).json({ success: false, message: 'Specified stall was not found.' });
       }
-      stallName = stall.name;
-      stallNumber = stall.stall_number;
+
+      const stallName = matchedStall.name;
+      const stallNumber = matchedStall.stall_number;
+      const actualStallId = matchedStall.id;
 
       const newReview = {
         id: 'rev_' + Date.now(),
-        stall_id,
+        stall_id: actualStallId,
         stall_name: stallName,
         stall_number: stallNumber,
         rating: parsedRating,
@@ -76,19 +137,28 @@ exports.submitReview = async (req, res) => {
 
       return res.status(201).json({
         success: true,
-        message: `Thank you for rating ${stallName}! Your feedback has been recorded for the evaluation committee.`,
+        message: `Thank you for rating Stall #${stallNumber} (${stallName})! Your rating of ${parsedRating}★ has been successfully recorded.`,
       });
     }
 
     // Live Supabase
-    const { data: stall } = await supabase.from('stalls').select('name, stall_number').eq('id', stall_id).single();
-    if (stall) {
-      stallName = stall.name;
-      stallNumber = stall.stall_number;
+    const { data: stall } = await supabase
+      .from('stalls')
+      .select('id, name, stall_number')
+      .or(`id.eq.${cleanId},stall_number.eq.${cleanId},stall_number.eq.${cleanPadded}`)
+      .limit(1)
+      .maybeSingle();
+
+    if (!stall) {
+      return res.status(404).json({ success: false, message: 'Specified stall was not found.' });
     }
 
+    const stallName = stall.name;
+    const stallNumber = stall.stall_number;
+    const actualStallId = stall.id;
+
     const newReview = {
-      stall_id,
+      stall_id: actualStallId,
       stall_name: stallName,
       stall_number: stallNumber,
       rating: parsedRating,
@@ -113,7 +183,7 @@ exports.submitReview = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: `Thank you for rating ${stallName}! Your feedback has been recorded for the evaluation committee.`,
+      message: `Thank you for rating Stall #${stallNumber} (${stallName})! Your rating of ${parsedRating}★ has been successfully recorded.`,
     });
   } catch (err) {
     console.error('Error submitting review:', err);
@@ -141,7 +211,7 @@ exports.getLeaderboard = async (req, res) => {
 
     // Compute stats per stall
     const leaderboard = stalls.map((stall) => {
-      const stallReviews = reviews.filter((r) => r.stall_id === stall.id);
+      const stallReviews = reviews.filter((r) => r.stall_id === stall.id || r.stall_number === stall.stall_number);
       const totalRatings = stallReviews.length;
       const avgRating =
         totalRatings > 0
@@ -162,8 +232,8 @@ exports.getLeaderboard = async (req, res) => {
       };
     });
 
-    // Sort by highest average rating, then total reviews
-    leaderboard.sort((a, b) => b.avg_rating - a.avg_rating || b.total_reviews - a.total_reviews);
+    // Sort by highest average rating, then total reviews, then stall number
+    leaderboard.sort((a, b) => b.avg_rating - a.avg_rating || b.total_reviews - a.total_reviews || parseInt(a.stall_number, 10) - parseInt(b.stall_number, 10));
 
     res.json({
       success: true,
@@ -200,24 +270,28 @@ exports.getAllReviews = async (req, res) => {
 // Admin: Create / Add a Stall
 exports.createStall = async (req, res) => {
   try {
-    const { stall_number, name, category, founders, description, image_url } = req.body;
+    const { stall_number, name, category, founders, department, description, instagram, image_url } = req.body;
 
     if (!name || !category) {
       return res.status(400).json({ success: false, message: 'Stall name and category are required.' });
     }
 
+    const paddedNum = (stall_number || '').trim().padStart(2, '0');
+
     const newStall = {
-      stall_number: (stall_number || '').trim(),
+      stall_number: paddedNum,
       name: name.trim(),
       category: category.trim(),
       founders: (founders || '').trim(),
+      department: (department || '').trim(),
       description: (description || '').trim(),
+      instagram: (instagram || '').trim(),
       image_url: image_url || '/assets/hero/hero1.png',
       created_at: new Date().toISOString(),
     };
 
     if (isMock) {
-      newStall.id = 'stall_' + Date.now();
+      newStall.id = 'stall_' + paddedNum;
       mockStore.stalls.push(newStall);
       return res.status(201).json({ success: true, message: 'Stall added successfully.', stall: newStall });
     }
@@ -238,7 +312,7 @@ exports.deleteStall = async (req, res) => {
     const { id } = req.params;
 
     if (isMock) {
-      const idx = mockStore.stalls.findIndex((s) => s.id === id);
+      const idx = mockStore.stalls.findIndex((s) => s.id === id || s.stall_number === id);
       if (idx !== -1) {
         mockStore.stalls.splice(idx, 1);
         return res.json({ success: true, message: 'Stall deleted successfully.' });

@@ -5,6 +5,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const isHomeRoute = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,51 +20,79 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close menu on route change
+  // Close menu on route change & handle body scroll lock
   useEffect(() => {
     setMenuOpen(false);
+    document.body.style.overflow = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location.pathname]);
 
+  const toggleMenu = () => {
+    const nextState = !menuOpen;
+    setMenuOpen(nextState);
+    if (nextState) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+    document.body.style.overflow = '';
+  };
+
   return (
-    <header className={`header ${scrolled ? 'scrolled' : ''}`}>
-      <div className="container">
-        <div className="logo">
-          <Link to="/">
-            <img src="/assets/logo.png" alt="Adamas University Entrepreneurship Club Logo" />
-          </Link>
-        </div>
+    <>
+      {/* Mobile Backdrop Overlay */}
+      <div
+        className={`nav-backdrop ${menuOpen ? 'active' : ''}`}
+        onClick={closeMenu}
+        aria-hidden="true"
+      />
 
-        <nav className={`nav ${menuOpen ? 'active' : ''}`}>
-          <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
-            Home
-          </NavLink>
-          <NavLink to="/about" className={({ isActive }) => (isActive ? 'active' : '')}>
-            About
-          </NavLink>
-          <a href="/#events" onClick={() => setMenuOpen(false)}>
-            Events
-          </a>
-          <a href="/#initiatives" onClick={() => setMenuOpen(false)}>
-            Initiatives
-          </a>
-          <NavLink to="/contact" className={({ isActive }) => (isActive ? 'active' : '')}>
-            Contact
-          </NavLink>
-        </nav>
+      <header className={`header ${isHomeRoute ? 'home-header' : ''} ${scrolled ? 'scrolled' : ''}`}>
+        <div className="container">
+          <div className="logo">
+            <Link to="/" onClick={closeMenu}>
+              <img src="/assets/logo.png" alt="Adamas University Entrepreneurship Club Logo" />
+            </Link>
+          </div>
 
-        <div
-          className={`menu-toggle ${menuOpen ? 'active' : ''}`}
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle navigation menu"
-          role="button"
-          tabIndex={0}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
+          <nav className={`nav ${menuOpen ? 'active' : ''}`}>
+            <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeMenu}>
+              Home
+            </NavLink>
+            <NavLink to="/about" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeMenu}>
+              About
+            </NavLink>
+            <NavLink to="/rakhi-stalls" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeMenu}>
+              Rakhi Stalls
+            </NavLink>
+            <a href="/#events" onClick={closeMenu}>
+              Events
+            </a>
+            <a href="/#initiatives" onClick={closeMenu}>
+              Initiatives
+            </a>
+            <NavLink to="/contact" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeMenu}>
+              Contact
+            </NavLink>
+          </nav>
+
+          <button
+            className={`menu-toggle ${menuOpen ? 'active' : ''}`}
+            onClick={toggleMenu}
+            aria-label="Toggle navigation menu"
+            aria-expanded={menuOpen}
+            type="button"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }
