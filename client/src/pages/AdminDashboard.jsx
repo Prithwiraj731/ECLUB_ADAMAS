@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import { useAuth } from '../context/AuthContext';
+import { apiFetch } from '../lib/api';
 
 export default function AdminDashboard() {
   const { admin, logout } = useAuth();
@@ -69,7 +70,7 @@ export default function AdminDashboard() {
 
   const loadStallsLeaderboard = async () => {
     try {
-      const res = await fetch('/api/stalls/leaderboard');
+      const res = await apiFetch('/api/stalls/leaderboard');
       const data = await res.json();
       if (data.success) {
         setStallsLeaderboard(data.leaderboard || []);
@@ -82,7 +83,7 @@ export default function AdminDashboard() {
 
   const loadStallReviews = async () => {
     try {
-      const res = await fetch('/api/stalls/reviews');
+      const res = await apiFetch('/api/stalls/reviews');
       const data = await res.json();
       if (data.success) {
         setStallReviews(data.reviews || []);
@@ -94,7 +95,7 @@ export default function AdminDashboard() {
 
   const loadEvents = async () => {
     try {
-      const res = await fetch('/api/events');
+      const res = await apiFetch('/api/events');
       const data = await res.json();
       if (data.success) setEvents(data.events || []);
     } catch (e) {
@@ -104,7 +105,7 @@ export default function AdminDashboard() {
 
   const loadNotices = async () => {
     try {
-      const res = await fetch('/api/notices');
+      const res = await apiFetch('/api/notices');
       const data = await res.json();
       if (data.success) setNotices(data.notices || []);
     } catch (e) {
@@ -115,7 +116,7 @@ export default function AdminDashboard() {
   const loadInquiries = async () => {
     try {
       setInquiryLoading(true);
-      const res = await fetch('/api/contact');
+      const res = await apiFetch('/api/contact');
       const data = await res.json();
       if (data.success) setInquiries(data.inquiries || []);
     } catch (e) {
@@ -132,7 +133,7 @@ export default function AdminDashboard() {
     setStallAlert({ success: null, message: '' });
 
     try {
-      const res = await fetch('/api/stalls', {
+      const res = await apiFetch('/api/stalls', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(stallForm),
@@ -166,7 +167,7 @@ export default function AdminDashboard() {
   const handleDeleteStall = async (id, stallName) => {
     if (!window.confirm(`Are you sure you want to delete stall "${stallName}"?`)) return;
     try {
-      const res = await fetch(`/api/stalls/${id}`, { method: 'DELETE' });
+      const res = await apiFetch(`/api/stalls/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         loadStallsLeaderboard();
@@ -185,7 +186,7 @@ export default function AdminDashboard() {
     setEventAlert({ success: null, message: '' });
 
     try {
-      const res = await fetch('/api/events', {
+      const res = await apiFetch('/api/events', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(eventForm),
@@ -218,7 +219,7 @@ export default function AdminDashboard() {
   const handleDeleteEvent = async (id) => {
     if (!window.confirm('Are you sure you want to delete this event?')) return;
     try {
-      const res = await fetch(`/api/events/${id}`, { method: 'DELETE' });
+      const res = await apiFetch(`/api/events/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) loadEvents();
     } catch (e) {
@@ -233,7 +234,7 @@ export default function AdminDashboard() {
     setNoticeAlert({ success: null, message: '' });
 
     try {
-      const res = await fetch('/api/notices', {
+      const res = await apiFetch('/api/notices', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(noticeForm),
@@ -263,7 +264,7 @@ export default function AdminDashboard() {
   // Toggle Notice Active
   const handleToggleNotice = async (id, currentStatus) => {
     try {
-      const res = await fetch(`/api/notices/${id}`, {
+      const res = await apiFetch(`/api/notices/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ is_active: !currentStatus }),
@@ -279,7 +280,7 @@ export default function AdminDashboard() {
   const handleDeleteNotice = async (id) => {
     if (!window.confirm('Are you sure you want to delete this notice?')) return;
     try {
-      const res = await fetch(`/api/notices/${id}`, { method: 'DELETE' });
+      const res = await apiFetch(`/api/notices/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) loadNotices();
     } catch (e) {
@@ -291,7 +292,7 @@ export default function AdminDashboard() {
   const handleDeleteInquiry = async (id) => {
     if (!window.confirm('Are you sure you want to delete this message?')) return;
     try {
-      const res = await fetch(`/api/contact/${id}`, { method: 'DELETE' });
+      const res = await apiFetch(`/api/contact/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) loadInquiries();
     } catch (e) {

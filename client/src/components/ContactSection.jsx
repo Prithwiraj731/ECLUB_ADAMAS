@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { apiFetch } from '../lib/api';
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -18,7 +19,7 @@ export default function ContactSection() {
     setStatus({ loading: true, success: null, message: '' });
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await apiFetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

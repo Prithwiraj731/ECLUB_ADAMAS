@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { apiFetch } from '../lib/api';
 
 export default function NoticeBanner() {
   const [notice, setNotice] = useState(null);
@@ -7,7 +8,7 @@ export default function NoticeBanner() {
   useEffect(() => {
     async function fetchNotice() {
       try {
-        const res = await fetch('/api/notices/active');
+        const res = await apiFetch('/api/notices/active');
         const data = await res.json();
         if (data.success && data.notice) {
           setNotice(data.notice);

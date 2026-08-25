@@ -2055,7 +2055,7 @@ p {
     display: block !important;
     position: absolute;
     top: clamp(80px, 12vh, 105px);
-    right: -30px;
+    right: 12px;
     bottom: auto;
     width: clamp(310px, 75vw, 370px);
     height: clamp(310px, 75vw, 370px);
@@ -2204,7 +2204,7 @@ p {
     display: block !important;
     position: absolute;
     bottom: 46px;
-    right: -30px;
+    right: 5px;
     left: auto;
     width: clamp(310px, 75vw, 370px);
     height: clamp(480px, 68vh, 580px);
@@ -2248,7 +2248,7 @@ p {
   .duo-char-wrap.char-female {
     position: absolute;
     bottom: 0;
-    left: clamp(140px, 34vw, 185px);
+    left: clamp(125px, 31vw, 165px);
     width: auto;
     height: 92%;
     z-index: 2;
@@ -2753,7 +2753,7 @@ p {
 
   .hero-mobile-halo-arch {
     top: clamp(75px, 11.5vh, 100px);
-    right: -25px;
+    right: 10px;
     bottom: auto;
     width: clamp(270px, 72vw, 330px);
     height: clamp(270px, 72vw, 330px);
@@ -2761,7 +2761,7 @@ p {
 
   .luxury-character-stage {
     bottom: 44px;
-    right: -25px;
+    right: 5px;
     left: auto;
     width: clamp(270px, 72vw, 330px);
     height: clamp(450px, 66vh, 540px);
@@ -2784,7 +2784,7 @@ p {
   .duo-char-wrap.char-female {
     position: absolute;
     bottom: 0;
-    left: clamp(120px, 30vw, 155px);
+    left: clamp(110px, 28vw, 145px);
     width: auto;
     height: 92%;
   }
@@ -4648,7 +4648,7 @@ p {
     display: block !important;
     position: absolute !important;
     top: 17.7% !important;
-    right: -3.8% !important;
+    right: 7% !important;
     width: 50.2% !important;
     height: auto !important;
     aspect-ratio: 1 !important;
@@ -4804,7 +4804,7 @@ p {
     display: block !important;
     position: absolute !important;
     top: 19.45% !important;
-    right: -14.2% !important;
+    right: -2.5% !important;
     bottom: auto !important;
     left: auto !important;
     transform: none !important;
@@ -4835,7 +4835,7 @@ p {
 
   .duo-char-wrap.char-female {
     position: absolute !important;
-    left: 43.5% !important;
+    left: 41% !important;
     bottom: 0.4% !important;
     height: 91.2% !important;
     margin: 0 !important;

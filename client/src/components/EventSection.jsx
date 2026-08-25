@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { apiFetch } from '../lib/api';
 
 export default function EventSection() {
   const [events, setEvents] = useState([]);
@@ -8,7 +9,7 @@ export default function EventSection() {
   useEffect(() => {
     async function loadEvents() {
       try {
-        const res = await fetch('/api/events');
+        const res = await apiFetch('/api/events');
         const data = await res.json();
         if (data.success && data.events && data.events.length > 0) {
           setEvents(data.events);

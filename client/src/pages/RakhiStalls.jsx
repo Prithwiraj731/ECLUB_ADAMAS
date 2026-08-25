@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { apiFetch } from '../lib/api';
 
 export default function RakhiStalls() {
   const [stalls, setStalls] = useState([]);
@@ -14,7 +15,7 @@ export default function RakhiStalls() {
   const loadStalls = async () => {
     try {
       setLoading(true);
-      const res = await fetch('/api/stalls');
+      const res = await apiFetch('/api/stalls');
       const data = await res.json();
       if (data.success && data.stalls) {
         setStalls(data.stalls);

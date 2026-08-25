@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
+import { apiFetch } from '../lib/api';
 
 export default function RateStall() {
   const { stallId } = useParams();
@@ -44,7 +45,7 @@ export default function RateStall() {
         setErrorMsg('');
 
         // Fetch all stalls
-        const allRes = await fetch('/api/stalls');
+        const allRes = await apiFetch('/api/stalls');
         const allData = await allRes.json();
         if (allData.success && allData.stalls) {
           setAllStalls(allData.stalls);
@@ -52,7 +53,7 @@ export default function RateStall() {
 
         if (activeStallParam) {
           // Fetch specific stall
-          const singleRes = await fetch(`/api/stalls/${encodeURIComponent(activeStallParam)}`);
+          const singleRes = await apiFetch(`/api/stalls/${encodeURIComponent(activeStallParam)}`);
           const singleData = await singleRes.json();
           if (singleData.success && singleData.stall) {
             setStall(singleData.stall);
@@ -135,7 +136,7 @@ export default function RateStall() {
         finalReviewNotes = finalReviewNotes ? `${tagText} ${finalReviewNotes}` : tagText;
       }
 
-      const res = await fetch('/api/stalls/review', {
+      const res = await apiFetch('/api/stalls/review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
