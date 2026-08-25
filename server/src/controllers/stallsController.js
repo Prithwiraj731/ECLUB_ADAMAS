@@ -12,12 +12,16 @@ exports.getAllStalls = async (req, res) => {
       return res.json({ success: true, stalls });
     }
 
-    const { data: stalls, error } = await supabase
+    const { data: rawStalls, error } = await supabase
       .from('stalls')
-      .select('*')
-      .order('stall_number', { ascending: true });
+      .select('*');
 
     if (error) throw error;
+    
+    // Sort numerically 1 to 30
+    const stalls = (rawStalls || []).sort(
+      (a, b) => (parseInt(a.stall_number, 10) || 0) - (parseInt(b.stall_number, 10) || 0)
+    );
     res.json({ success: true, stalls });
   } catch (err) {
     console.error('Error fetching stalls:', err);
