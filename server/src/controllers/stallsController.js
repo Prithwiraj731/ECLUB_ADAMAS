@@ -78,10 +78,12 @@ exports.getStallByIdOrNumber = async (req, res) => {
   }
 };
 
+const voteRateLimitStore = new Map();
+
 // Public: Submit a 1-5 Star Rating & Review for a specific stall
 exports.submitReview = async (req, res) => {
   try {
-    const { stall_id, rating, reviewer_name, reviewer_contact, review_text } = req.body;
+    const { stall_id, rating, reviewer_name, reviewer_contact, review_text, client_token } = req.body;
 
     if (!stall_id) {
       return res.status(400).json({ success: false, message: 'Stall ID is required.' });
@@ -90,6 +92,17 @@ exports.submitReview = async (req, res) => {
     const parsedRating = parseInt(rating, 10);
     if (isNaN(parsedRating) || parsedRating < 1 || parsedRating > 5) {
       return res.status(400).json({ success: false, message: 'Rating must be between 1 and 5 stars.' });
+    }
+
+    // Security & Anti-Spam: Prevent duplicate votes for the same stall from same device/IP
+    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+    const voteKey = `${client_token || clientIp}_${stall_id}`;
+
+    if (voteRateLimitStore.has(voteKey)) {
+      return res.status(400).json({
+        success: false,
+        message: 'You have already submitted your official rating for this stall.',
+      });
     }
 
     let matchedStall = null;
@@ -127,6 +140,7 @@ exports.submitReview = async (req, res) => {
         created_at: new Date().toISOString(),
       };
 
+      voteRateLimitStore.set(voteKey, Date.now());
       mockStore.stall_reviews.unshift(newReview);
 
       // Trigger email dispatch to coordinator
@@ -174,6 +188,8 @@ exports.submitReview = async (req, res) => {
       console.error('Supabase review insert error:', error);
       throw error;
     }
+
+    voteRateLimitStore.set(voteKey, Date.now());
 
     // Send email notification
     sendReviewNotification({

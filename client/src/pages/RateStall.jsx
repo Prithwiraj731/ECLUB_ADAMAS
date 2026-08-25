@@ -18,9 +18,9 @@ export default function RateStall() {
   const [rating, setRating] = useState(5);
   const [hoverRating, setHoverRating] = useState(0);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [reviewText, setReviewText] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
+  const [alreadyVoted, setAlreadyVoted] = useState(null);
   const [serverFeedback, setServerFeedback] = useState({ success: null, message: '' });
 
   // Quick feedback tag suggestions
@@ -34,6 +34,16 @@ export default function RateStall() {
     '💎 Best Value',
     '🏆 Winner Contender',
   ];
+
+  // Get or initialize persistent client device token for security
+  const getClientToken = () => {
+    let token = localStorage.getItem('eclub_voter_token');
+    if (!token) {
+      token = 'voter_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now();
+      localStorage.setItem('eclub_voter_token', token);
+    }
+    return token;
+  };
 
   // Fetch stalls & matched stall
   useEffect(() => {
@@ -87,6 +97,24 @@ export default function RateStall() {
     initData();
   }, [activeStallParam]);
 
+  // Check if current device/visitor has already rated this specific stall
+  useEffect(() => {
+    if (stall) {
+      const key1 = `eclub_voted_${stall.id}`;
+      const key2 = `eclub_voted_${stall.stall_number}`;
+      const saved = localStorage.getItem(key1) || localStorage.getItem(key2);
+      if (saved) {
+        try {
+          setAlreadyVoted(JSON.parse(saved));
+        } catch (e) {
+          setAlreadyVoted({ rating: 5 });
+        }
+      } else {
+        setAlreadyVoted(null);
+      }
+    }
+  }, [stall]);
+
   const toggleTag = (tag) => {
     if (selectedTags.includes(tag)) {
       setSelectedTags(selectedTags.filter((t) => t !== tag));
@@ -121,18 +149,14 @@ export default function RateStall() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!stall) return;
+    if (!stall || alreadyVoted) return;
 
     try {
       setSubmitting(true);
       setServerFeedback({ success: null, message: '' });
 
-      // Combine tags with review notes
-      let finalReviewNotes = reviewText.trim();
-      if (selectedTags.length > 0) {
-        const tagText = `[Highlights: ${selectedTags.join(', ')}]`;
-        finalReviewNotes = finalReviewNotes ? `${tagText} ${finalReviewNotes}` : tagText;
-      }
+      const finalTags = selectedTags.join(', ');
+      const clientToken = getClientToken();
 
       const res = await apiFetch('/api/stalls/review', {
         method: 'POST',
@@ -142,13 +166,24 @@ export default function RateStall() {
           rating,
           reviewer_name: 'Visitor',
           reviewer_contact: '',
-          review_text: finalReviewNotes,
+          review_text: finalTags,
+          client_token: clientToken,
         }),
       });
 
       const data = await res.json();
 
       if (data.success) {
+        const voteRecord = {
+          rating,
+          tags: selectedTags,
+          timestamp: Date.now(),
+        };
+        // Securely lock this stall from duplicate votes in browser
+        localStorage.setItem(`eclub_voted_${stall.id}`, JSON.stringify(voteRecord));
+        localStorage.setItem(`eclub_voted_${stall.stall_number}`, JSON.stringify(voteRecord));
+        
+        setAlreadyVoted(voteRecord);
         setSubmittedSuccess(true);
         setServerFeedback({
           success: true,
@@ -170,6 +205,9 @@ export default function RateStall() {
       setSubmitting(false);
     }
   };
+
+  const activeRatingDisplay = alreadyVoted ? alreadyVoted.rating : rating;
+  const activeTagsDisplay = alreadyVoted && alreadyVoted.tags ? alreadyVoted.tags : selectedTags;
 
   return (
     <div className="rate-stall-page-wrapper">
@@ -214,7 +252,7 @@ export default function RateStall() {
                 defaultValue=""
               >
                 <option value="" disabled>
-                  -- Select Stall (#01 to #{allStalls.length || 23}) --
+                  -- Select Stall (#01 to #{allStalls.length || 30}) --
                 </option>
                 {allStalls.map((s) => (
                   <option key={s.id} value={s.stall_number}>
@@ -232,8 +270,8 @@ export default function RateStall() {
           </div>
         )}
 
-        {/* Success Confirmation View */}
-        {!loading && stall && submittedSuccess && (
+        {/* Success / Already Voted Screen (Permanent Lockout) */}
+        {!loading && stall && (submittedSuccess || alreadyVoted) && (
           <div className="rate-card rate-success-card animate-scale-up">
             <div className="success-icon-badge">
               <i className="fas fa-check-circle"></i>
@@ -241,45 +279,43 @@ export default function RateStall() {
             <span className="success-pre-title">OFFICIAL RATING RECORDED</span>
             <h2>Thank You for Rating!</h2>
             <p className="success-stall-highlight">
-              Your feedback for <strong>Stall #{stall.stall_number}: {stall.name}</strong> has been logged directly for the Evaluation Committee.
+              Your rating for <strong>Stall #{stall.stall_number}: {stall.name}</strong> has been securely logged for the Evaluation Committee.
             </p>
 
             <div className="submitted-summary-box">
               <div className="summary-row">
                 <span>Rating Given:</span>
                 <span className="summary-stars">
-                  {'★'.repeat(rating)}{'☆'.repeat(5 - rating)} ({rating}/5 Stars)
+                  {'★'.repeat(activeRatingDisplay || 5)}{'☆'.repeat(5 - (activeRatingDisplay || 5))} ({activeRatingDisplay || 5}/5 Stars)
                 </span>
               </div>
               <div className="summary-row">
                 <span>Stall Category:</span>
                 <span>{stall.category}</span>
               </div>
+              {activeTagsDisplay && activeTagsDisplay.length > 0 && (
+                <div className="summary-row">
+                  <span>Highlights:</span>
+                  <span>{activeTagsDisplay.join(', ')}</span>
+                </div>
+              )}
             </div>
 
-            <div className="success-actions">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => {
-                  setSubmittedSuccess(false);
-                  setRating(5);
-                  setSelectedTags([]);
-                  setReviewText('');
-                  setServerFeedback({ success: null, message: '' });
-                }}
-              >
-                <i className="fas fa-edit"></i> Submit Another Rating
-              </button>
-              <Link to="/rakhi-stalls" className="btn btn-primary">
+            <div className="rate-security-badge-note">
+              <i className="fas fa-lock"></i>
+              <span>Your vote has been officially registered. Single-vote policy active.</span>
+            </div>
+
+            <div className="success-actions" style={{ justifyContent: 'center', marginTop: '20px' }}>
+              <Link to="/rakhi-stalls" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
                 <i className="fas fa-store"></i> Explore All Stalls
               </Link>
             </div>
           </div>
         )}
 
-        {/* Active Rating Form for the Specific Stall */}
-        {!loading && stall && !submittedSuccess && (
+        {/* Active Rating Form for the Specific Stall (When not yet voted) */}
+        {!loading && stall && !submittedSuccess && !alreadyVoted && (
           <div className="rate-card rate-active-card animate-fade-in">
             {/* Stall Summary Header */}
             <div className="rate-stall-profile-banner">
@@ -374,18 +410,6 @@ export default function RateStall() {
                       {tag}
                     </button>
                   ))}
-                </div>
-                
-                {/* Optional Feedback / Comments */}
-                <div className="rate-optional-notes-box" style={{ marginTop: '14px' }}>
-                  <textarea
-                    id="review_text"
-                    rows="3"
-                    className="rate-textarea-clean"
-                    placeholder="Tell us what you liked most (quality, packaging, taste, creativity)..."
-                    value={reviewText}
-                    onChange={(e) => setReviewText(e.target.value)}
-                  ></textarea>
                 </div>
               </div>
 
