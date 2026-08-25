@@ -174,7 +174,7 @@ export default function ContactSection() {
               </div>
               <div className="info-text">
                 <h4>Call Us</h4>
-                <p>+91 (033) 2437-9999 / Toll Free: 1800-419-7423</p>
+                <p>+91 70039 05850</p>
               </div>
             </div>
 
@@ -184,7 +184,7 @@ export default function ContactSection() {
               </div>
               <div className="info-text">
                 <h4>Club Office Hours</h4>
-                <p>Monday - Friday: 9:00 AM - 5:30 PM (IST)</p>
+                <p>Monday - Friday: 9:30 AM - 5:30 PM (IST)</p>
               </div>
             </div>
           </div>

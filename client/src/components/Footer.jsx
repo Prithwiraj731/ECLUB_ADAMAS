@@ -14,18 +14,18 @@ export default function Footer() {
               Empowering the next generation of visionary founders, changemakers, and innovators at Adamas University.
             </p>
             <div className="social-links">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/company/adamas-entrepreneurship-club/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
                 <i className="fab fa-linkedin-in"></i>
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
+              <a href="https://www.instagram.com/eclubadamas?igsi=MW1rcmJ4ZHIzM3JwYg==" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
                 <i className="fab fa-instagram"></i>
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Twitter">
+              {/* <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Twitter">
                 <i className="fab fa-x-twitter"></i>
               </a>
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
                 <i className="fab fa-facebook-f"></i>
-              </a>
+              </a> */}
             </div>
           </div>
 
@@ -47,8 +47,8 @@ export default function Footer() {
             <ul>
               <li><i className="fas fa-map-marker-alt" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> Adamas Knowledge City, Barasat</li>
               <li><i className="fas fa-envelope" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> eclub@adamasuniversity.ac.in</li>
-              <li><i className="fas fa-phone-alt" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> +91 (033) 2437-9999</li>
-              <li><i className="fas fa-clock" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> Mon - Fri: 9:00 AM - 5:00 PM</li>
+              <li><i className="fas fa-phone-alt" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> +91 70039 05850</li>
+              <li><i className="fas fa-clock" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> Mon - Fri: 9:30 AM - 5:30 PM</li>
             </ul>
           </div>
         </div>
