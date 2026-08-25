@@ -163,17 +163,17 @@ exports.submitReview = async (req, res) => {
 
     const newReview = {
       stall_id: actualStallId,
-      stall_name: stallName,
-      stall_number: stallNumber,
       rating: parsedRating,
-      reviewer_name: (reviewer_name || 'Anonymous Visitor').trim(),
+      reviewer_name: (reviewer_name || 'Visitor').trim(),
       reviewer_contact: (reviewer_contact || '').trim(),
       review_text: (review_text || '').trim(),
-      created_at: new Date().toISOString(),
     };
 
     const { error } = await supabase.from('stall_reviews').insert([newReview]);
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase review insert error:', error);
+      throw error;
+    }
 
     // Send email notification
     sendReviewNotification({

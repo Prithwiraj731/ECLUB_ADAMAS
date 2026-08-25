@@ -18,8 +18,6 @@ export default function RateStall() {
   const [rating, setRating] = useState(5);
   const [hoverRating, setHoverRating] = useState(0);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [reviewerName, setReviewerName] = useState('');
-  const [reviewerContact, setReviewerContact] = useState('');
   const [reviewText, setReviewText] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
@@ -142,8 +140,8 @@ export default function RateStall() {
         body: JSON.stringify({
           stall_id: stall.id || stall.stall_number,
           rating,
-          reviewer_name: reviewerName,
-          reviewer_contact: reviewerContact,
+          reviewer_name: 'Visitor',
+          reviewer_contact: '',
           review_text: finalReviewNotes,
         }),
       });
@@ -257,12 +255,6 @@ export default function RateStall() {
                 <span>Stall Category:</span>
                 <span>{stall.category}</span>
               </div>
-              {reviewerName && (
-                <div className="summary-row">
-                  <span>Reviewer:</span>
-                  <span>{reviewerName}</span>
-                </div>
-              )}
             </div>
 
             <div className="success-actions">
@@ -368,7 +360,7 @@ export default function RateStall() {
                 </div>
               </div>
 
-              {/* Quick Highlight Tags */}
+              {/* What stood out about the stall? (Optional) */}
               <div className="rate-tags-section">
                 <label className="rate-section-label">What stood out about this stall? (Optional)</label>
                 <div className="rate-tags-cloud">
@@ -383,42 +375,18 @@ export default function RateStall() {
                     </button>
                   ))}
                 </div>
-              </div>
-
-              {/* Reviewer Name */}
-              <div className="rate-input-group">
-                <label htmlFor="reviewer_name">Your Name (Optional / Recommended)</label>
-                <input
-                  id="reviewer_name"
-                  type="text"
-                  placeholder="e.g. Rahul Sen / Visitor"
-                  value={reviewerName}
-                  onChange={(e) => setReviewerName(e.target.value)}
-                />
-              </div>
-
-              {/* Reviewer Student ID / Contact */}
-              <div className="rate-input-group">
-                <label htmlFor="reviewer_contact">Student ID / Contact (Optional)</label>
-                <input
-                  id="reviewer_contact"
-                  type="text"
-                  placeholder="e.g. AU/2024/0482 or Phone/Email"
-                  value={reviewerContact}
-                  onChange={(e) => setReviewerContact(e.target.value)}
-                />
-              </div>
-
-              {/* Detailed Review Notes */}
-              <div className="rate-input-group">
-                <label htmlFor="review_text">Feedback &amp; Comments for the Stall (Optional)</label>
-                <textarea
-                  id="review_text"
-                  rows="3"
-                  placeholder="Share your thoughts on product quality, packaging, taste, or stall creativity..."
-                  value={reviewText}
-                  onChange={(e) => setReviewText(e.target.value)}
-                ></textarea>
+                
+                {/* Optional Feedback / Comments */}
+                <div className="rate-optional-notes-box" style={{ marginTop: '14px' }}>
+                  <textarea
+                    id="review_text"
+                    rows="3"
+                    className="rate-textarea-clean"
+                    placeholder="Tell us what you liked most (quality, packaging, taste, creativity)..."
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value)}
+                  ></textarea>
+                </div>
               </div>
 
               {/* Confidentiality Notice */}
