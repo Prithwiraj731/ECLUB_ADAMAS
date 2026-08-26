@@ -305,6 +305,29 @@ export default function AdminDashboard() {
     navigate('/admin/login');
   };
 
+  // Reset All Ratings & Reviews to start fresh
+  const handleResetRatings = async () => {
+    const confirmed = window.confirm(
+      '⚠️ RESET ALL RATINGS & VOTES?\n\nAre you sure you want to completely clear all visitor ratings and reviews to start fresh? This action will reset all stall scores to 0.'
+    );
+    if (!confirmed) return;
+
+    try {
+      const res = await apiFetch('/api/stalls/reset-reviews', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        alert('✅ All stall ratings and reviews have been completely reset! The leaderboard is now fresh.');
+        loadStallsLeaderboard();
+        loadStallReviews();
+      } else {
+        alert(data.message || 'Failed to reset ratings');
+      }
+    } catch (e) {
+      console.error('Reset ratings error:', e);
+      alert('Failed to reset ratings due to network issue.');
+    }
+  };
+
   const copyRatingLink = (stallNum) => {
     const url = `${window.location.origin}/rate/${stallNum}`;
     navigator.clipboard.writeText(url);
@@ -543,7 +566,24 @@ export default function AdminDashboard() {
             </p>
           </div>
 
-          <div className="admin-header-actions" style={{ display: 'flex', gap: '10px' }}>
+          <div className="admin-header-actions" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            {activeTab === 'stalls' && (
+              <button
+                onClick={handleResetRatings}
+                className="btn btn-secondary"
+                style={{
+                  padding: '0.55rem 1.15rem',
+                  fontSize: '0.86rem',
+                  color: '#DC2626',
+                  borderColor: '#FCA5A5',
+                  background: '#FEF2F2',
+                  fontWeight: '700'
+                }}
+                title="Completely wipe all submitted stall ratings and start fresh"
+              >
+                <i className="fas fa-undo-alt" style={{ marginRight: '6px' }}></i> Reset Ratings (Start Fresh)
+              </button>
+            )}
             {activeTab === 'qrcodes' && (
               <button
                 onClick={() => window.print()}
@@ -636,9 +676,38 @@ export default function AdminDashboard() {
                           <div style={{ fontSize: '0.75rem' }}>{stall.department || ''}</div>
                         </td>
                         <td style={{ padding: '14px 16px' }}>
-                          <span style={{ background: stall.avg_rating >= 4 ? 'rgba(139, 13, 26, 0.12)' : '#FAF8F5', color: stall.avg_rating >= 4 ? 'var(--primary-color)' : 'var(--secondary-color)', padding: '4px 10px', borderRadius: '12px', fontWeight: '800', fontSize: '0.9rem' }}>
-                            ★ {stall.avg_rating} / 5.0
-                          </span>
+                          {stall.total_reviews > 0 ? (
+                            <span
+                              style={{
+                                background:
+                                  stall.avg_rating >= 4.5
+                                    ? 'rgba(255, 184, 0, 0.18)'
+                                    : stall.avg_rating >= 4
+                                    ? 'rgba(16, 185, 129, 0.15)'
+                                    : stall.avg_rating >= 3
+                                    ? 'rgba(245, 158, 11, 0.15)'
+                                    : '#FAF8F5',
+                                color:
+                                  stall.avg_rating >= 4.5
+                                    ? '#B45309'
+                                    : stall.avg_rating >= 4
+                                    ? '#047857'
+                                    : stall.avg_rating >= 3
+                                    ? '#B45309'
+                                    : 'var(--secondary-color)',
+                                padding: '4px 10px',
+                                borderRadius: '12px',
+                                fontWeight: '800',
+                                fontSize: '0.9rem',
+                              }}
+                            >
+                              ★ {stall.avg_rating} / 5.0
+                            </span>
+                          ) : (
+                            <span style={{ color: '#9CA3AF', fontSize: '0.82rem', fontWeight: '600' }}>
+                              — (0 reviews)
+                            </span>
+                          )}
                         </td>
                         <td style={{ padding: '14px 16px', fontWeight: '700' }}>{stall.total_reviews} reviews</td>
                         <td style={{ padding: '14px 16px' }}>

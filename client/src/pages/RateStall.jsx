@@ -14,8 +14,8 @@ export default function RateStall() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Rating Form State
-  const [rating, setRating] = useState(5);
+  // Rating Form State - Starts at 0 (unselected black stars)
+  const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [selectedTags, setSelectedTags] = useState([]);
   const [submitting, setSubmitting] = useState(false);
@@ -130,26 +130,70 @@ export default function RateStall() {
     }
   };
 
-  const getRatingLabel = (score) => {
+  const getRatingInfo = (score) => {
     switch (score) {
       case 1:
-        return '1★ Needs Improvement';
+        return {
+          title: '1★ Needs Improvement',
+          subtitle: 'Poor / Below Expectations',
+          badgeClass: 'rating-badge-tier-1',
+          emoji: '🥀',
+          color: '#EF4444',
+        };
       case 2:
-        return '2★ Fair Effort';
+        return {
+          title: '2★ Fair Effort',
+          subtitle: 'Average / Room for Growth',
+          badgeClass: 'rating-badge-tier-2',
+          emoji: '⚡',
+          color: '#F97316',
+        };
       case 3:
-        return '3★ Good Quality & Service';
+        return {
+          title: '3★ Good Quality & Service',
+          subtitle: 'Good Effort / Satisfied',
+          badgeClass: 'rating-badge-tier-3',
+          emoji: '✨',
+          color: '#F59E0B',
+        };
       case 4:
-        return '4★ Very Good & Creative!';
+        return {
+          title: '4★ Very Good & Creative!',
+          subtitle: 'Impressive & Well Made',
+          badgeClass: 'rating-badge-tier-4',
+          emoji: '🌟',
+          color: '#10B981',
+        };
       case 5:
-        return '5★ Outstanding! Winner Contender 🏆';
+        return {
+          title: '5★ Outstanding! Winner Contender 🏆',
+          subtitle: 'Masterpiece / Top Venture',
+          badgeClass: 'rating-badge-tier-5',
+          emoji: '👑',
+          color: '#FFB800',
+        };
       default:
-        return `${score}★`;
+        return {
+          title: 'Tap a star to rate (1 to 5 Stars)',
+          subtitle: 'Rating is required before submitting',
+          badgeClass: 'rating-badge-tier-0',
+          emoji: '⭐',
+          color: '#6B7280',
+        };
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!stall || alreadyVoted) return;
+
+    if (!rating || rating < 1 || rating > 5) {
+      setServerFeedback({
+        success: false,
+        message: 'Please tap a star (1 to 5 Stars) to rate this stall before submitting.',
+      });
+      return;
+    }
 
     try {
       setSubmitting(true);
@@ -207,6 +251,8 @@ export default function RateStall() {
   };
 
   const activeRatingDisplay = alreadyVoted ? alreadyVoted.rating : rating;
+  const currentActiveScore = hoverRating || rating;
+  const activeRatingInfo = getRatingInfo(currentActiveScore);
   const activeTagsDisplay = alreadyVoted && alreadyVoted.tags ? alreadyVoted.tags : selectedTags;
 
   return (
@@ -285,7 +331,7 @@ export default function RateStall() {
             <div className="submitted-summary-box">
               <div className="summary-row">
                 <span>Rating Given:</span>
-                <span className="summary-stars">
+                <span className={`summary-stars rating-tier-color-${activeRatingDisplay || 5}`}>
                   {'★'.repeat(activeRatingDisplay || 5)}{'☆'.repeat(5 - (activeRatingDisplay || 5))} ({activeRatingDisplay || 5}/5 Stars)
                 </span>
               </div>
@@ -310,6 +356,24 @@ export default function RateStall() {
               <Link to="/rakhi-stalls" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
                 <i className="fas fa-store"></i> Explore All Stalls
               </Link>
+            </div>
+
+            <div style={{ marginTop: '14px', textAlign: 'center' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  localStorage.removeItem(`eclub_voted_${stall.id}`);
+                  localStorage.removeItem(`eclub_voted_${stall.stall_number}`);
+                  setAlreadyVoted(null);
+                  setSubmittedSuccess(false);
+                  setRating(0);
+                  setHoverRating(0);
+                }}
+                style={{ background: 'none', border: 'none', color: '#9CA3AF', fontSize: '0.76rem', cursor: 'pointer', textDecoration: 'underline' }}
+                title="Reset browser storage token to test rating this stall again"
+              >
+                <i className="fas fa-redo"></i> Reset local vote cache (Testing Mode)
+              </button>
             </div>
           </div>
         )}
@@ -370,29 +434,50 @@ export default function RateStall() {
             {/* Interactive Rating Form */}
             <form onSubmit={handleSubmit} className="rate-interactive-form">
               {/* Star Rating Section */}
-              <div className="rate-star-selector-box">
-                <label className="rate-section-label">
-                  Rate Your Experience with this Stall (1 to 5 Stars) *
-                </label>
-                <div className="rate-stars-row">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      type="button"
-                      key={star}
-                      className={`rate-star-btn ${
-                        (hoverRating || rating) >= star ? 'active' : ''
-                      }`}
-                      onClick={() => setRating(star)}
-                      onMouseEnter={() => setHoverRating(star)}
-                      onMouseLeave={() => setHoverRating(0)}
-                      aria-label={`Give ${star} Stars`}
-                    >
-                      ★
-                    </button>
-                  ))}
+              <div className={`rate-star-selector-box tier-box-${currentActiveScore}`}>
+                <div className="rate-selector-top-row">
+                  <label className="rate-section-label">
+                    Rate Your Experience with this Stall (1 to 5 Stars) *
+                  </label>
+                  <span className={`rate-score-pill pill-tier-${currentActiveScore}`}>
+                    {currentActiveScore > 0 ? `${currentActiveScore} of 5 Stars` : 'Tap to rate'}
+                  </span>
                 </div>
-                <div className="rate-score-caption">
-                  {getRatingLabel(hoverRating || rating)}
+
+                <div className="rate-stars-row" role="radiogroup" aria-label="Stall star rating">
+                  {[1, 2, 3, 4, 5].map((star) => {
+                    const isSelectedOrHovered = currentActiveScore >= star;
+                    const tierClass = currentActiveScore > 0 ? `tier-${currentActiveScore}` : 'unselected-black';
+
+                    return (
+                      <button
+                        type="button"
+                        key={star}
+                        role="radio"
+                        aria-checked={rating === star}
+                        className={`rate-star-btn ${
+                          isSelectedOrHovered ? `active ${tierClass}` : 'black-star'
+                        }`}
+                        onClick={() => setRating(star)}
+                        onMouseEnter={() => setHoverRating(star)}
+                        onMouseLeave={() => setHoverRating(0)}
+                        aria-label={`Give ${star} Stars - ${getRatingInfo(star).title}`}
+                      >
+                        <span className="star-icon">★</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Dynamic Score Caption Badge */}
+                <div className="rate-score-caption-wrapper">
+                  <div className={`rate-dynamic-caption-card card-tier-${currentActiveScore}`}>
+                    <span className="caption-emoji">{activeRatingInfo.emoji}</span>
+                    <div className="caption-texts">
+                      <span className="caption-title">{activeRatingInfo.title}</span>
+                      <span className="caption-sub">{activeRatingInfo.subtitle}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -423,16 +508,20 @@ export default function RateStall() {
               <div className="rate-form-actions">
                 <button
                   type="submit"
-                  className="btn btn-primary rate-submit-button"
-                  disabled={submitting}
+                  className={`btn btn-primary rate-submit-button ${rating === 0 ? 'rate-btn-unselected' : ''}`}
+                  disabled={submitting || rating === 0}
                 >
                   {submitting ? (
                     <>
                       <i className="fas fa-spinner fa-spin"></i> Recording Rating...
                     </>
+                  ) : rating === 0 ? (
+                    <>
+                      <i className="fas fa-star-half-alt"></i> Tap Stars Above to Rate Stall #{stall.stall_number}
+                    </>
                   ) : (
                     <>
-                      <i className="fas fa-paper-plane"></i> Submit Rating for Stall #{stall.stall_number}
+                      <i className="fas fa-paper-plane"></i> Submit {rating}★ Rating for Stall #{stall.stall_number}
                     </>
                   )}
                 </button>

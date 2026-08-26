@@ -3964,14 +3964,86 @@ p {
   margin-top: 0.75rem;
 }
 
-/* Star Rating Section */
+/* Star Rating Section & Interactive Multi-Color Animated System */
 .rate-star-selector-box {
   background: #FAF8F5;
-  border: 1px solid var(--border-light);
-  border-radius: 20px;
-  padding: 1.5rem 1rem;
+  border: 2px solid var(--border-light);
+  border-radius: 22px;
+  padding: 1.6rem 1.25rem;
   text-align: center;
   margin-bottom: 1.5rem;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.rate-star-selector-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #E5E7EB;
+  transition: all 0.35s ease;
+}
+
+/* Tier Box Moods (Background & Accent Gradients) */
+.rate-star-selector-box.tier-box-0 {
+  border-color: #E5E7EB;
+}
+.rate-star-selector-box.tier-box-1 {
+  border-color: rgba(239, 68, 68, 0.45);
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(254, 242, 242, 0.6) 100%);
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.12);
+}
+.rate-star-selector-box.tier-box-1::before {
+  background: linear-gradient(90deg, #EF4444, #DC2626);
+}
+
+.rate-star-selector-box.tier-box-2 {
+  border-color: rgba(249, 115, 22, 0.45);
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 247, 237, 0.6) 100%);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.12);
+}
+.rate-star-selector-box.tier-box-2::before {
+  background: linear-gradient(90deg, #F97316, #EA580C);
+}
+
+.rate-star-selector-box.tier-box-3 {
+  border-color: rgba(245, 158, 11, 0.45);
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(254, 252, 232, 0.6) 100%);
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.14);
+}
+.rate-star-selector-box.tier-box-3::before {
+  background: linear-gradient(90deg, #F59E0B, #D97706);
+}
+
+.rate-star-selector-box.tier-box-4 {
+  border-color: rgba(16, 185, 129, 0.5);
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(236, 253, 245, 0.65) 100%);
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+}
+.rate-star-selector-box.tier-box-4::before {
+  background: linear-gradient(90deg, #10B981, #059669);
+}
+
+.rate-star-selector-box.tier-box-5 {
+  border-color: rgba(255, 184, 0, 0.65);
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(254, 243, 199, 0.7) 100%);
+  box-shadow: 0 10px 30px rgba(255, 184, 0, 0.22);
+}
+.rate-star-selector-box.tier-box-5::before {
+  background: linear-gradient(90deg, #FFB800, #F59E0B, #FFD700);
+}
+
+/* Selector Header Row */
+.rate-selector-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .rate-section-label {
@@ -3979,39 +4051,248 @@ p {
   font-size: 0.88rem;
   font-weight: 800;
   color: var(--secondary-color);
-  margin-bottom: 0.75rem;
+  margin: 0;
+  text-align: left;
 }
 
+.rate-score-pill {
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 12px;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+}
+.rate-score-pill.pill-tier-0 {
+  background: #E5E7EB;
+  color: #4B5563;
+}
+.rate-score-pill.pill-tier-1 {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+.rate-score-pill.pill-tier-2 {
+  background: #FFEDD5;
+  color: #C2410C;
+}
+.rate-score-pill.pill-tier-3 {
+  background: #FEF3C7;
+  color: #B45309;
+}
+.rate-score-pill.pill-tier-4 {
+  background: #D1FAE5;
+  color: #047857;
+}
+.rate-score-pill.pill-tier-5 {
+  background: #FEF08A;
+  color: #854D0E;
+  box-shadow: 0 2px 8px rgba(234, 179, 8, 0.3);
+}
+
+/* Stars Row & Button Base */
 .rate-stars-row {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-bottom: 0.5rem;
+  align-items: center;
+  gap: 12px;
+  margin: 0.75rem 0 1.25rem 0;
 }
 
 .rate-star-btn {
   background: none;
   border: none;
-  font-size: 2.8rem;
-  color: #D1CBC3;
+  font-size: 3.2rem;
   cursor: pointer;
   line-height: 1;
   padding: 0 4px;
-  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.25s ease, filter 0.25s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.rate-star-btn:hover,
-.rate-star-btn.active {
-  color: #F59E0B;
+.rate-star-btn:focus-visible {
+  outline: 2px solid var(--primary-color);
+  border-radius: 8px;
+}
+
+/* 1. Default Black Stars (Unrated / Inactive) */
+.rate-star-btn.black-star,
+.rate-star-btn:not(.active) {
+  color: #18181B; /* Crisp solid black */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+  opacity: 0.9;
+}
+
+.rate-star-btn.black-star:hover {
   transform: scale(1.22);
-  text-shadow: 0 3px 12px rgba(245, 158, 11, 0.45);
+  color: #27272A;
+  opacity: 1;
 }
 
-.rate-score-caption {
+/* Active Pop Animation */
+.rate-star-btn.active {
+  animation: starPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes starPop {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.3) rotate(-5deg); }
+  100% { transform: scale(1.18); }
+}
+
+.rate-star-btn:hover {
+  transform: scale(1.26);
+}
+
+/* 2. Color Tiers */
+/* Tier 1: Crimson / Coral Red */
+.rate-star-btn.active.tier-1 {
+  color: #EF4444;
+  filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.7)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Tier 2: Sunset Flame Orange */
+.rate-star-btn.active.tier-2 {
+  color: #F97316;
+  filter: drop-shadow(0 0 12px rgba(249, 115, 22, 0.7)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Tier 3: Warm Honey Gold / Amber */
+.rate-star-btn.active.tier-3 {
+  color: #F59E0B;
+  filter: drop-shadow(0 0 14px rgba(245, 158, 11, 0.75)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Tier 4: Vivid Emerald Green */
+.rate-star-btn.active.tier-4 {
+  color: #10B981;
+  filter: drop-shadow(0 0 16px rgba(16, 185, 129, 0.8)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Tier 5: Radiant Royal Gold with Sparkle Pulse */
+.rate-star-btn.active.tier-5 {
+  color: #FFB800;
+  filter: drop-shadow(0 0 18px rgba(255, 184, 0, 0.85)) drop-shadow(0 0 35px rgba(255, 215, 0, 0.45)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  animation: starPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, goldGlowPulse 2s infinite alternate ease-in-out 0.35s;
+}
+
+@keyframes goldGlowPulse {
+  0% {
+    filter: drop-shadow(0 0 14px rgba(255, 184, 0, 0.8)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  }
+  100% {
+    filter: drop-shadow(0 0 24px rgba(255, 184, 0, 1)) drop-shadow(0 0 45px rgba(255, 215, 0, 0.6)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+  }
+}
+
+/* Dynamic Score Caption Badge Card */
+.rate-score-caption-wrapper {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.rate-dynamic-caption-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: badgePopIn 0.25s ease-out;
+  border: 1px solid transparent;
+  max-width: 100%;
+}
+
+@keyframes badgePopIn {
+  0% { opacity: 0; transform: translateY(4px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.rate-dynamic-caption-card .caption-emoji {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.rate-dynamic-caption-card .caption-texts {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.rate-dynamic-caption-card .caption-title {
   font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--primary-color);
-  min-height: 22px;
+  font-weight: 850;
+  letter-spacing: -0.2px;
+  line-height: 1.25;
+}
+
+.rate-dynamic-caption-card .caption-sub {
+  font-size: 0.76rem;
+  font-weight: 600;
+  opacity: 0.85;
+  line-height: 1.2;
+}
+
+/* Badge Tiers */
+.rate-dynamic-caption-card.card-tier-0 {
+  background: #F3F4F6;
+  border-color: #E5E7EB;
+  color: #4B5563;
+}
+
+.rate-dynamic-caption-card.card-tier-1 {
+  background: #FEE2E2;
+  border-color: #FCA5A5;
+  color: #991B1B;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+}
+
+.rate-dynamic-caption-card.card-tier-2 {
+  background: #FFEDD5;
+  border-color: #FDBA74;
+  color: #9A3412;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15);
+}
+
+.rate-dynamic-caption-card.card-tier-3 {
+  background: #FEF3C7;
+  border-color: #FCD34D;
+  color: #92400E;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.18);
+}
+
+.rate-dynamic-caption-card.card-tier-4 {
+  background: #D1FAE5;
+  border-color: #6EE7B7;
+  color: #065F46;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.18);
+}
+
+.rate-dynamic-caption-card.card-tier-5 {
+  background: linear-gradient(135deg, #FEF08A 0%, #FDE047 60%, #FACC15 100%);
+  border-color: #EAB308;
+  color: #713F12;
+  box-shadow: 0 6px 18px rgba(234, 179, 8, 0.32);
+}
+
+/* Summary Card Tier Colors */
+.rating-tier-color-1 { color: #EF4444 !important; }
+.rating-tier-color-2 { color: #F97316 !important; }
+.rating-tier-color-3 { color: #F59E0B !important; }
+.rating-tier-color-4 { color: #10B981 !important; }
+.rating-tier-color-5 { color: #FFB800 !important; }
+
+/* Unrated Button state */
+.rate-btn-unselected {
+  background: #9CA3AF !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+  opacity: 0.75;
 }
 
 /* Quick Tags */
@@ -4198,9 +4479,15 @@ p {
 }
 
 .summary-stars {
+  font-weight: 850;
   color: #F59E0B;
-  font-weight: 800;
 }
+
+.summary-stars.rating-tier-color-1 { color: #EF4444 !important; }
+.summary-stars.rating-tier-color-2 { color: #F97316 !important; }
+.summary-stars.rating-tier-color-3 { color: #F59E0B !important; }
+.summary-stars.rating-tier-color-4 { color: #10B981 !important; }
+.summary-stars.rating-tier-color-5 { color: #FFB800 !important; text-shadow: 0 0 10px rgba(255, 184, 0, 0.4); }
 
 .success-actions {
   display: flex;

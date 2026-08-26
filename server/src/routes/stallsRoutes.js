@@ -5,6 +5,8 @@ const stallsController = require('../controllers/stallsController');
 // Admin / Leaderboard & Reviews routes (declared first to avoid route parameter collision)
 router.get('/leaderboard', stallsController.getLeaderboard);
 router.get('/reviews', stallsController.getAllReviews);
+router.post('/reset-reviews', stallsController.resetReviews);
+router.delete('/reviews', stallsController.resetReviews);
 
 // Public routes for visitors
 router.get('/', stallsController.getAllStalls);

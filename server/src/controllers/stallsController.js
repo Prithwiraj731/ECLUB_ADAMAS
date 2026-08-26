@@ -287,6 +287,36 @@ exports.getAllReviews = async (req, res) => {
   }
 };
 
+// Admin: Reset / Delete all reviews and ratings to start fresh
+exports.resetReviews = async (req, res) => {
+  try {
+    voteRateLimitStore.clear();
+
+    if (isMock) {
+      mockStore.stall_reviews = [];
+      return res.json({ success: true, message: 'All stall ratings and reviews have been completely reset.' });
+    }
+
+    // Delete all existing records in Supabase stall_reviews
+    const { error } = await supabase
+      .from('stall_reviews')
+      .delete()
+      .gte('rating', 0);
+
+    if (error) {
+      console.error('Error resetting Supabase reviews:', error);
+      throw error;
+    }
+
+    mockStore.stall_reviews = [];
+
+    res.json({ success: true, message: 'All stall ratings and reviews have been completely reset.' });
+  } catch (err) {
+    console.error('Error resetting reviews:', err);
+    res.status(500).json({ success: false, message: 'Failed to reset reviews.' });
+  }
+};
+
 // Admin: Create / Add a Stall
 exports.createStall = async (req, res) => {
   try {
