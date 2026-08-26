@@ -163,8 +163,7 @@ export default function ContactSection() {
               </div>
               <div className="info-text">
                 <h4>Email Us</h4>
-                <p>eclub@adamasuniversity.ac.in</p>
-                <p>innovation@adamasuniversity.ac.in</p>
+                <p>adamaseclub@gmail.com</p>
               </div>
             </div>
 
