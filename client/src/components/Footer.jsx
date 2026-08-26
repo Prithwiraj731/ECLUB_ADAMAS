@@ -46,7 +46,7 @@ export default function Footer() {
             <h4>Campus Hub</h4>
             <ul>
               <li><i className="fas fa-map-marker-alt" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> Adamas Knowledge City, Barasat</li>
-              <li><i className="fas fa-envelope" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> eclub@adamasuniversity.ac.in</li>
+              <li><i className="fas fa-envelope" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> adamaseclub@gmail.com</li>
               <li><i className="fas fa-phone-alt" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> +91 80175 79014</li>
               <li><i className="fas fa-clock" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> Mon - Fri: 9:30 AM - 5:30 PM</li>
             </ul>
