@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const objectives = [
@@ -36,106 +36,349 @@ const objectives = [
 
 const offerings = [
   {
+    icon: 'fa-chalkboard-teacher',
     title: 'Mentorship & Venture Advisory',
     description: 'Dedicated 1-on-1 office hours with industry leaders, founders, and subject matter specialists.'
   },
   {
+    icon: 'fa-certificate',
     title: 'Workshops & Certifications',
     description: 'Accredited workshops spanning product strategy, financial modeling, marketing psychology, and fundraising.'
   },
   {
+    icon: 'fa-rocket',
     title: 'E-Summit & Hackathons',
     description: 'Annual flagship conclaves gathering over 2,000+ delegates, 50+ startup stalls, and prominent angel syndicates.'
   },
   {
+    icon: 'fa-laptop-house',
     title: 'Co-Working & Prototyping Lab',
     description: 'Access to high-speed workstations, 3D printing equipment, meeting pods, and cloud server credits.'
   }
 ];
 
-const team = [
+const coreTeam = [
   {
-    name: 'Dr. S. K. Mukherjee',
-    role: 'Faculty Mentor & Chief Advisor',
-    department: 'School of Business & Economics',
-    icon: 'fa-user-tie'
+    name: 'Soodipa Chakraborty',
+    role: 'Founder & Mentor',
+    photo: '/assets/photos/Soodipa.jpg',
+    badge: 'Faculty Mentor',
+    objectPosition: 'center 15%'
   },
   {
-    name: 'Arindam Ghosh',
-    role: 'Club President',
-    department: 'Computer Science & Engineering',
-    icon: 'fa-crown'
+    name: 'Preyashee Saha',
+    role: 'Student Coordinator',
+    photo: '/assets/photos/Preyashee.jpeg',
+    badge: 'Core Leadership',
+    objectPosition: 'center 18%'
   },
   {
-    name: 'Shreya Sengupta',
-    role: 'Vice President & Head of Incubation',
-    department: 'Department of Management',
-    icon: 'fa-briefcase'
+    name: 'Sayani Saha',
+    role: 'Student Coordinator',
+    photo: '/assets/photos/Sayani.jpeg',
+    badge: 'Core Leadership',
+    objectPosition: 'center 20%'
   },
   {
-    name: 'Rohan Sharma',
-    role: 'Lead - Tech & Innovation Wing',
-    department: 'Information Technology',
-    icon: 'fa-code'
+    name: 'Ratnadipa Saha',
+    role: 'Lead – Reports & Documentation',
+    photo: '/assets/photos/Ratnadipa.jpeg',
+    badge: 'Documentation Lead',
+    objectPosition: 'center 25%'
   },
   {
-    name: 'Priyanka Das',
-    role: 'Lead - Marketing & Public Relations',
-    department: 'Media & Mass Communication',
-    icon: 'fa-bullhorn'
+    name: 'Utsav Saha',
+    role: 'Lead – Social Media & Promotions',
+    photo: '/assets/photos/Utsav.jpeg',
+    badge: 'Media & Branding Lead',
+    objectPosition: 'center 15%'
   },
   {
-    name: 'Sourav Roy',
-    role: 'Lead - Corporate & Investor Relations',
-    department: 'Finance & Commerce',
-    icon: 'fa-handshake'
+    name: 'Md Samiul Islam',
+    role: 'Lead – PR & Communications',
+    photo: '/assets/photos/Samiul.jpeg',
+    badge: 'PR & Outreach Lead',
+    objectPosition: 'center 15%'
+  },
+  {
+    name: 'Sourish Banerjee',
+    role: 'Lead – Social Media & Promotions',
+    photo: '/assets/photos/Sourish.jpeg',
+    badge: 'Media & Branding Lead',
+    objectPosition: 'center 15%'
+  },
+  {
+    name: 'Aleena Hossain',
+    role: 'Lead – PR & Communications',
+    photo: '/assets/photos/Aleena.jpeg',
+    badge: 'PR & Outreach Lead',
+    objectPosition: 'center 12%'
+  },
+  {
+    name: 'Prithwiraj Mazumdar',
+    role: 'Lead – Technical Operations',
+    photo: '/assets/photos/Prithwiraj.jpeg',
+    badge: 'Tech & Ops Lead',
+    objectPosition: 'center 20%'
+  }
+];
+
+const timelineBento2025 = [
+  {
+    id: 1,
+    title: 'Annual E-Club Mega Conclave',
+    subtitle: 'Over 200+ students and aspiring founders gathered at the Adamas Grand Auditorium',
+    tag: 'Flagship Conclave',
+    date: '2025–26 Session',
+    photo: '/assets/photos/Main-Team.jpeg',
+    gridClass: 'bento-span-2x2',
+    icon: 'fa-users'
+  },
+  {
+    id: 2,
+    title: 'Executive Committee Launch',
+    subtitle: 'Core leaders inaugurated outside the Adamas University main building',
+    tag: 'Leadership',
+    date: 'August 2025',
+    photo: '/assets/photos/t1.jpeg',
+    gridClass: 'bento-span-1x1',
+    icon: 'fa-university'
+  },
+  {
+    id: 3,
+    title: 'Founder & Mentor Keynote Address',
+    subtitle: 'Soodipa Chakraborty sharing the vision for student incubations',
+    tag: 'Keynote Session',
+    date: 'October 2025',
+    photo: '/assets/photos/t5.jpeg',
+    gridClass: 'bento-span-1x1',
+    icon: 'fa-microphone'
+  },
+  {
+    id: 4,
+    title: 'Virtual Founder Masterclass',
+    subtitle: 'Interactive live session with industry disruptors streamed to the auditorium',
+    tag: 'Masterclass',
+    date: 'November 2025',
+    photo: '/assets/photos/t3.jpeg',
+    gridClass: 'bento-span-1x1',
+    icon: 'fa-chalkboard-teacher'
+  },
+  {
+    id: 5,
+    title: 'Audience Interaction & Pitch Battles',
+    subtitle: 'Students engaging in active Q&A, venture debate, and ideas evaluation',
+    tag: 'Idea Pitch',
+    date: 'December 2025',
+    photo: '/assets/photos/t6.jpeg',
+    gridClass: 'bento-span-1x1',
+    icon: 'fa-comments'
+  },
+  {
+    id: 6,
+    title: 'Packed Full House Attendance',
+    subtitle: 'Adamas University students showing massive enthusiasm for startup building',
+    tag: 'Campus Pulse',
+    date: 'January 2026',
+    photo: '/assets/photos/t7.jpeg',
+    gridClass: 'bento-span-2x1',
+    icon: 'fa-fire'
+  },
+  {
+    id: 7,
+    title: 'E-Club Student Coordinators Squad',
+    subtitle: 'Passionate student team driving daily operations, logistics & tech',
+    tag: 'Core Squad',
+    date: '2025–26 Era',
+    photo: '/assets/photos/team.jpeg',
+    gridClass: 'bento-span-1x1',
+    icon: 'fa-shield-alt'
   }
 ];
 
 export default function About() {
+  const [activeTimeline, setActiveTimeline] = useState('2025-26');
+
   return (
-    <div>
+    <div className="about-page-root">
       {/* Page Hero */}
       <section className="page-hero">
         <div className="container">
+          <span className="hero-badge-tag">
+            <i className="fas fa-compass"></i> ADAMAS ENTREPRENEURSHIP CLUB
+          </span>
           <h1>About Our Club</h1>
-          <p>Empowering Adamas University students to pioneer sustainable ventures and lead global innovation.</p>
+          <p>
+            Empowering Adamas University students to transform bold ideas into scalable ventures, sustainable businesses, and world-class innovations.
+          </p>
         </div>
       </section>
 
       {/* Mission & Vision */}
-      <section className="section" style={{ background: 'var(--white)' }}>
+      <section className="section about-mv-section">
         <div className="container">
           <div className="about-content">
             <div className="about-text">
-              <h2>Our Mission & Vision</h2>
-              <div style={{ marginBottom: '1.5rem' }}>
-                <h3 style={{ color: 'var(--secondary-color)', fontSize: '1.4rem' }}>
-                  <i className="fas fa-bullseye" style={{ color: 'var(--primary-color)', marginRight: '10px' }}></i>
-                  Our Mission
-                </h3>
-                <p>
-                  To cultivate a dynamic entrepreneurial ecosystem within Adamas University by empowering students with
-                  practical tools, expert mentorship, seed capital pipelines, and an interdisciplinary collaborative
-                  community.
-                </p>
+              <span className="section-eyebrow">
+                <i className="fas fa-star" style={{ color: 'var(--primary-color)' }}></i> FOUNDATIONAL PILLARS
+              </span>
+              <h2>Our Mission &amp; Vision</h2>
+              
+              <div className="mv-card-item">
+                <div className="mv-icon-box">
+                  <i className="fas fa-bullseye"></i>
+                </div>
+                <div className="mv-text-box">
+                  <h3>Our Mission</h3>
+                  <p>
+                    To cultivate a dynamic, high-impact entrepreneurial ecosystem within Adamas University by empowering students with practical venture-building tools, industry mentorship, seed capital access, and an interdisciplinary collaborative community.
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <h3 style={{ color: 'var(--secondary-color)', fontSize: '1.4rem' }}>
-                  <i className="fas fa-eye" style={{ color: 'var(--primary-color)', marginRight: '10px' }}></i>
-                  Our Vision
-                </h3>
-                <p>
-                  To become Eastern India's leading university venture incubator, producing high-growth startups,
-                  socio-economic innovations, and ethical business leaders that shape the future of industry.
-                </p>
+              <div className="mv-card-item">
+                <div className="mv-icon-box">
+                  <i className="fas fa-eye"></i>
+                </div>
+                <div className="mv-text-box">
+                  <h3>Our Vision</h3>
+                  <p>
+                    To become Eastern India's leading university venture incubator, producing high-growth student startups, pioneering technological breakthroughs, and ethical business leaders that shape the future of global industry.
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="about-image">
-              <img src="/assets/hero/hero3.png" alt="Adamas University Innovation Center" />
+            <div className="about-mv-image-wrapper">
+              <div className="about-mv-card">
+                <img
+                  src="/assets/photos/Main-Team.jpeg"
+                  alt="Adamas Entrepreneurship Club Full Delegation and Mentors"
+                  className="about-mv-photo"
+                />
+                <div className="about-mv-overlay-badge">
+                  <i className="fas fa-award"></i>
+                  <div>
+                    <strong>Adamas E-Club Grand Assembly</strong>
+                    <span>Auditorium Session • 2025–26</span>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2025-26 Timeline & Bento Gallery Section */}
+      <section className="section timeline-bento-section">
+        <div className="container">
+          <div className="section-header text-center">
+            <span className="section-eyebrow">
+              <i className="fas fa-history" style={{ color: 'var(--primary-color)' }}></i> ARCHIVES &amp; MILESTONES
+            </span>
+            <h2>Moments &amp; Timeline Chronicles</h2>
+            <p>
+              A visual journey through key workshops, auditoriums, summits, and milestones crafted by the E-Club community.
+            </p>
+
+            {/* Timeline Year Tabs */}
+            <div className="timeline-tabs-wrapper">
+              <button
+                type="button"
+                className={`timeline-tab-btn ${activeTimeline === '2025-26' ? 'active' : ''}`}
+                onClick={() => setActiveTimeline('2025-26')}
+              >
+                <i className="fas fa-calendar-check"></i>
+                <span>Timeline 2025 – 2026</span>
+                <span className="timeline-tab-pill">Active Era</span>
+              </button>
+
+              <button
+                type="button"
+                className="timeline-tab-btn disabled-upcoming"
+                title="Timeline for 2026-27 will be updated soon"
+              >
+                <i className="fas fa-hourglass-half"></i>
+                <span>Timeline 2026 – 2027</span>
+                <span className="timeline-tab-pill upcoming">Upcoming</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Bento Grid */}
+          <div className="timeline-bento-grid">
+            {timelineBento2025.map((item) => (
+              <div key={item.id} className={`bento-card ${item.gridClass}`}>
+                <div className="bento-media-container">
+                  <img src={item.photo} alt={item.title} className="bento-img" loading="lazy" />
+                  <div className="bento-glass-overlay">
+                    <div className="bento-tags-row">
+                      <span className="bento-tag">
+                        <i className={`fas ${item.icon}`}></i> {item.tag}
+                      </span>
+                      <span className="bento-date">{item.date}</span>
+                    </div>
+                    <div className="bento-info">
+                      <h3>{item.title}</h3>
+                      <p>{item.subtitle}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Leadership & Core Team Section */}
+      <section className="section core-team-section">
+        <div className="container">
+          <div className="section-header text-center">
+            <span className="section-eyebrow">
+              <i className="fas fa-crown" style={{ color: 'var(--primary-color)' }}></i> EXECUTIVE COMMITTEE
+            </span>
+            <h2>Leadership &amp; Core Team</h2>
+            <p>
+              Meet the passionate mentors and student leaders steering the Entrepreneurship Club at Adamas University.
+            </p>
+          </div>
+
+          <div className="team-bento-grid">
+            {coreTeam.map((member, index) => (
+              <div key={index} className="team-member-card">
+                <div className="team-avatar-wrapper">
+                  <img
+                    src={member.photo}
+                    alt={member.name}
+                    className="team-avatar-img"
+                    style={{ objectPosition: member.objectPosition || 'center 20%' }}
+                    loading="lazy"
+                  />
+                  <div className="team-badge-tag">
+                    <span>{member.badge}</span>
+                  </div>
+                </div>
+
+                <div className="team-card-body">
+                  <h3 className="team-member-name">{member.name}</h3>
+                  <p className="team-member-role">{member.role}</p>
+                  <div className="team-adamas-tag">
+                    <i className="fas fa-university"></i>
+                    <span>Adamas University</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="team-join-cta-box">
+            <div className="join-cta-content">
+              <h3>Want to make an impact with our core team?</h3>
+              <p>We are always eager to welcome driven students passionate about innovation, organizing, and tech operations.</p>
+            </div>
+            <Link to="/contact" className="btn btn-primary btn-join-team">
+              <i className="fas fa-paper-plane" style={{ marginRight: '8px' }}></i> Connect With Us
+            </Link>
           </div>
         </div>
       </section>
@@ -143,7 +386,10 @@ export default function About() {
       {/* Core Objectives */}
       <section className="section" style={{ background: 'var(--off-white)' }}>
         <div className="container">
-          <div className="section-header">
+          <div className="section-header text-center">
+            <span className="section-eyebrow">
+              <i className="fas fa-cogs" style={{ color: 'var(--primary-color)' }}></i> STRATEGIC GOALS
+            </span>
             <h2>Our Core Objectives</h2>
             <p>Our strategic pillars guiding every initiative, hackathon, and mentorship session</p>
           </div>
@@ -167,55 +413,30 @@ export default function About() {
       {/* What We Offer */}
       <section className="section" style={{ background: 'var(--white)' }}>
         <div className="container">
-          <div className="section-header">
+          <div className="section-header text-center">
+            <span className="section-eyebrow">
+              <i className="fas fa-gift" style={{ color: 'var(--primary-color)' }}></i> MEMBER PRIVILEGES
+            </span>
             <h2>What We Offer Members</h2>
             <p>Tangible resources and acceleration benefits for every student who joins our club</p>
           </div>
 
-          <div className="initiatives-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
+          <div className="initiatives-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))' }}>
             {offerings.map((offer, i) => (
-              <div key={i} style={{ background: 'var(--white)', padding: '1.75rem 1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
-                <h4 style={{ color: 'var(--secondary-color)', fontSize: '1.1rem', margin: 0, display: 'flex', alignItems: 'center' }}>
-                  <i className="fas fa-check-circle" style={{ color: 'var(--primary-color)', marginRight: '10px' }}></i>
-                  {offer.title}
-                </h4>
-                <p style={{ marginTop: '0.75rem', lineHeight: '1.6', fontSize: '0.9rem' }}>{offer.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Leadership & Core Committee */}
-      <section className="section" style={{ background: 'var(--off-white)' }}>
-        <div className="container">
-          <div className="section-header">
-            <h2>Leadership & Core Team</h2>
-            <p>Meet the visionary mentors and student leaders driving E-Club operations</p>
-          </div>
-
-          <div className="initiatives-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
-            {team.map((member, i) => (
-              <div key={i} className="highlight-item" style={{ flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '1.75rem 1.25rem' }}>
-                <div className="highlight-icon" style={{ width: '64px', height: '64px', fontSize: '1.5rem', marginBottom: '1rem', borderRadius: '16px' }}>
-                  <i className={`fas ${member.icon}`}></i>
+              <div key={i} className="offering-card">
+                <div className="offering-icon">
+                  <i className={`fas ${offer.icon}`}></i>
                 </div>
-                <div className="highlight-text">
-                  <h4 style={{ fontSize: '1.2rem', marginBottom: '0.35rem' }}>{member.name}</h4>
-                  <p style={{ color: 'var(--primary-color)', fontWeight: '700', marginBottom: '0.35rem', fontSize: '0.88rem' }}>{member.role}</p>
-                  <p style={{ fontSize: '0.82rem' }}>{member.department}</p>
+                <div className="offering-info">
+                  <h4>{offer.title}</h4>
+                  <p>{offer.description}</p>
                 </div>
               </div>
             ))}
-          </div>
-
-          <div style={{ textAlign: 'center', marginTop: '4rem' }}>
-            <Link to="/contact" className="btn btn-primary">
-              <i className="fas fa-user-plus" style={{ marginRight: '8px' }}></i> Join Our Core Team
-            </Link>
           </div>
         </div>
       </section>
     </div>
   );
 }
+

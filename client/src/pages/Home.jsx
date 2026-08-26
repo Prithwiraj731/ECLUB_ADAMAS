@@ -19,8 +19,18 @@ export default function Home() {
       <section id="about" className="about section">
         <div className="container">
           <div className="about-content">
-            <div className="about-image">
-              <img src="/assets/hero/hero2.png" alt="Adamas Entrepreneurship Club Team" />
+            <div className="about-image-wrapper">
+              <div className="about-image-card">
+                <img
+                  src="/assets/photos/team.jpeg"
+                  alt="Adamas University Entrepreneurship Club Core Student Leadership Team"
+                  className="about-team-photo"
+                />
+                <div className="about-image-badge">
+                  <i className="fas fa-users"></i>
+                  <span>Official E-Club Student Leadership</span>
+                </div>
+              </div>
             </div>
 
             <div className="about-text">
