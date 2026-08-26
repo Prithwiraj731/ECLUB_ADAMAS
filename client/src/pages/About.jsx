@@ -311,17 +311,8 @@ export default function About() {
               <div key={item.id} className={`bento-card ${item.gridClass}`}>
                 <div className="bento-media-container">
                   <img src={item.photo} alt={item.title} className="bento-img" loading="lazy" />
-                  <div className="bento-glass-overlay">
-                    <div className="bento-tags-row">
-                      <span className="bento-tag">
-                        <i className={`fas ${item.icon}`}></i> {item.tag}
-                      </span>
-                      <span className="bento-date">{item.date}</span>
-                    </div>
-                    <div className="bento-info">
-                      <h3>{item.title}</h3>
-                      <p>{item.subtitle}</p>
-                    </div>
+                  <div className="bento-hover-caption">
+                    <span className="bento-caption-title">{item.title}</span>
                   </div>
                 </div>
               </div>
@@ -354,9 +345,6 @@ export default function About() {
                     style={{ objectPosition: member.objectPosition || 'center 20%' }}
                     loading="lazy"
                   />
-                  <div className="team-badge-tag">
-                    <span>{member.badge}</span>
-                  </div>
                 </div>
 
                 <div className="team-card-body">

@@ -5625,86 +5625,32 @@ p {
   transform: scale(1.06);
 }
 
-.bento-glass-overlay {
+.bento-hover-caption {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(14, 14, 14, 0.15) 0%, rgba(14, 14, 14, 0.4) 45%, rgba(14, 14, 14, 0.94) 100%);
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: background 0.3s ease;
-}
-
-.bento-card:hover .bento-glass-overlay {
-  background: linear-gradient(180deg, rgba(14, 14, 14, 0.1) 0%, rgba(14, 14, 14, 0.35) 40%, rgba(14, 14, 14, 0.96) 100%);
-}
-
-.bento-tags-row {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 18px 20px;
+  background: linear-gradient(to top, rgba(10, 10, 10, 0.88) 0%, rgba(10, 10, 10, 0.4) 60%, transparent 100%);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
 }
 
-.bento-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(14, 14, 14, 0.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #FFB800;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.6px;
-  padding: 4px 10px;
-  border-radius: 12px;
-  text-transform: uppercase;
+.bento-card:hover .bento-hover-caption {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.bento-date {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #D4D4D8;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 3px 8px;
-  border-radius: 8px;
-  backdrop-filter: blur(8px);
-}
-
-.bento-info {
-  margin-top: auto;
-}
-
-.bento-info h3 {
+.bento-caption-title {
   color: #ffffff;
-  font-size: 1.15rem;
-  font-weight: 850;
-  margin: 0 0 0.3rem 0;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-}
-
-.bento-span-2x2 .bento-info h3 {
-  font-size: 1.45rem;
-}
-
-.bento-info p {
-  color: #D4D4D8;
-  font-size: 0.82rem;
-  line-height: 1.4;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.bento-span-2x2 .bento-info p {
-  font-size: 0.92rem;
-  -webkit-line-clamp: 3;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 /* Core Leadership Team Section */
@@ -5716,8 +5662,8 @@ p {
 .team-bento-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 26px;
-  margin-top: 2rem;
+  gap: 28px;
+  margin-top: 2.25rem;
   max-width: 1120px;
   margin-left: auto;
   margin-right: auto;
@@ -5736,7 +5682,7 @@ p {
 
 .team-member-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 22px 48px -10px rgba(139, 13, 26, 0.16), 0 4px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 24px 50px -10px rgba(139, 13, 26, 0.18), 0 4px 20px rgba(0, 0, 0, 0.06);
   border-color: rgba(139, 13, 26, 0.38);
 }
 
@@ -5744,7 +5690,7 @@ p {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1.12;
-  background: #18181B;
+  background: #111111;
   overflow: hidden;
 }
 
@@ -5757,24 +5703,7 @@ p {
 }
 
 .team-member-card:hover .team-avatar-img {
-  transform: scale(1.045);
-}
-
-.team-badge-tag {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  background: rgba(14, 14, 14, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 184, 0, 0.35);
-  padding: 5px 12px;
-  border-radius: 20px;
-  color: #FFB800;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.4px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  transform: scale(1.04);
 }
 
 .team-card-body {
