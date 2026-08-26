@@ -5379,17 +5379,17 @@ p {
 
 .team-bento-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 28px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
   margin-top: 2.25rem;
-  max-width: 1120px;
+  max-width: 860px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .team-member-card {
   background: var(--white);
-  border-radius: 22px;
+  border-radius: 20px;
   overflow: hidden;
   border: 1px solid rgba(139, 13, 26, 0.12);
   box-shadow: 0 10px 30px -6px rgba(0, 0, 0, 0.05);
@@ -5589,14 +5589,41 @@ p {
   }
 
   .team-bento-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 1.5rem;
+  }
+
+  .team-member-card {
+    border-radius: 16px;
   }
 
   .team-avatar-wrapper {
-    aspect-ratio: 1 / 1.12;
+    aspect-ratio: 1 / 1.1;
     height: auto;
-    max-height: 400px;
+  }
+
+  .team-card-body {
+    padding: 0.75rem 0.65rem 0.85rem 0.65rem;
+  }
+
+  .team-member-name {
+    font-size: 0.92rem;
+    font-weight: 850;
+    margin-bottom: 0.15rem;
+  }
+
+  .team-member-role {
+    font-size: 0.74rem;
+    font-weight: 750;
+    margin-bottom: 0.35rem;
+    line-height: 1.25;
+  }
+
+  .team-adamas-tag {
+    font-size: 0.68rem;
+    padding-top: 0.35rem;
+    gap: 4px;
   }
 
   .team-join-cta-box {
@@ -5621,6 +5648,28 @@ p {
     right: 12px;
     padding: 8px 12px;
     font-size: 0.76rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .team-bento-grid {
+    gap: 8px;
+  }
+
+  .team-card-body {
+    padding: 0.65rem 0.5rem 0.75rem 0.5rem;
+  }
+
+  .team-member-name {
+    font-size: 0.84rem;
+  }
+
+  .team-member-role {
+    font-size: 0.68rem;
+  }
+
+  .team-adamas-tag {
+    font-size: 0.62rem;
   }
 }
 
