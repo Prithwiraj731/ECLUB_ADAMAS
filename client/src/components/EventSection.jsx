@@ -75,7 +75,9 @@ export default function EventSection() {
             <div className="event-details">
               <div className="event-title-row">
                 <h3>{displayEvent.title}</h3>
-                <span className="stall-price-chip">₹299 / Stall</span>
+                <span className="stall-price-chip" style={{ background: 'rgba(139, 13, 26, 0.12)', color: '#8B0D1A', border: '1px solid rgba(139, 13, 26, 0.3)', fontWeight: '700' }}>
+                  <i className="fas fa-lock" style={{ marginRight: '5px' }}></i> Registration Closed
+                </span>
               </div>
 
               <div className="event-meta">
@@ -111,16 +113,16 @@ export default function EventSection() {
 
               <div className="event-cta-group">
                 <Link to="/rakhi-stalls" className="btn btn-primary event-reg-btn">
-                  <i className="fas fa-store"></i> View 23 Stalls Directory →
+                  <i className="fas fa-store"></i> View 31 Stalls Directory →
                 </Link>
-                <a
-                  href={regLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
                   className="btn btn-secondary"
+                  style={{ opacity: 0.8, cursor: 'not-allowed', background: '#ece7df', color: '#666', borderColor: '#dcd5ca' }}
+                  disabled
                 >
-                  <i className="fas fa-shopping-bag"></i> Register Stall (₹299)
-                </a>
+                  <i className="fas fa-lock"></i> Registration Closed
+                </button>
               </div>
             </div>
           </div>

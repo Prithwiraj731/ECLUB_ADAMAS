@@ -93,7 +93,7 @@ export default function RakhiStalls() {
 
           <div className="stalls-hero-stats-row">
             <div className="stalls-hero-stat-pill">
-              <span className="stat-num">{stalls.length || 23}</span>
+              <span className="stat-num">{stalls.length || 31}</span>
               <span className="stat-label">Student Stalls</span>
             </div>
             <div className="stalls-hero-stat-pill">
@@ -117,7 +117,7 @@ export default function RakhiStalls() {
               <i className="fas fa-search search-icon"></i>
               <input
                 type="text"
-                placeholder="Search by stall name, number (#01–#23), founder, or department..."
+                placeholder="Search by stall name, number (#01–#31), founder, or department..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />

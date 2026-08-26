@@ -532,7 +532,7 @@ export default function AdminDashboard() {
         <div className="admin-panel-header no-print">
           <div>
             <h1 style={{ color: 'var(--secondary-color)', fontSize: '1.85rem', fontWeight: '800', margin: 0 }}>
-              {activeTab === 'stalls' && 'Rakhi Startup Bazaar • 23 Stalls Leaderboard'}
+              {activeTab === 'stalls' && 'Rakhi Startup Bazaar • Live Stalls Leaderboard'}
               {activeTab === 'qrcodes' && 'Stall QR Code Hub & Physical Standees'}
               {activeTab === 'events' && 'Events Management'}
               {activeTab === 'notices' && 'Live Notices Management'}
@@ -602,7 +602,7 @@ export default function AdminDashboard() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
                 <h3 style={{ color: 'var(--secondary-color)', margin: 0, fontSize: '1.3rem' }}>
                   <i className="fas fa-trophy" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i>
-                  Ranked Stall Leaderboard (23 Official University Stalls)
+                  Ranked Stall Leaderboard ({stallsLeaderboard.length || 31} Official University Stalls)
                 </h3>
               </div>
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function HeroSection() {
   const scrollToAbout = () => {
@@ -157,15 +158,15 @@ export default function HeroSection() {
         </div>
 
         <div className="luxury-side-action side-right">
-          <a href="#events" className="luxury-action-pill">
+          <Link to="/rakhi-stalls" className="luxury-action-pill">
             <div className="pill-icon crimson-glow">
               <i className="fas fa-gem"></i>
             </div>
             <div className="pill-text-group">
-              <span className="pill-title">Rakhi Startup Bazaar Stall</span>
-              <span className="pill-sub">Register Now! →</span>
+              <span className="pill-title">Rakhi Startup Bazaar</span>
+              <span className="pill-sub">Explore 31 Stalls →</span>
             </div>
-          </a>
+          </Link>
         </div>
 
         {/* ===== DESKTOP BOTTOM SOCIAL PROOF & TRUST METRICS DOCK ===== */}
