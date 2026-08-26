@@ -252,7 +252,7 @@ export default function RateStall() {
                 defaultValue=""
               >
                 <option value="" disabled>
-                  -- Select Stall (#01 to #{allStalls.length || 30}) --
+                  -- Select Stall (#01 to #{allStalls.length || 31}) --
                 </option>
                 {allStalls.map((s) => (
                   <option key={s.id} value={s.stall_number}>

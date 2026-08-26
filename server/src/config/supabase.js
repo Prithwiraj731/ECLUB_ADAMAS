@@ -162,7 +162,7 @@ const mockStore = {
     {
         "id": "stall_8",
         "stall_number": "8",
-        "name": "Sweet Stiches",
+        "name": "Thread and Tales",
         "category": "Rakhi & Festive Products",
         "founders": "Tridipa Laskar",
         "department": "Management (School Of Business) • 3rd Year",
@@ -386,7 +386,7 @@ const mockStore = {
     {
         "id": "stall_24",
         "stall_number": "24",
-        "name": "Faces and Fun",
+        "name": "Chitra Chatter",
         "category": "Rakhi & Festive Products",
         "founders": "Prapti Biswas",
         "department": "BSc Forensic Science (SOBAS) • 1st Year",
@@ -479,6 +479,20 @@ const mockStore = {
         "email": "aditya6.singh@stu.adamasuniversity.ac.in",
         "contact": "9123704457",
         "image_url": "/assets/hero/hero1.png",
+        "created_at": "2026-08-25T10:00:00.000Z"
+    },
+    {
+        "id": "stall_31",
+        "stall_number": "31",
+        "name": "Chatpata",
+        "category": "Homemade Food & Bakery",
+        "founders": "Rajbir Saha",
+        "department": "Adamas University • Student Team",
+        "description": "Delicious & mouth-watering chatpata snacks, savory street treats & refreshments.",
+        "instagram": "",
+        "email": "",
+        "contact": "",
+        "image_url": "/assets/hero/hero2.png",
         "created_at": "2026-08-25T10:00:00.000Z"
     }
 ],
