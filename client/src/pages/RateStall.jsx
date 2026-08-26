@@ -69,11 +69,18 @@ export default function RateStall() {
             // Fallback match from allStalls list
             if (allData.stalls) {
               const cleanP = activeStallParam.toLowerCase().trim();
+              const numOnly = cleanP.replace(/\D/g, '');
+              const cleanPadded = numOnly ? numOnly.padStart(2, '0') : cleanP.padStart(2, '0');
+              const cleanUnpadded = numOnly ? String(parseInt(numOnly, 10)) : cleanP;
+
               const found = allData.stalls.find(
                 (s) =>
                   s.id.toLowerCase() === cleanP ||
+                  s.id.toLowerCase() === `stall_${cleanP}` ||
+                  s.id.toLowerCase() === `stall_${cleanPadded}` ||
                   s.stall_number.toLowerCase() === cleanP ||
-                  s.stall_number === cleanP.padStart(2, '0') ||
+                  s.stall_number === cleanPadded ||
+                  s.stall_number === cleanUnpadded ||
                   s.name.toLowerCase().includes(cleanP)
               );
               if (found) {
@@ -383,34 +390,26 @@ export default function RateStall() {
           <div className="rate-card rate-active-card animate-fade-in">
             {/* Stall Summary Header */}
             <div className="rate-stall-profile-banner">
-              <div className="rate-stall-num-badge">Stall #{stall.stall_number}</div>
+              <div className="rate-stall-badge-row">
+                <span className="rate-stall-num-badge">Stall #{stall.stall_number}</span>
+                {stall.category && <span className="rate-stall-cat-chip">{stall.category}</span>}
+              </div>
+
               <h1 className="rate-stall-title">{stall.name}</h1>
-              <span className="rate-stall-cat-chip">{stall.category}</span>
 
-              {stall.founders && (
-                <div className="rate-stall-founders">
-                  <i className="fas fa-user-circle"></i>
-                  <span>
-                    <strong>Founder:</strong> {stall.founders}
-                  </span>
-                </div>
-              )}
-
-              {stall.department && (
-                <div className="rate-stall-dept">
-                  <i className="fas fa-graduation-cap"></i>
-                  <span>{stall.department}</span>
-                </div>
-              )}
-
-              {stall.description && (
-                <p className="rate-stall-bio">"{stall.description}"</p>
-              )}
-
-              {stall.instagram && (
-                <div className="rate-stall-insta-pill">
-                  <i className="fab fa-instagram"></i>
-                  <span>{stall.instagram.replace('https://www.instagram.com/', '@').replace('https://instagram.com/', '@')}</span>
+              {(stall.founders || stall.department) && (
+                <div className="rate-stall-meta-line">
+                  {stall.founders && (
+                    <span className="meta-item">
+                      <i className="fas fa-user-circle"></i> {stall.founders}
+                    </span>
+                  )}
+                  {stall.founders && stall.department && <span className="meta-dot">•</span>}
+                  {stall.department && (
+                    <span className="meta-item">
+                      <i className="fas fa-graduation-cap"></i> {stall.department}
+                    </span>
+                  )}
                 </div>
               )}
             </div>
@@ -435,13 +434,13 @@ export default function RateStall() {
             <form onSubmit={handleSubmit} className="rate-interactive-form">
               {/* Star Rating Section */}
               <div className={`rate-star-selector-box tier-box-${currentActiveScore}`}>
-                <div className="rate-selector-top-row">
-                  <label className="rate-section-label">
-                    Rate Your Experience with this Stall (1 to 5 Stars) *
-                  </label>
-                  <span className={`rate-score-pill pill-tier-${currentActiveScore}`}>
-                    {currentActiveScore > 0 ? `${currentActiveScore} of 5 Stars` : 'Tap to rate'}
-                  </span>
+                <div className="rate-selector-header">
+                  <label className="rate-section-label">Tap to Rate (1 to 5 Stars)</label>
+                  {currentActiveScore > 0 && (
+                    <span className={`rate-score-pill pill-tier-${currentActiveScore}`}>
+                      {currentActiveScore} / 5 Stars
+                    </span>
+                  )}
                 </div>
 
                 <div className="rate-stars-row" role="radiogroup" aria-label="Stall star rating">
@@ -461,7 +460,7 @@ export default function RateStall() {
                         onClick={() => setRating(star)}
                         onMouseEnter={() => setHoverRating(star)}
                         onMouseLeave={() => setHoverRating(0)}
-                        aria-label={`Give ${star} Stars - ${getRatingInfo(star).title}`}
+                        aria-label={`Rate ${star} Stars`}
                       >
                         <span className="star-icon">★</span>
                       </button>
@@ -473,17 +472,14 @@ export default function RateStall() {
                 <div className="rate-score-caption-wrapper">
                   <div className={`rate-dynamic-caption-card card-tier-${currentActiveScore}`}>
                     <span className="caption-emoji">{activeRatingInfo.emoji}</span>
-                    <div className="caption-texts">
-                      <span className="caption-title">{activeRatingInfo.title}</span>
-                      <span className="caption-sub">{activeRatingInfo.subtitle}</span>
-                    </div>
+                    <span className="caption-title">{activeRatingInfo.title}</span>
                   </div>
                 </div>
               </div>
 
               {/* What stood out about the stall? (Optional) */}
               <div className="rate-tags-section">
-                <label className="rate-section-label">What stood out about this stall? (Optional)</label>
+                <label className="rate-section-label">What stood out? (Optional)</label>
                 <div className="rate-tags-cloud">
                   {feedbackTagOptions.map((tag) => (
                     <button
@@ -498,12 +494,6 @@ export default function RateStall() {
                 </div>
               </div>
 
-              {/* Confidentiality Notice */}
-              <div className="rate-confidential-notice">
-                <i className="fas fa-shield-alt"></i>
-                <span>All visitor feedback is submitted directly to the E-Club Evaluation Committee for official winner selection.</span>
-              </div>
-
               {/* Submit CTA Button */}
               <div className="rate-form-actions">
                 <button
@@ -513,21 +503,21 @@ export default function RateStall() {
                 >
                   {submitting ? (
                     <>
-                      <i className="fas fa-spinner fa-spin"></i> Recording Rating...
+                      <i className="fas fa-spinner fa-spin"></i> Submitting...
                     </>
                   ) : rating === 0 ? (
                     <>
-                      <i className="fas fa-star-half-alt"></i> Tap Stars Above to Rate Stall #{stall.stall_number}
+                      <i className="fas fa-star"></i> Tap Stars Above to Rate
                     </>
                   ) : (
                     <>
-                      <i className="fas fa-paper-plane"></i> Submit {rating}★ Rating for Stall #{stall.stall_number}
+                      <i className="fas fa-paper-plane"></i> Submit {rating}★ Rating
                     </>
                   )}
                 </button>
 
                 <Link to="/rakhi-stalls" className="rate-back-to-directory">
-                  ← View All Registered Stalls
+                  ← Browse All Stalls
                 </Link>
               </div>
             </form>

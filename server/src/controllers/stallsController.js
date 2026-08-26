@@ -38,7 +38,9 @@ exports.getStallByIdOrNumber = async (req, res) => {
     }
 
     const cleanParam = idOrNumber.trim();
-    const cleanPadded = cleanParam.padStart(2, '0');
+    const numOnly = cleanParam.replace(/\D/g, '');
+    const cleanPadded = numOnly ? numOnly.padStart(2, '0') : cleanParam.padStart(2, '0');
+    const cleanUnpadded = numOnly ? String(parseInt(numOnly, 10)) : cleanParam;
 
     if (isMock) {
       const stall = mockStore.stalls.find(
@@ -48,6 +50,7 @@ exports.getStallByIdOrNumber = async (req, res) => {
           s.id === `stall_${cleanPadded}` ||
           s.stall_number === cleanParam ||
           s.stall_number === cleanPadded ||
+          s.stall_number === cleanUnpadded ||
           (parseInt(s.stall_number, 10) === parseInt(cleanParam, 10) && !isNaN(parseInt(cleanParam, 10)))
       );
 
@@ -62,7 +65,7 @@ exports.getStallByIdOrNumber = async (req, res) => {
     const { data: stall, error } = await supabase
       .from('stalls')
       .select('*')
-      .or(`id.eq.${cleanParam},stall_number.eq.${cleanParam},stall_number.eq.${cleanPadded}`)
+      .or(`id.eq.${cleanParam},stall_number.eq.${cleanParam},stall_number.eq.${cleanPadded},stall_number.eq.${cleanUnpadded}`)
       .limit(1)
       .maybeSingle();
 
