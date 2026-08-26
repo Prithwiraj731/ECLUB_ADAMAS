@@ -119,7 +119,7 @@ const coreTeam = [
     role: 'Lead – Technical Operations',
     photo: '/assets/photos/Prithwiraj.jpeg',
     badge: 'Tech & Ops Lead',
-    objectPosition: 'center 20%'
+    objectPosition: 'center 32%'
   }
 ];
 

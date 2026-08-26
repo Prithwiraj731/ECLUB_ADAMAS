@@ -5715,9 +5715,12 @@ p {
 
 .team-bento-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 26px;
   margin-top: 2rem;
+  max-width: 1120px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .team-member-card {
@@ -5740,7 +5743,7 @@ p {
 .team-avatar-wrapper {
   position: relative;
   width: 100%;
-  height: 320px;
+  aspect-ratio: 1 / 1.12;
   background: #18181B;
   overflow: hidden;
 }
@@ -5944,7 +5947,9 @@ p {
   }
 
   .team-avatar-wrapper {
-    height: 340px;
+    aspect-ratio: 1 / 1.12;
+    height: auto;
+    max-height: 400px;
   }
 
   .team-join-cta-box {
