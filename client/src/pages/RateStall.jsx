@@ -13,6 +13,7 @@ export default function RateStall() {
   const [allStalls, setAllStalls] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isVotingActive, setIsVotingActive] = useState(false);
 
   // Rating Form State - Starts at 0 (unselected black stars)
   const [rating, setRating] = useState(0);
@@ -45,14 +46,27 @@ export default function RateStall() {
     return token;
   };
 
-  // Fetch stalls & matched stall
+  // Fetch stalls, voting status & matched stall
   useEffect(() => {
     async function initData() {
       try {
         setLoading(true);
         setErrorMsg('');
 
-        // Fetch all stalls
+        // 1. Fetch live voting status
+        try {
+          const statusRes = await apiFetch('/api/stalls/voting-status');
+          const statusData = await statusRes.json();
+          if (statusData.success) {
+            setIsVotingActive(Boolean(statusData.is_voting_active));
+          } else {
+            setIsVotingActive(false);
+          }
+        } catch (e) {
+          setIsVotingActive(false);
+        }
+
+        // 2. Fetch all stalls
         const allRes = await apiFetch('/api/stalls');
         const allData = await allRes.json();
         if (allData.success && allData.stalls) {
@@ -271,7 +285,9 @@ export default function RateStall() {
             <i className="fas fa-gem"></i>
             <span>ADAMAS UNIVERSITY E-CLUB</span>
           </div>
-          <span className="rate-event-tag">RAKHI STARTUP BAZAAR</span>
+          <span className={`rate-event-tag ${!isVotingActive ? 'rate-event-concluded-tag' : ''}`}>
+            {!isVotingActive ? 'EVENT CONCLUDED' : 'RAKHI STARTUP BAZAAR'}
+          </span>
         </div>
 
         {/* Loading State */}
@@ -283,21 +299,34 @@ export default function RateStall() {
           </div>
         )}
 
-        {/* No Stall Selected / Selector Screen */}
+        {/* No Stall Selected / Selector Screen (When Event Active vs Concluded) */}
         {!loading && !stall && (
-          <div className="rate-card rate-select-card">
-            <div className="rate-card-icon-header">
-              <i className="fas fa-qrcode"></i>
+          <div className="rate-card rate-select-card animate-fade-in">
+            <div className="rate-card-icon-header" style={{ background: !isVotingActive ? 'rgba(139, 13, 26, 0.08)' : undefined }}>
+              <i className={`fas ${!isVotingActive ? 'fa-lock' : 'fa-qrcode'}`}></i>
             </div>
-            <h2>Scan Stall QR Code</h2>
-            <p className="rate-select-intro">
-              Each stall has a unique QR code on-ground. Please scan the QR code located at the physical stall, or select the stall from the list below to submit your rating:
-            </p>
+            
+            {!isVotingActive ? (
+              <>
+                <span className="rate-closed-pill">RATING CLOSED</span>
+                <h2>Event Concluded</h2>
+                <p className="rate-select-intro">
+                  The <strong>Rakhi Startup Bazaar</strong> has officially concluded! Live visitor evaluations and QR code ratings are now closed. You can explore all participating student ventures in the directory below:
+                </p>
+              </>
+            ) : (
+              <>
+                <h2>Scan Stall QR Code</h2>
+                <p className="rate-select-intro">
+                  Each stall has a unique QR code on-ground. Please scan the QR code located at the physical stall, or select the stall from the list below to submit your rating:
+                </p>
+              </>
+            )}
 
             {errorMsg && <div className="rate-alert-warning">{errorMsg}</div>}
 
             <div className="rate-stall-dropdown-group">
-              <label htmlFor="stall-picker-select">Choose Stall to Rate:</label>
+              <label htmlFor="stall-picker-select">View Specific Stall Details:</label>
               <select
                 id="stall-picker-select"
                 className="stall-select-dropdown"
@@ -315,16 +344,97 @@ export default function RateStall() {
               </select>
             </div>
 
-            <div className="rate-select-footer-links">
-              <Link to="/rakhi-stalls" className="btn btn-secondary">
+            <div className="rate-select-footer-links" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <Link to="/rakhi-stalls" className="btn btn-primary" style={{ justifyContent: 'center' }}>
                 <i className="fas fa-store"></i> Browse All Stalls Directory
+              </Link>
+              <Link to="/" className="btn btn-secondary" style={{ justifyContent: 'center' }}>
+                <i className="fas fa-home"></i> Back to E-Club Home
               </Link>
             </div>
           </div>
         )}
 
-        {/* Success / Already Voted Screen (Permanent Lockout) */}
-        {!loading && stall && (submittedSuccess || alreadyVoted) && (
+        {/* EVENT CONCLUDED / RATING CLOSED SCREEN (When visitor scans stall QR after event concluded) */}
+        {!loading && stall && !isVotingActive && (
+          <div className="rate-card rate-concluded-card animate-fade-in">
+            {/* Stall Summary Header */}
+            <div className="rate-stall-profile-banner">
+              <div className="rate-stall-badge-row">
+                <span className="rate-stall-num-badge">Stall #{stall.stall_number}</span>
+                {stall.category && <span className="rate-stall-cat-chip">{stall.category}</span>}
+              </div>
+
+              <h1 className="rate-stall-title">{stall.name}</h1>
+
+              {(stall.founders || stall.department) && (
+                <div className="rate-stall-meta-line">
+                  {stall.founders && (
+                    <span className="meta-item">
+                      <i className="fas fa-user-circle"></i> {stall.founders}
+                    </span>
+                  )}
+                  {stall.founders && stall.department && <span className="meta-dot">•</span>}
+                  {stall.department && (
+                    <span className="meta-item">
+                      <i className="fas fa-graduation-cap"></i> {stall.department}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Closed Notice Announcement Card */}
+            <div className="rate-closed-notice-box">
+              <div className="rate-closed-badge-icon">
+                <i className="fas fa-lock"></i>
+              </div>
+              <span className="rate-closed-pre-title">EVALUATION PERIOD ENDED</span>
+              <h2 className="rate-closed-main-title">Live Rating is Closed</h2>
+              <p className="rate-closed-desc">
+                The <strong>Rakhi Startup Bazaar</strong> has officially concluded. QR code rating submissions for <strong>Stall #{stall.stall_number}: {stall.name}</strong> are now closed.
+              </p>
+              <div className="rate-closed-subtext">
+                <i className="fas fa-award"></i>
+                <span>All visitor ratings &amp; reviews have been securely locked for the E-Club Evaluation Committee.</span>
+              </div>
+            </div>
+
+            {/* If the visitor voted previously during live event, display their rating confirmation */}
+            {alreadyVoted && (
+              <div className="submitted-summary-box" style={{ marginTop: '1.25rem' }}>
+                <div className="summary-row">
+                  <span>Your Submitted Rating:</span>
+                  <span className={`summary-stars rating-tier-color-${alreadyVoted.rating || 5}`}>
+                    {'★'.repeat(alreadyVoted.rating || 5)}{'☆'.repeat(5 - (alreadyVoted.rating || 5))} ({alreadyVoted.rating || 5}/5 Stars)
+                  </span>
+                </div>
+                {alreadyVoted.tags && alreadyVoted.tags.length > 0 && (
+                  <div className="summary-row">
+                    <span>Highlights:</span>
+                    <span>{alreadyVoted.tags.join(', ')}</span>
+                  </div>
+                )}
+                <div style={{ fontSize: '0.76rem', color: '#059669', marginTop: '6px', fontWeight: '700', textAlign: 'center' }}>
+                  <i className="fas fa-check-circle"></i> Your rating was successfully registered during the live event.
+                </div>
+              </div>
+            )}
+
+            {/* Navigation Actions */}
+            <div className="rate-concluded-actions" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <Link to="/rakhi-stalls" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
+                <i className="fas fa-store"></i> Explore All Bazaar Stalls
+              </Link>
+              <Link to="/" className="btn btn-secondary" style={{ width: '100%', justifyContent: 'center' }}>
+                <i className="fas fa-home"></i> Back to E-Club Home
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Success / Already Voted Screen (When Voting is Active and visitor has submitted) */}
+        {!loading && stall && isVotingActive && (submittedSuccess || alreadyVoted) && (
           <div className="rate-card rate-success-card animate-scale-up">
             <div className="success-icon-badge">
               <i className="fas fa-check-circle"></i>
@@ -385,8 +495,8 @@ export default function RateStall() {
           </div>
         )}
 
-        {/* Active Rating Form for the Specific Stall (When not yet voted) */}
-        {!loading && stall && !submittedSuccess && !alreadyVoted && (
+        {/* Active Rating Form for the Specific Stall (When Voting is Active & not yet voted) */}
+        {!loading && stall && isVotingActive && !submittedSuccess && !alreadyVoted && (
           <div className="rate-card rate-active-card animate-fade-in">
             {/* Stall Summary Header */}
             <div className="rate-stall-profile-banner">

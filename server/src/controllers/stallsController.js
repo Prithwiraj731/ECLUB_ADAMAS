@@ -123,7 +123,7 @@ exports.getVotingStatus = async (req, res) => {
       is_voting_active: isActive,
       message: isActive
         ? 'Live voting is officially OPEN! Ratings are being accepted.'
-        : 'Live voting is currently PAUSED. Ratings will open during the event.',
+        : 'Live rating is CLOSED. The Rakhi Startup Bazaar event has concluded and ratings are no longer accepted.',
     });
   } catch (err) {
     console.error('Error getting voting status:', err);
@@ -148,7 +148,7 @@ exports.toggleVotingStatus = async (req, res) => {
         is_voting_active: newStatus,
         message: newStatus
           ? '🟢 Live voting has STARTED! Visitors can now rate stalls.'
-          : '⏸️ Live voting is now PAUSED. Rating submissions are closed.',
+          : '🔒 Live voting is now CLOSED. Rating submissions are disabled.',
       });
     }
 
@@ -172,7 +172,7 @@ exports.toggleVotingStatus = async (req, res) => {
       is_voting_active: newStatus,
       message: newStatus
         ? '🟢 Live voting has STARTED! Visitors can now rate stalls.'
-        : '⏸️ Live voting is now PAUSED. Rating submissions are closed.',
+        : '🔒 Live voting is now CLOSED. Rating submissions are disabled.',
     });
   } catch (err) {
     console.error('Error toggling voting status:', err);
@@ -185,6 +185,15 @@ const voteRateLimitStore = new Map();
 // Public: Submit a 1-5 Star Rating & Review for a specific stall
 exports.submitReview = async (req, res) => {
   try {
+    // 1. Guard: Check if live voting is currently open
+    const isVotingActive = await getVotingStatusHelper();
+    if (!isVotingActive) {
+      return res.status(403).json({
+        success: false,
+        message: 'Live stall rating is currently closed as the Rakhi Startup Bazaar has concluded. Thank you for your support!',
+      });
+    }
+
     const { stall_id, rating, reviewer_name, reviewer_contact, review_text, client_token } = req.body;
 
     if (!stall_id) {

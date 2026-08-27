@@ -8,6 +8,10 @@ router.get('/reviews', stallsController.getAllReviews);
 router.post('/reset-reviews', stallsController.resetReviews);
 router.delete('/reviews', stallsController.resetReviews);
 
+// Live Voting Status routes
+router.get('/voting-status', stallsController.getVotingStatus);
+router.post('/toggle-voting', stallsController.toggleVotingStatus);
+
 // Public routes for visitors
 router.get('/', stallsController.getAllStalls);
 router.get('/:idOrNumber', stallsController.getStallByIdOrNumber);

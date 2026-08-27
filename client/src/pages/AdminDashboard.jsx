@@ -14,6 +14,8 @@ export default function AdminDashboard() {
   const [stallsLeaderboard, setStallsLeaderboard] = useState([]);
   const [stallReviews, setStallReviews] = useState([]);
   const [totalVotes, setTotalVotes] = useState(0);
+  const [votingActive, setVotingActive] = useState(false);
+  const [votingLoading, setVotingLoading] = useState(false);
   const [qrSearch, setQrSearch] = useState('');
   const [stallForm, setStallForm] = useState({
     stall_number: '',
@@ -76,12 +78,25 @@ export default function AdminDashboard() {
 
   // Load Data on Mount
   useEffect(() => {
+    loadVotingStatus();
     loadStallsLeaderboard();
     loadStallReviews();
     loadEvents();
     loadNotices();
     loadInquiries();
   }, []);
+
+  const loadVotingStatus = async () => {
+    try {
+      const res = await apiFetch('/api/stalls/voting-status');
+      const data = await res.json();
+      if (data.success) {
+        setVotingActive(Boolean(data.is_voting_active));
+      }
+    } catch (e) {
+      console.error('Failed to load voting status:', e);
+    }
+  };
 
   const loadStallsLeaderboard = async () => {
     try {
@@ -366,6 +381,35 @@ export default function AdminDashboard() {
     navigate('/admin/login');
   };
 
+  // Toggle Live Voting Status (Start / Close Event Ratings)
+  const handleToggleVoting = async () => {
+    const confirmMsg = votingActive
+      ? '🔒 CLOSE LIVE STALL RATINGS?\n\nAre you sure you want to close visitor rating submissions? Visitors who scan QR codes will see the Event Concluded announcement and will not be able to rate.'
+      : '🟢 RE-OPEN LIVE STALL RATINGS?\n\nAre you sure you want to open live stall ratings? Visitors scanning QR codes will be able to submit star ratings.';
+    if (!window.confirm(confirmMsg)) return;
+
+    try {
+      setVotingLoading(true);
+      const res = await apiFetch('/api/stalls/toggle-voting', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ is_active: !votingActive }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setVotingActive(Boolean(data.is_voting_active));
+        alert(data.message || (data.is_voting_active ? 'Live voting is now open!' : 'Live voting is now closed.'));
+      } else {
+        alert(data.message || 'Failed to toggle voting status.');
+      }
+    } catch (e) {
+      console.error('Error toggling voting:', e);
+      alert('Failed to toggle voting status due to network error.');
+    } finally {
+      setVotingLoading(false);
+    }
+  };
+
   // Reset All Ratings & Reviews to start fresh
   const handleResetRatings = async () => {
     const confirmed = window.confirm(
@@ -627,23 +671,49 @@ export default function AdminDashboard() {
             </p>
           </div>
 
-          <div className="admin-header-actions" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <div className="admin-header-actions" style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
             {activeTab === 'stalls' && (
-              <button
-                onClick={handleResetRatings}
-                className="btn btn-secondary"
-                style={{
-                  padding: '0.55rem 1.15rem',
-                  fontSize: '0.86rem',
-                  color: '#DC2626',
-                  borderColor: '#FCA5A5',
-                  background: '#FEF2F2',
-                  fontWeight: '700'
-                }}
-                title="Completely wipe all submitted stall ratings and start fresh"
-              >
-                <i className="fas fa-undo-alt" style={{ marginRight: '6px' }}></i> Reset Ratings (Start Fresh)
-              </button>
+              <>
+                <div
+                  className={`voting-status-indicator ${votingActive ? 'status-open' : 'status-closed'}`}
+                  title={votingActive ? 'Live ratings are open and being accepted' : 'Live ratings are closed (Event concluded)'}
+                >
+                  <span className="status-dot"></span>
+                  <span>{votingActive ? 'Live Rating: Open' : 'Live Rating: Closed'}</span>
+                </div>
+                <button
+                  onClick={handleToggleVoting}
+                  disabled={votingLoading}
+                  className="btn btn-secondary"
+                  style={{
+                    padding: '0.55rem 1.15rem',
+                    fontSize: '0.86rem',
+                    fontWeight: '700',
+                    color: votingActive ? '#DC2626' : '#059669',
+                    borderColor: votingActive ? '#FCA5A5' : '#A7F3D0',
+                    background: votingActive ? '#FEF2F2' : '#ECFDF5',
+                  }}
+                  title={votingActive ? 'Close live voting submissions' : 'Re-open live voting submissions'}
+                >
+                  <i className={`fas ${votingActive ? 'fa-lock' : 'fa-unlock'}`} style={{ marginRight: '6px' }}></i>
+                  {votingLoading ? 'Updating...' : votingActive ? 'Close Rating' : 'Open Rating'}
+                </button>
+                <button
+                  onClick={handleResetRatings}
+                  className="btn btn-secondary"
+                  style={{
+                    padding: '0.55rem 1.15rem',
+                    fontSize: '0.86rem',
+                    color: '#DC2626',
+                    borderColor: '#FCA5A5',
+                    background: '#FEF2F2',
+                    fontWeight: '700'
+                  }}
+                  title="Completely wipe all submitted stall ratings and start fresh"
+                >
+                  <i className="fas fa-undo-alt" style={{ marginRight: '6px' }}></i> Reset Ratings (Start Fresh)
+                </button>
+              </>
             )}
             {activeTab === 'qrcodes' && (
               <button

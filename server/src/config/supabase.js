@@ -511,6 +511,7 @@ const mockStore = {
     }
 ],
   stall_reviews: [],
+  is_voting_active: false,
   admins: [
     {
       id: 'a1',
