@@ -22,6 +22,7 @@ export default function RateStall() {
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
   const [alreadyVoted, setAlreadyVoted] = useState(null);
   const [serverFeedback, setServerFeedback] = useState({ success: null, message: '' });
+  const [isVotingActive, setIsVotingActive] = useState(true);
 
   // Quick feedback tag suggestions
   const feedbackTagOptions = [
@@ -57,6 +58,17 @@ export default function RateStall() {
         const allData = await allRes.json();
         if (allData.success && allData.stalls) {
           setAllStalls(allData.stalls);
+        }
+
+        // Fetch voting status
+        try {
+          const vRes = await apiFetch('/api/stalls/voting-status');
+          const vData = await vRes.json();
+          if (vData.success && typeof vData.is_voting_active === 'boolean') {
+            setIsVotingActive(vData.is_voting_active);
+          }
+        } catch (vErr) {
+          console.warn('Could not retrieve voting status:', vErr);
         }
 
         if (activeStallParam) {
@@ -385,8 +397,111 @@ export default function RateStall() {
           </div>
         )}
 
-        {/* Active Rating Form for the Specific Stall (When not yet voted) */}
-        {!loading && stall && !submittedSuccess && !alreadyVoted && (
+        {/* Live Voting Paused State (When voting is paused by coordinators) */}
+        {!loading && stall && !submittedSuccess && !alreadyVoted && !isVotingActive && (
+          <div className="rate-card rate-paused-card animate-fade-in" style={{ textAlign: 'center', padding: '2.5rem 1.75rem' }}>
+            <div
+              style={{
+                width: '68px',
+                height: '68px',
+                borderRadius: '50%',
+                background: 'rgba(239, 68, 68, 0.1)',
+                color: '#DC2626',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '1.85rem',
+                margin: '0 auto 1.25rem auto',
+                border: '2px solid rgba(239, 68, 68, 0.25)',
+              }}
+            >
+              <i className="fas fa-pause-circle"></i>
+            </div>
+
+            <span
+              style={{
+                display: 'inline-block',
+                background: 'rgba(239, 68, 68, 0.12)',
+                color: '#B91C1C',
+                padding: '4px 14px',
+                borderRadius: '20px',
+                fontSize: '0.78rem',
+                fontWeight: '800',
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
+                marginBottom: '0.75rem',
+              }}
+            >
+              ⏸️ Live Voting Currently Paused
+            </span>
+
+            <h2 style={{ fontSize: '1.55rem', color: 'var(--secondary-color)', marginBottom: '0.5rem', fontWeight: '800' }}>
+              Ratings Are Not Open Yet
+            </h2>
+
+            <p style={{ color: 'var(--text-dark)', fontSize: '0.94rem', maxWidth: '440px', margin: '0 auto 1.75rem auto', lineHeight: '1.6' }}>
+              The event coordinators have temporarily paused live voting. Rating submissions will officially open during the Rakhi Startup Bazaar exhibition.
+            </p>
+
+            {/* Stall Profile Preview Card */}
+            <div
+              style={{
+                background: '#FAF8F5',
+                border: '1px solid var(--border-light)',
+                borderRadius: '16px',
+                padding: '1.25rem',
+                textAlign: 'left',
+                marginBottom: '1.5rem',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span
+                  style={{
+                    background: '#8B0D1A',
+                    color: '#F5F2ED',
+                    fontSize: '0.76rem',
+                    fontWeight: '800',
+                    padding: '4px 12px',
+                    borderRadius: '12px',
+                  }}
+                >
+                  STALL #{stall.stall_number}
+                </span>
+                <span style={{ fontSize: '0.78rem', color: '#666', fontWeight: '700' }}>{stall.category}</span>
+              </div>
+
+              <h3 style={{ margin: '6px 0 2px 0', fontSize: '1.25rem', color: 'var(--secondary-color)', fontWeight: '800' }}>
+                {stall.name}
+              </h3>
+
+              {stall.founders && (
+                <p style={{ margin: '0 0 8px 0', fontSize: '0.85rem', color: 'var(--text-light)', fontWeight: '600' }}>
+                  <i className="fas fa-user-circle" style={{ marginRight: '5px' }}></i> {stall.founders} {stall.department ? `• ${stall.department}` : ''}
+                </p>
+              )}
+
+              {stall.description && (
+                <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-dark)', fontStyle: 'italic', lineHeight: '1.5' }}>
+                  "{stall.description}"
+                </p>
+              )}
+            </div>
+
+            <div className="rate-security-badge-note" style={{ marginBottom: '1.25rem' }}>
+              <i className="fas fa-clock"></i>
+              <span>Keep this page open or re-scan your QR code once coordinators open voting!</span>
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+              <Link to="/rakhi-stalls" className="btn btn-secondary" style={{ width: '100%', justifyContent: 'center' }}>
+                <i className="fas fa-store"></i> Browse All Stalls Directory
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Active Rating Form for the Specific Stall (When not yet voted & voting is active) */}
+        {!loading && stall && !submittedSuccess && !alreadyVoted && isVotingActive && (
           <div className="rate-card rate-active-card animate-fade-in">
             {/* Stall Summary Header */}
             <div className="rate-stall-profile-banner">

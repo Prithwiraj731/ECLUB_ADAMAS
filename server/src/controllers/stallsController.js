@@ -81,11 +81,118 @@ exports.getStallByIdOrNumber = async (req, res) => {
   }
 };
 
+// ==========================================
+// LIVE VOTING / RATING STATUS MANAGEMENT
+// ==========================================
+let cachedVotingActive = null;
+
+async function getVotingStatusHelper() {
+  if (cachedVotingActive !== null) {
+    return cachedVotingActive;
+  }
+
+  if (isMock) {
+    cachedVotingActive = mockStore.is_voting_active !== undefined ? mockStore.is_voting_active : false;
+    return cachedVotingActive;
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('admins')
+      .select('email')
+      .eq('username', 'system_voting_config')
+      .maybeSingle();
+
+    if (!error && data) {
+      cachedVotingActive = data.email === 'active';
+    } else {
+      cachedVotingActive = false;
+    }
+  } catch (e) {
+    cachedVotingActive = false;
+  }
+  return cachedVotingActive;
+}
+
+// Public: Get live voting status
+exports.getVotingStatus = async (req, res) => {
+  try {
+    const isActive = await getVotingStatusHelper();
+    res.json({
+      success: true,
+      is_voting_active: isActive,
+      message: isActive
+        ? 'Live voting is officially OPEN! Ratings are being accepted.'
+        : 'Live voting is currently PAUSED. Ratings will open during the event.',
+    });
+  } catch (err) {
+    console.error('Error getting voting status:', err);
+    res.status(500).json({ success: false, is_voting_active: false, message: 'Failed to retrieve voting status.' });
+  }
+};
+
+// Admin: Start / Pause live voting
+exports.toggleVotingStatus = async (req, res) => {
+  try {
+    const current = await getVotingStatusHelper();
+    const newStatus = req.body && typeof req.body.is_active === 'boolean'
+      ? req.body.is_active
+      : !current;
+
+    cachedVotingActive = newStatus;
+
+    if (isMock) {
+      mockStore.is_voting_active = newStatus;
+      return res.json({
+        success: true,
+        is_voting_active: newStatus,
+        message: newStatus
+          ? '🟢 Live voting has STARTED! Visitors can now rate stalls.'
+          : '⏸️ Live voting is now PAUSED. Rating submissions are closed.',
+      });
+    }
+
+    // Persist to Supabase admins table record
+    const { error } = await supabase
+      .from('admins')
+      .upsert(
+        {
+          username: 'system_voting_config',
+          password_hash: 'system_setting',
+          email: newStatus ? 'active' : 'paused',
+          role: 'voting_status',
+        },
+        { onConflict: 'username' }
+      );
+
+    if (error) throw error;
+
+    res.json({
+      success: true,
+      is_voting_active: newStatus,
+      message: newStatus
+        ? '🟢 Live voting has STARTED! Visitors can now rate stalls.'
+        : '⏸️ Live voting is now PAUSED. Rating submissions are closed.',
+    });
+  } catch (err) {
+    console.error('Error toggling voting status:', err);
+    res.status(500).json({ success: false, message: 'Failed to toggle voting status.' });
+  }
+};
+
 const voteRateLimitStore = new Map();
 
 // Public: Submit a 1-5 Star Rating & Review for a specific stall
 exports.submitReview = async (req, res) => {
   try {
+    const isVotingActive = await getVotingStatusHelper();
+    if (!isVotingActive) {
+      return res.status(403).json({
+        success: false,
+        message: '⏸️ Live voting is currently paused by event coordinators. Ratings cannot be submitted at this time.',
+      });
+    }
+
     const { stall_id, rating, reviewer_name, reviewer_contact, review_text, client_token } = req.body;
 
     if (!stall_id) {

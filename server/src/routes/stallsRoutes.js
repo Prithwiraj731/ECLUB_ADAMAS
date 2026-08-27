@@ -9,6 +9,8 @@ router.post('/reset-reviews', stallsController.resetReviews);
 router.delete('/reviews', stallsController.resetReviews);
 
 // Public routes for visitors
+router.get('/voting-status', stallsController.getVotingStatus);
+router.post('/toggle-voting', stallsController.toggleVotingStatus);
 router.get('/', stallsController.getAllStalls);
 router.get('/:idOrNumber', stallsController.getStallByIdOrNumber);
 router.post('/review', stallsController.submitReview);
