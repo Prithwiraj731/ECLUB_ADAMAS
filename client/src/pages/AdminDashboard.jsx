@@ -44,10 +44,6 @@ export default function AdminDashboard() {
   const [editStallAlert, setEditStallAlert] = useState({ success: null, message: '' });
   const [editStallLoading, setEditStallLoading] = useState(false);
 
-  // Live Voting Status Control
-  const [isVotingActive, setIsVotingActive] = useState(false);
-  const [votingToggleLoading, setVotingToggleLoading] = useState(false);
-
   // Events State
   const [events, setEvents] = useState([]);
   const [eventForm, setEventForm] = useState({
@@ -85,20 +81,7 @@ export default function AdminDashboard() {
     loadEvents();
     loadNotices();
     loadInquiries();
-    loadVotingStatus();
   }, []);
-
-  const loadVotingStatus = async () => {
-    try {
-      const res = await apiFetch('/api/stalls/voting-status');
-      const data = await res.json();
-      if (data.success && typeof data.is_voting_active === 'boolean') {
-        setIsVotingActive(data.is_voting_active);
-      }
-    } catch (e) {
-      console.error('Failed to load voting status:', e);
-    }
-  };
 
   const loadStallsLeaderboard = async () => {
     try {
@@ -406,37 +389,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // Toggle Start / Pause Live QR Voting
-  const handleToggleVoting = async () => {
-    const willBeActive = !isVotingActive;
-    const confirmPrompt = willBeActive
-      ? '🟢 START LIVE VOTING?\n\nAre you sure you want to OPEN live voting? Visitors who scan the on-ground QR codes will now be able to submit their 1-5 star ratings.'
-      : '⏸️ PAUSE LIVE VOTING?\n\nAre you sure you want to PAUSE live voting? Visitors who scan the on-ground QR codes will see that voting is paused and will NOT be able to submit ratings.';
-
-    if (!window.confirm(confirmPrompt)) return;
-
-    setVotingToggleLoading(true);
-    try {
-      const res = await apiFetch('/api/stalls/toggle-voting', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ is_active: willBeActive }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setIsVotingActive(data.is_voting_active);
-        alert(data.message);
-      } else {
-        alert(data.message || 'Failed to toggle voting status.');
-      }
-    } catch (err) {
-      console.error('Toggle voting error:', err);
-      alert('Network issue while toggling voting status.');
-    } finally {
-      setVotingToggleLoading(false);
-    }
-  };
-
   const copyRatingLink = (stallNum) => {
     const url = `${window.location.origin}/rate/${stallNum}`;
     navigator.clipboard.writeText(url);
@@ -726,99 +678,6 @@ export default function AdminDashboard() {
         {/* Tab 1: Rakhi Stalls & Voting Leaderboard */}
         {activeTab === 'stalls' && (
           <div>
-            {/* Master Live Voting Control Banner */}
-            <div
-              className="admin-card"
-              style={{
-                marginBottom: '1.75rem',
-                background: isVotingActive
-                  ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.04) 100%)'
-                  : 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.04) 100%)',
-                border: `2px solid ${isVotingActive ? 'rgba(16, 185, 129, 0.4)' : 'rgba(239, 68, 68, 0.4)'}`,
-                borderRadius: '16px',
-                padding: '1.25rem 1.5rem',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: '1.25rem',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <div
-                  style={{
-                    width: '50px',
-                    height: '50px',
-                    borderRadius: '50%',
-                    background: isVotingActive ? '#10B981' : '#EF4444',
-                    color: '#FFFFFF',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.35rem',
-                    boxShadow: isVotingActive
-                      ? '0 0 20px rgba(16, 185, 129, 0.5)'
-                      : '0 0 20px rgba(239, 68, 68, 0.4)',
-                  }}
-                >
-                  <i className={`fas ${isVotingActive ? 'fa-check' : 'fa-pause'}`}></i>
-                </div>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <span
-                      style={{
-                        fontSize: '0.78rem',
-                        fontWeight: '900',
-                        textTransform: 'uppercase',
-                        letterSpacing: '1px',
-                        color: isVotingActive ? '#047857' : '#B91C1C',
-                        background: isVotingActive ? 'rgba(16, 185, 129, 0.18)' : 'rgba(239, 68, 68, 0.18)',
-                        padding: '3px 10px',
-                        borderRadius: '8px',
-                      }}
-                    >
-                      {isVotingActive ? '🟢 Live Voting: OPEN & ACTIVE' : '⏸️ Live Voting: PAUSED / CLOSED'}
-                    </span>
-                  </div>
-                  <h3 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--secondary-color)', fontWeight: '800' }}>
-                    {isVotingActive
-                      ? 'Visitors scanning QR codes can currently rate & review stalls.'
-                      : 'Voting is paused. Visitors scanning standees are informed voting has not opened yet.'}
-                  </h3>
-                </div>
-              </div>
-
-              <div>
-                <button
-                  onClick={handleToggleVoting}
-                  disabled={votingToggleLoading}
-                  className="btn"
-                  style={{
-                    padding: '0.75rem 1.6rem',
-                    fontSize: '0.95rem',
-                    fontWeight: '800',
-                    borderRadius: '10px',
-                    background: isVotingActive ? '#DC2626' : '#059669',
-                    color: '#FFFFFF',
-                    border: 'none',
-                    cursor: 'pointer',
-                    boxShadow: isVotingActive
-                      ? '0 4px 15px rgba(220, 38, 38, 0.3)'
-                      : '0 4px 15px rgba(5, 150, 105, 0.35)',
-                    transition: 'all 0.2s ease',
-                  }}
-                >
-                  {votingToggleLoading ? (
-                    <span><i className="fas fa-spinner fa-spin"></i> Updating...</span>
-                  ) : isVotingActive ? (
-                    <span><i className="fas fa-pause-circle" style={{ marginRight: '6px' }}></i> Pause Live Voting</span>
-                  ) : (
-                    <span><i className="fas fa-play-circle" style={{ marginRight: '6px' }}></i> Start Live Voting</span>
-                  )}
-                </button>
-              </div>
-            </div>
-
             {/* Top Metric Cards */}
             <div className="admin-metric-cards-grid">
               <div style={{ background: 'var(--white)', padding: '1.5rem', borderRadius: '16px', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
@@ -1101,98 +960,6 @@ export default function AdminDashboard() {
         {/* Tab 2: Stall QR Codes Hub */}
         {activeTab === 'qrcodes' && (
           <div>
-            {/* Master Live Voting Control Banner */}
-            <div
-              className="admin-card no-print"
-              style={{
-                marginBottom: '1.75rem',
-                background: isVotingActive
-                  ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.04) 100%)'
-                  : 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.04) 100%)',
-                border: `2px solid ${isVotingActive ? 'rgba(16, 185, 129, 0.4)' : 'rgba(239, 68, 68, 0.4)'}`,
-                borderRadius: '16px',
-                padding: '1.25rem 1.5rem',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: '1.25rem',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <div
-                  style={{
-                    width: '46px',
-                    height: '46px',
-                    borderRadius: '50%',
-                    background: isVotingActive ? '#10B981' : '#EF4444',
-                    color: '#FFFFFF',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.25rem',
-                    boxShadow: isVotingActive
-                      ? '0 0 15px rgba(16, 185, 129, 0.5)'
-                      : '0 0 15px rgba(239, 68, 68, 0.4)',
-                  }}
-                >
-                  <i className={`fas ${isVotingActive ? 'fa-check' : 'fa-pause'}`}></i>
-                </div>
-                <div>
-                  <span
-                    style={{
-                      fontSize: '0.76rem',
-                      fontWeight: '900',
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      color: isVotingActive ? '#047857' : '#B91C1C',
-                      background: isVotingActive ? 'rgba(16, 185, 129, 0.18)' : 'rgba(239, 68, 68, 0.18)',
-                      padding: '2px 8px',
-                      borderRadius: '6px',
-                      display: 'inline-block',
-                      marginBottom: '4px',
-                    }}
-                  >
-                    {isVotingActive ? '🟢 QR Rating Active' : '⏸️ QR Rating Paused'}
-                  </span>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--secondary-color)', fontWeight: '800' }}>
-                    {isVotingActive
-                      ? 'QR codes are currently OPEN for scanning and rating.'
-                      : 'QR codes are paused. Anyone scanning will be told voting is not open yet.'}
-                  </h3>
-                </div>
-              </div>
-
-              <div>
-                <button
-                  onClick={handleToggleVoting}
-                  disabled={votingToggleLoading}
-                  className="btn"
-                  style={{
-                    padding: '0.65rem 1.4rem',
-                    fontSize: '0.9rem',
-                    fontWeight: '800',
-                    borderRadius: '10px',
-                    background: isVotingActive ? '#DC2626' : '#059669',
-                    color: '#FFFFFF',
-                    border: 'none',
-                    cursor: 'pointer',
-                    boxShadow: isVotingActive
-                      ? '0 4px 15px rgba(220, 38, 38, 0.3)'
-                      : '0 4px 15px rgba(5, 150, 105, 0.35)',
-                  }}
-                >
-                  {votingToggleLoading ? (
-                    <span><i className="fas fa-spinner fa-spin"></i> Updating...</span>
-                  ) : isVotingActive ? (
-                    <span><i className="fas fa-pause-circle" style={{ marginRight: '6px' }}></i> Pause Live Voting</span>
-                  ) : (
-                    <span><i className="fas fa-play-circle" style={{ marginRight: '6px' }}></i> Start Live Voting</span>
-                  )}
-                </button>
-              </div>
-            </div>
-
             <div className="admin-card no-print" style={{ marginBottom: '2rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                 <div>

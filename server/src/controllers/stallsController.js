@@ -65,7 +65,7 @@ exports.getStallByIdOrNumber = async (req, res) => {
     const { data: stall, error } = await supabase
       .from('stalls')
       .select('*')
-      .or(`id.eq.${cleanParam},stall_number.eq.${cleanParam},stall_number.eq.${cleanPadded},stall_number.eq.${cleanUnpadded}`)
+      .or(`id.eq.${cleanParam},id.eq.stall_${cleanUnpadded},id.eq.stall_${cleanPadded},stall_number.eq.${cleanParam},stall_number.eq.${cleanPadded},stall_number.eq.${cleanUnpadded}`)
       .limit(1)
       .maybeSingle();
 
@@ -185,14 +185,6 @@ const voteRateLimitStore = new Map();
 // Public: Submit a 1-5 Star Rating & Review for a specific stall
 exports.submitReview = async (req, res) => {
   try {
-    const isVotingActive = await getVotingStatusHelper();
-    if (!isVotingActive) {
-      return res.status(403).json({
-        success: false,
-        message: '⏸️ Live voting is currently paused by event coordinators. Ratings cannot be submitted at this time.',
-      });
-    }
-
     const { stall_id, rating, reviewer_name, reviewer_contact, review_text, client_token } = req.body;
 
     if (!stall_id) {
@@ -270,10 +262,13 @@ exports.submitReview = async (req, res) => {
     }
 
     // Live Supabase
+    const numOnly = cleanId.replace(/\D/g, '');
+    const cleanUnpadded = numOnly ? String(parseInt(numOnly, 10)) : cleanId;
+
     const { data: stall } = await supabase
       .from('stalls')
       .select('id, name, stall_number')
-      .or(`id.eq.${cleanId},stall_number.eq.${cleanId},stall_number.eq.${cleanPadded}`)
+      .or(`id.eq.${cleanId},id.eq.stall_${cleanUnpadded},id.eq.stall_${cleanPadded},stall_number.eq.${cleanId},stall_number.eq.${cleanPadded},stall_number.eq.${cleanUnpadded}`)
       .limit(1)
       .maybeSingle();
 
