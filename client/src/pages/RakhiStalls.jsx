@@ -78,6 +78,60 @@ export default function RakhiStalls() {
     }
   };
 
+  // Helper to parse single or multiple Instagram links/handles cleanly
+  const parseInstagramLinks = (raw) => {
+    if (!raw || typeof raw !== 'string') return [];
+    const trimmed = raw.trim();
+    if (!trimmed || ['no', 'na', 'n/a', 'null', 'none'].includes(trimmed.toLowerCase())) {
+      return [];
+    }
+
+    // Split by " and ", commas, multiple URLs, or space-separated @handles
+    let rawItems = [];
+    if (trimmed.toLowerCase().includes(' and ')) {
+      rawItems = trimmed.split(/\s+and\s+/i);
+    } else if (trimmed.includes(',')) {
+      rawItems = trimmed.split(',');
+    } else if (trimmed.includes('http') && trimmed.split('http').length > 2) {
+      rawItems = trimmed.match(/(https?:\/\/[^\s]+)/g) || [trimmed];
+    } else if (trimmed.includes('@') && trimmed.split('@').length > 2) {
+      rawItems = trimmed.split(/\s+/).filter(Boolean);
+    } else {
+      rawItems = [trimmed];
+    }
+
+    return rawItems
+      .map((item) => item.trim())
+      .filter(
+        (item) =>
+          item.length > 0 &&
+          !['no', 'na', 'n/a', 'null', 'none', 'and'].includes(item.toLowerCase())
+      )
+      .map((item) => {
+        let handle = item;
+        let url = '';
+
+        if (item.startsWith('http://') || item.startsWith('https://')) {
+          url = item;
+          try {
+            const urlObj = new URL(item);
+            const pathSegments = urlObj.pathname.split('/').filter(Boolean);
+            const userHandle = pathSegments[0] || 'Instagram';
+            handle = `@${userHandle.replace(/^@+/, '')}`;
+          } catch {
+            const segment = item.split('/').filter(Boolean).pop().split('?')[0];
+            handle = `@${segment.replace(/^@+/, '')}`;
+          }
+        } else {
+          const clean = item.replace(/^@+/, '').trim();
+          handle = `@${clean}`;
+          url = `https://instagram.com/${clean}`;
+        }
+
+        return { handle, url };
+      });
+  };
+
   return (
     <div className="stalls-page-wrapper">
       {/* Festive Hero Banner */}
@@ -168,62 +222,62 @@ export default function RakhiStalls() {
             </div>
           ) : (
             <div className="stalls-grid showcase-grid">
-              {filteredStalls.map((stall) => (
-                <div key={stall.id} className="stall-card showcase-stall-card">
-                  {/* Card Top Badges */}
-                  <div className="stall-card-header">
-                    <span className="stall-number-chip">Stall #{stall.stall_number}</span>
-                    <span className="stall-category-chip">
-                      <i className={`fas ${getCategoryIcon(stall.category)}`}></i>
-                      <span className="cat-label-full">{stall.category}</span>
-                      <span className="cat-label-short">{getShortCategory(stall.category)}</span>
-                    </span>
+              {filteredStalls.map((stall) => {
+                const instaLinks = parseInstagramLinks(stall.instagram);
+
+                return (
+                  <div key={stall.id} className="stall-card showcase-stall-card">
+                    {/* Card Top Badges */}
+                    <div className="stall-card-header">
+                      <span className="stall-number-chip">Stall #{stall.stall_number}</span>
+                      <span className="stall-category-chip">
+                        <i className={`fas ${getCategoryIcon(stall.category)}`}></i>
+                        <span className="cat-label-full">{stall.category}</span>
+                        <span className="cat-label-short">{getShortCategory(stall.category)}</span>
+                      </span>
+                    </div>
+
+                    {/* Card Content Body */}
+                    <div className="stall-card-body">
+                      <h3 className="stall-name-title">{stall.name}</h3>
+
+                      {stall.founders && (
+                        <div className="stall-founders-row">
+                          <i className="fas fa-user-circle"></i>
+                          <span>{stall.founders}</span>
+                        </div>
+                      )}
+
+                      {stall.department && (
+                        <div className="stall-dept-chip">
+                          <i className="fas fa-graduation-cap"></i>
+                          <span>{stall.department}</span>
+                        </div>
+                      )}
+
+                      <p className="stall-description">{stall.description}</p>
+
+                      {instaLinks.length > 0 && (
+                        <div className="stall-instagram-row">
+                          {instaLinks.map((insta, idx) => (
+                            <a
+                              key={idx}
+                              href={insta.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="stall-insta-link"
+                              title={`Visit ${insta.handle} on Instagram`}
+                            >
+                              <i className="fab fa-instagram"></i>
+                              <span>{insta.handle}</span>
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-
-                  {/* Card Content Body */}
-                  <div className="stall-card-body">
-                    <h3 className="stall-name-title">{stall.name}</h3>
-
-                    {stall.founders && (
-                      <div className="stall-founders-row">
-                        <i className="fas fa-user-circle"></i>
-                        <span>{stall.founders}</span>
-                      </div>
-                    )}
-
-                    {stall.department && (
-                      <div className="stall-dept-chip">
-                        <i className="fas fa-graduation-cap"></i>
-                        <span>{stall.department}</span>
-                      </div>
-                    )}
-
-                    <p className="stall-description">{stall.description}</p>
-
-                    {stall.instagram && (
-                      <div className="stall-instagram-row">
-                        <a
-                          href={
-                            stall.instagram.startsWith('http')
-                              ? stall.instagram
-                              : `https://instagram.com/${stall.instagram.replace('@', '')}`
-                          }
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="stall-insta-link"
-                        >
-                          <i className="fab fa-instagram"></i>
-                          <span>
-                            {stall.instagram.startsWith('http')
-                              ? `@${stall.instagram.split('/').filter(Boolean).pop().split('?')[0]}`
-                              : stall.instagram}
-                          </span>
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
