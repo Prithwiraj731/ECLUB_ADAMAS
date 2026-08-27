@@ -221,12 +221,6 @@ export default function RakhiStalls() {
                         </a>
                       </div>
                     )}
-
-                    <div className="stall-card-footer">
-                      <Link to={`/rate/${stall.stall_number}`} className="stall-card-rate-btn">
-                        <i className="fas fa-star"></i> Rate Stall #{stall.stall_number}
-                      </Link>
-                    </div>
                   </div>
                 </div>
               ))}
