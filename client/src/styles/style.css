@@ -1987,7 +1987,7 @@ p {
 .stalls-hero-banner {
   background: var(--secondary-color);
   color: var(--off-white);
-  padding: clamp(3.5rem, 6vw, 4.75rem) 1.25rem clamp(2.5rem, 5vw, 3.75rem) 1.25rem;
+  padding: clamp(6.5rem, 10vw, 8.25rem) 1.25rem clamp(2.5rem, 4vw, 3.5rem) 1.25rem;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -2983,47 +2983,6 @@ p {
   min-height: 100vh;
 }
 
-.stalls-hero-banner {
-  background: var(--secondary-color);
-  color: var(--off-white);
-  padding: 4rem 1rem 3.5rem 1rem;
-  text-align: center;
-  position: relative;
-  border-bottom: 3px solid var(--primary-color);
-}
-
-.stalls-hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(139, 13, 26, 0.25);
-  border: 1px solid rgba(139, 13, 26, 0.5);
-  color: var(--off-white);
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-bottom: 1.25rem;
-}
-
-.stalls-hero-banner h1 {
-  font-size: clamp(2rem, 5vw, 3.25rem);
-  font-weight: 900;
-  color: var(--off-white);
-  letter-spacing: -0.02em;
-  margin-bottom: 0.75rem;
-}
-
-.stalls-hero-subtitle {
-  color: #A8A39D;
-  font-size: 1.15rem;
-  font-weight: 500;
-  max-width: 680px;
-  margin: 0 auto 1.5rem auto;
-}
-
 .stalls-hero-notice-pill {
   display: inline-flex;
   align-items: center;
@@ -3677,19 +3636,22 @@ p {
 
 @media (max-width: 768px) {
   .stalls-page-wrapper {
-    padding-top: 65px;
+    padding-top: 0;
   }
 
+  .page-hero,
   .stalls-hero-banner {
-    padding: 2.25rem 1rem 2rem 1rem;
+    padding: 5.5rem 1rem 2rem 1rem;
   }
 
+  .page-hero-badge,
   .stalls-hero-badge {
     font-size: 0.68rem;
     padding: 4px 12px;
     margin-bottom: 0.85rem;
   }
 
+  .page-hero h1,
   .stalls-hero-banner h1 {
     font-size: 1.85rem;
     line-height: 1.15;
@@ -3886,14 +3848,17 @@ p {
 }
 
 @media (max-width: 480px) {
+  .page-hero,
   .stalls-hero-banner {
-    padding: 1.85rem 0.75rem 1.6rem 0.75rem;
+    padding: 5.2rem 0.75rem 1.75rem 0.75rem;
   }
 
+  .page-hero h1,
   .stalls-hero-banner h1 {
     font-size: 1.55rem;
   }
 
+  .page-hero p,
   .stalls-hero-subtitle {
     font-size: 0.82rem;
     margin-bottom: 1rem;
