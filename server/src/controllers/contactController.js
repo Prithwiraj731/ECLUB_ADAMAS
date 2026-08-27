@@ -1,4 +1,5 @@
 const { supabase, isMock, mockStore } = require('../config/supabase');
+const { sendContactInquiryNotification } = require('../services/emailService');
 
 // Submit contact inquiry from website
 exports.submitInquiry = async (req, res) => {
@@ -15,43 +16,73 @@ exports.submitInquiry = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Please provide a valid email address.' });
     }
 
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedSubject = (subject || 'General Inquiry').trim();
+    const trimmedMessage = message.trim();
+
     const newInquiry = {
-      name: name.trim(),
-      email: email.trim().toLowerCase(),
-      subject: (subject || 'General Inquiry').trim(),
-      message: message.trim(),
-      is_read: false,
+      name: trimmedName,
+      email: trimmedEmail,
+      subject: trimmedSubject,
+      message: trimmedMessage,
       created_at: new Date().toISOString()
     };
 
+    // Forward email notification to adamaseclub@gmail.com asynchronously
+    sendContactInquiryNotification({
+      name: trimmedName,
+      email: trimmedEmail,
+      subject: trimmedSubject,
+      message: trimmedMessage
+    }).catch(err => console.error('Background email notification error:', err));
+
     if (isMock) {
       newInquiry.id = 'inq_' + Date.now();
-      mockStore.contacts.unshift(newInquiry);
+      mockStore.contacts.unshift({ ...newInquiry, is_read: false });
       return res.status(201).json({
         success: true,
-        message: 'Thank you for reaching out! Your message has been successfully sent to the E-Club team.',
+        message: 'Thank you for reaching out! Your message has been sent to the E-Club team.',
         inquiry: newInquiry
       });
     }
 
-    const { data, error } = await supabase
-      .from('contacts')
+    // Attempt insert into inquiries table (or fallback to contacts table if existed)
+    let savedData = null;
+    const { data: inqData, error: inqErr } = await supabase
+      .from('inquiries')
       .insert([newInquiry])
       .select()
-      .single();
+      .maybeSingle();
 
-    if (error) throw error;
+    if (!inqErr && inqData) {
+      savedData = inqData;
+    } else {
+      // Fallback try contacts table
+      const { data: contData, error: contErr } = await supabase
+        .from('contacts')
+        .insert([newInquiry])
+        .select()
+        .maybeSingle();
+        
+      if (contErr && inqErr) {
+        console.warn('⚠️ Supabase inquiry insert warning:', inqErr.message || contErr.message);
+      } else {
+        savedData = contData;
+      }
+    }
 
     res.status(201).json({
       success: true,
-      message: 'Thank you for reaching out! Your message has been successfully sent to the E-Club team.',
-      inquiry: data
+      message: 'Thank you for reaching out! Your message has been sent to the E-Club team.',
+      inquiry: savedData || newInquiry
     });
   } catch (err) {
     console.error('Error submitting contact inquiry:', err);
     res.status(500).json({ success: false, message: 'Failed to submit message. Please try again.' });
   }
 };
+
 
 // Admin: Get all inquiries
 exports.getAllInquiries = async (req, res) => {

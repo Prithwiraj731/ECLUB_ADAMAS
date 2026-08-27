@@ -25,7 +25,7 @@ const faqs = [
   {
     question: 'How can external startup founders or corporate sponsors partner with E-Club?',
     answer:
-      'We welcome corporate sponsors, angel syndicates, and guest speakers! Please drop us an email at eclub@adamasuniversity.ac.in with your proposal or sponsorship deck.',
+      'We welcome corporate sponsors, angel syndicates, and guest speakers! Please drop us an email at adamaseclub@gmail.com with your proposal or sponsorship deck.',
   },
 ];
 
