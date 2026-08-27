@@ -770,7 +770,40 @@ export default function AdminDashboard() {
                             </span>
                           )}
                         </td>
-                        <td style={{ padding: '14px 16px', fontWeight: '700' }}>{stall.total_reviews} reviews</td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <div style={{ fontWeight: '800', fontSize: '0.95rem', color: 'var(--secondary-color)', marginBottom: '4px' }}>
+                            {stall.total_reviews} {stall.total_reviews === 1 ? 'vote' : 'votes'}
+                          </div>
+                          {stall.total_reviews > 0 && stall.rating_breakdown && (
+                            <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', fontSize: '0.72rem' }}>
+                              {stall.rating_breakdown[5] > 0 && (
+                                <span style={{ background: 'rgba(255, 184, 0, 0.18)', color: '#92400E', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }} title={`${stall.rating_breakdown[5]} visitors gave 5 Stars`}>
+                                  5★: {stall.rating_breakdown[5]}
+                                </span>
+                              )}
+                              {stall.rating_breakdown[4] > 0 && (
+                                <span style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#047857', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }} title={`${stall.rating_breakdown[4]} visitors gave 4 Stars`}>
+                                  4★: {stall.rating_breakdown[4]}
+                                </span>
+                              )}
+                              {stall.rating_breakdown[3] > 0 && (
+                                <span style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#B45309', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }} title={`${stall.rating_breakdown[3]} visitors gave 3 Stars`}>
+                                  3★: {stall.rating_breakdown[3]}
+                                </span>
+                              )}
+                              {stall.rating_breakdown[2] > 0 && (
+                                <span style={{ background: 'rgba(249, 115, 22, 0.15)', color: '#C2410C', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }} title={`${stall.rating_breakdown[2]} visitors gave 2 Stars`}>
+                                  2★: {stall.rating_breakdown[2]}
+                                </span>
+                              )}
+                              {stall.rating_breakdown[1] > 0 && (
+                                <span style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#B91C1C', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }} title={`${stall.rating_breakdown[1]} visitors gave 1 Star`}>
+                                  1★: {stall.rating_breakdown[1]}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </td>
                         <td style={{ padding: '14px 16px' }}>
                           <button
                             onClick={() => copyRatingLink(stall.stall_number)}
