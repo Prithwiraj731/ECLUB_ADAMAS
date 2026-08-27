@@ -204,10 +204,11 @@ export default function About() {
       {/* Page Hero */}
       <section className="page-hero">
         <div className="container">
-          <span className="hero-badge-tag">
-            <i className="fas fa-compass"></i> ADAMAS ENTREPRENEURSHIP CLUB
-          </span>
-          <h1>About Our Club</h1>
+          <div className="page-hero-badge">
+            <i className="fas fa-compass"></i>
+            <span>ADAMAS UNIVERSITY ENTREPRENEURSHIP CLUB</span>
+          </div>
+          <h1>ABOUT OUR CLUB</h1>
           <p>
             Empowering Adamas University students to transform bold ideas into scalable ventures, sustainable businesses, and world-class innovations.
           </p>

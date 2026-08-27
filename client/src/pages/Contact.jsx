@@ -41,7 +41,11 @@ export default function Contact() {
       {/* Page Hero */}
       <section className="page-hero">
         <div className="container">
-          <h1>Connect With Us</h1>
+          <div className="page-hero-badge">
+            <i className="fas fa-envelope-open-text"></i>
+            <span>ADAMAS UNIVERSITY ENTREPRENEURSHIP CLUB</span>
+          </div>
+          <h1>CONNECT WITH US</h1>
           <p>Have inquiries, ideas, or partnership opportunities? Our team is always eager to help.</p>
         </div>
       </section>
