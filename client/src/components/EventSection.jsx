@@ -113,7 +113,7 @@ export default function EventSection() {
 
               <div className="event-cta-group">
                 <Link to="/rakhi-stalls" className="btn btn-primary event-reg-btn">
-                  <i className="fas fa-store"></i> View 31 Stalls Directory →
+                  <i className="fas fa-store"></i> View 32 Stalls Directory →
                 </Link>
                 <button
                   type="button"

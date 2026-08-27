@@ -29,6 +29,21 @@ export default function AdminDashboard() {
   const [stallLoading, setStallLoading] = useState(false);
   const [copiedStallNum, setCopiedStallNum] = useState(null);
 
+  // Edit Stall State & Modal
+  const [editingStall, setEditingStall] = useState(null);
+  const [editStallForm, setEditStallForm] = useState({
+    stall_number: '',
+    name: '',
+    category: 'Rakhi & Festive Products',
+    founders: '',
+    department: '',
+    description: '',
+    instagram: '',
+    image_url: '',
+  });
+  const [editStallAlert, setEditStallAlert] = useState({ success: null, message: '' });
+  const [editStallLoading, setEditStallLoading] = useState(false);
+
   // Events State
   const [events, setEvents] = useState([]);
   const [eventForm, setEventForm] = useState({
@@ -176,6 +191,52 @@ export default function AdminDashboard() {
       }
     } catch (e) {
       alert('Failed to delete stall');
+    }
+  };
+
+  // Open Edit Modal
+  const handleEditStallClick = (stall) => {
+    setEditingStall(stall);
+    setEditStallForm({
+      stall_number: stall.stall_number || '',
+      name: stall.name || '',
+      category: stall.category || 'Rakhi & Festive Products',
+      founders: stall.founders || '',
+      department: stall.department || '',
+      description: stall.description || '',
+      instagram: stall.instagram || '',
+      image_url: stall.image_url || '',
+    });
+    setEditStallAlert({ success: null, message: '' });
+  };
+
+  // Submit Edit Stall
+  const handleEditStallSubmit = async (e) => {
+    e.preventDefault();
+    if (!editingStall) return;
+    setEditStallLoading(true);
+    setEditStallAlert({ success: null, message: '' });
+
+    try {
+      const res = await apiFetch(`/api/stalls/${editingStall.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editStallForm),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setEditStallAlert({ success: true, message: 'Stall details updated successfully!' });
+        loadStallsLeaderboard();
+        setTimeout(() => {
+          setEditingStall(null);
+        }, 1000);
+      } else {
+        setEditStallAlert({ success: false, message: data.message || 'Failed to update stall.' });
+      }
+    } catch (err) {
+      setEditStallAlert({ success: false, message: 'Server error while updating stall.' });
+    } finally {
+      setEditStallLoading(false);
     }
   };
 
@@ -642,7 +703,7 @@ export default function AdminDashboard() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
                 <h3 style={{ color: 'var(--secondary-color)', margin: 0, fontSize: '1.3rem' }}>
                   <i className="fas fa-trophy" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i>
-                  Ranked Stall Leaderboard ({stallsLeaderboard.length || 31} Official University Stalls)
+                  Ranked Stall Leaderboard ({stallsLeaderboard.length || 32} Official University Stalls)
                 </h3>
               </div>
 
@@ -724,10 +785,17 @@ export default function AdminDashboard() {
                             )}
                           </button>
                         </td>
-                        <td style={{ padding: '14px 16px' }}>
+                        <td style={{ padding: '14px 16px', display: 'flex', gap: '8px', alignItems: 'center' }}>
+                          <button
+                            onClick={() => handleEditStallClick(stall)}
+                            style={{ color: 'var(--primary-color)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.95rem', padding: '4px' }}
+                            title="Edit Stall Name & Details"
+                          >
+                            <i className="fas fa-edit"></i>
+                          </button>
                           <button
                             onClick={() => handleDeleteStall(stall.id, stall.name)}
-                            style={{ color: '#dc2626', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.88rem' }}
+                            style={{ color: '#dc2626', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.88rem', padding: '4px' }}
                             title="Delete Stall"
                           >
                             <i className="fas fa-trash-alt"></i>
@@ -1339,6 +1407,145 @@ export default function AdminDashboard() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* Modal: Edit Stall Details */}
+        {editingStall && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              background: 'rgba(0, 0, 0, 0.65)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 9999,
+              padding: '1rem',
+              backdropFilter: 'blur(4px)',
+            }}
+          >
+            <div
+              style={{
+                background: 'var(--white)',
+                borderRadius: '16px',
+                width: '100%',
+                maxWidth: '620px',
+                maxHeight: '90vh',
+                overflowY: 'auto',
+                padding: '2rem',
+                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.3)',
+                border: '1px solid var(--border-light)',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', borderBottom: '1px solid var(--border-light)', paddingBottom: '0.75rem' }}>
+                <h3 style={{ margin: 0, color: 'var(--secondary-color)', fontSize: '1.3rem' }}>
+                  <i className="fas fa-edit" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i>
+                  Edit Stall #{editingStall.stall_number}
+                </h3>
+                <button
+                  onClick={() => setEditingStall(null)}
+                  style={{ background: 'none', border: 'none', fontSize: '1.25rem', cursor: 'pointer', color: '#999' }}
+                >
+                  ✕
+                </button>
+              </div>
+
+              {editStallAlert.message && (
+                <div style={{ padding: '0.85rem 1rem', borderRadius: '8px', marginBottom: '1.25rem', background: editStallAlert.success ? '#dcfce7' : '#fee2e2', color: editStallAlert.success ? '#16a34a' : '#dc2626' }}>
+                  {editStallAlert.message}
+                </div>
+              )}
+
+              <form onSubmit={handleEditStallSubmit}>
+                <div className="admin-form-grid-3">
+                  <div className="form-group">
+                    <label>Stall Number</label>
+                    <input
+                      type="text"
+                      required
+                      value={editStallForm.stall_number}
+                      onChange={(e) => setEditStallForm({ ...editStallForm, stall_number: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                    <label>Stall Name *</label>
+                    <input
+                      type="text"
+                      required
+                      value={editStallForm.name}
+                      onChange={(e) => setEditStallForm({ ...editStallForm, name: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="admin-form-grid-3">
+                  <div className="form-group">
+                    <label>Category</label>
+                    <input
+                      type="text"
+                      required
+                      value={editStallForm.category}
+                      onChange={(e) => setEditStallForm({ ...editStallForm, category: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Founders / Team</label>
+                    <input
+                      type="text"
+                      value={editStallForm.founders}
+                      onChange={(e) => setEditStallForm({ ...editStallForm, founders: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Department / School</label>
+                    <input
+                      type="text"
+                      value={editStallForm.department}
+                      onChange={(e) => setEditStallForm({ ...editStallForm, department: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: '1rem' }}>
+                  <label>Instagram Handle / Link</label>
+                  <input
+                    type="text"
+                    value={editStallForm.instagram}
+                    onChange={(e) => setEditStallForm({ ...editStallForm, instagram: e.target.value })}
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+                  <label>Description &amp; Offerings</label>
+                  <textarea
+                    rows="3"
+                    value={editStallForm.description}
+                    onChange={(e) => setEditStallForm({ ...editStallForm, description: e.target.value })}
+                  ></textarea>
+                </div>
+
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                  <button
+                    type="button"
+                    onClick={() => setEditingStall(null)}
+                    className="btn btn-secondary"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={editStallLoading}
+                  >
+                    {editStallLoading ? 'Saving...' : 'Update Stall'}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
       </main>

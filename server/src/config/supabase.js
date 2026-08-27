@@ -78,7 +78,7 @@ const mockStore = {
     {
         "id": "stall_2",
         "stall_number": "2",
-        "name": "Phool & Dhaga",
+        "name": "Pixie Dust",
         "category": "Rakhi & Festive Products",
         "founders": "Sania Alam",
         "department": "Forensic science (School of basic and applied science) • 3rd Year",
@@ -246,7 +246,7 @@ const mockStore = {
     {
         "id": "stall_14",
         "stall_number": "14",
-        "name": "Bring your own babe",
+        "name": "Scoopy Secrets",
         "category": "Homemade Food & Bakery",
         "founders": "Shana kashish",
         "department": "Commerce (Business) • 2nd Year",
@@ -414,7 +414,7 @@ const mockStore = {
     {
         "id": "stall_26",
         "stall_number": "26",
-        "name": "আবার খাবো",
+        "name": "হেঁশেল কথা",
         "category": "Homemade Food & Bakery",
         "founders": "Saptarnab Karmakar",
         "department": "Environmental science and sustainability (SOBAS) • 1st Year",
@@ -484,11 +484,25 @@ const mockStore = {
     {
         "id": "stall_31",
         "stall_number": "31",
-        "name": "Chatpata",
+        "name": "Chatpata Adda",
         "category": "Homemade Food & Bakery",
         "founders": "Rajbir Saha",
         "department": "Adamas University • Student Team",
         "description": "Delicious & mouth-watering chatpata snacks, savory street treats & refreshments.",
+        "instagram": "",
+        "email": "",
+        "contact": "",
+        "image_url": "/assets/hero/hero2.png",
+        "created_at": "2026-08-25T10:00:00.000Z"
+    },
+    {
+        "id": "stall_32",
+        "stall_number": "32",
+        "name": "B.Tech Momowala",
+        "category": "Homemade Food & Bakery",
+        "founders": "Sampad Ghosh",
+        "department": "B.Tech • Adamas University",
+        "description": "Special homemade momos, delicious steamed & fried dumplings served with authentic spicy chutney and special seasoning.",
         "instagram": "",
         "email": "",
         "contact": "",

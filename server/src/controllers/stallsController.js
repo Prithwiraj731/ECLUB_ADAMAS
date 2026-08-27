@@ -359,6 +359,62 @@ exports.createStall = async (req, res) => {
   }
 };
 
+// Admin: Update / Edit a Stall
+exports.updateStall = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { stall_number, name, category, founders, department, description, instagram, email, contact, image_url } = req.body;
+
+    const cleanId = String(id).trim();
+
+    if (isMock) {
+      const idx = mockStore.stalls.findIndex((s) => s.id === cleanId || s.stall_number === cleanId);
+      if (idx === -1) {
+        return res.status(404).json({ success: false, message: 'Stall not found.' });
+      }
+      mockStore.stalls[idx] = {
+        ...mockStore.stalls[idx],
+        ...(stall_number !== undefined ? { stall_number: String(stall_number).trim().padStart(2, '0') } : {}),
+        ...(name !== undefined ? { name: name.trim() } : {}),
+        ...(category !== undefined ? { category: category.trim() } : {}),
+        ...(founders !== undefined ? { founders: founders.trim() } : {}),
+        ...(department !== undefined ? { department: department.trim() } : {}),
+        ...(description !== undefined ? { description: description.trim() } : {}),
+        ...(instagram !== undefined ? { instagram: instagram.trim() } : {}),
+        ...(email !== undefined ? { email: email.trim() } : {}),
+        ...(contact !== undefined ? { contact: contact.trim() } : {}),
+        ...(image_url !== undefined ? { image_url: image_url.trim() } : {}),
+      };
+      return res.json({ success: true, message: 'Stall updated successfully.', stall: mockStore.stalls[idx] });
+    }
+
+    const updatePayload = {};
+    if (stall_number !== undefined) updatePayload.stall_number = String(stall_number).trim().padStart(2, '0');
+    if (name !== undefined) updatePayload.name = name.trim();
+    if (category !== undefined) updatePayload.category = category.trim();
+    if (founders !== undefined) updatePayload.founders = founders.trim();
+    if (department !== undefined) updatePayload.department = department.trim();
+    if (description !== undefined) updatePayload.description = description.trim();
+    if (instagram !== undefined) updatePayload.instagram = instagram.trim();
+    if (email !== undefined) updatePayload.email = email.trim();
+    if (contact !== undefined) updatePayload.contact = contact.trim();
+    if (image_url !== undefined) updatePayload.image_url = image_url.trim();
+
+    const { data, error } = await supabase
+      .from('stalls')
+      .update(updatePayload)
+      .eq('id', cleanId)
+      .select()
+      .maybeSingle();
+
+    if (error) throw error;
+    res.json({ success: true, message: 'Stall updated successfully.', stall: data });
+  } catch (err) {
+    console.error('Error updating stall:', err);
+    res.status(500).json({ success: false, message: 'Failed to update stall.' });
+  }
+};
+
 // Admin: Delete a Stall
 exports.deleteStall = async (req, res) => {
   try {

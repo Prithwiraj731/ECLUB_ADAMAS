@@ -164,7 +164,7 @@ export default function HeroSection() {
             </div>
             <div className="pill-text-group">
               <span className="pill-title">Rakhi Startup Bazaar</span>
-              <span className="pill-sub">Explore 31 Stalls →</span>
+              <span className="pill-sub">Explore 32 Stalls →</span>
             </div>
           </Link>
         </div>

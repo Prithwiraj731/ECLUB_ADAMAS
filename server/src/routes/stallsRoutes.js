@@ -15,6 +15,7 @@ router.post('/review', stallsController.submitReview);
 
 // Admin stall management routes
 router.post('/', stallsController.createStall);
+router.put('/:id', stallsController.updateStall);
 router.delete('/:id', stallsController.deleteStall);
 
 module.exports = router;
