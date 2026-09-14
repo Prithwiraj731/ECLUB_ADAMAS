@@ -141,13 +141,22 @@ ON CONFLICT (username) DO NOTHING;
 INSERT INTO public.events (title, description, date, location, image_url, is_featured, registration_link)
 VALUES 
 (
+    'INTER-SCHOOL START UP LAUNCH PAD',
+    'The Adamas University Entrepreneurship Club presents the Inter-School Start Up Launch Pad! Teams from all 10 Adamas schools compete across 3 high-stakes simulation rounds: Discover & Strategise, Build & Execute, and Crisis & Adapt. “It’s not just about having the best idea, but making the best decisions.”',
+    'Wednesday, September 16, 2026 • 2:00 PM – 5:00 PM',
+    'AU International Lounge, Adamas University',
+    '/assets/startup-launchpad.jpg',
+    TRUE,
+    '/launchpad'
+),
+(
     'RAKHI STARTUP BAZAAR',
     'The Entrepreneurship Club is organising the Rakhi Startup Bazaar — a high-energy platform for students and creators to showcase, validate, and sell handcrafted products & innovative goods while experiencing entrepreneurship beyond the classroom!',
-    'Upcoming Campus Exhibition',
+    'Campus Exhibition Archive',
     'Adamas University Campus',
     '/assets/rakhi.jpeg',
-    TRUE,
-    'https://forms.gle/W9u2ewPSW5u2tS7t9'
+    FALSE,
+    '/rakhi-stalls'
 ),
 (
     'HACK-A-VENTURE 48H Hackathon',
@@ -172,10 +181,10 @@ ON CONFLICT DO NOTHING;
 -- 3. Seed Default Notice
 INSERT INTO public.notices (title, content, is_active, badge_text)
 VALUES (
-    'Spring 2026 E-Club Membership & Core Committee Recruitment Open!',
-    'Applications are now open for dynamic students to join the core operational wings including Innovation & Startups, Event Management, Marketing & PR, and Technical Development.',
+    'Mandatory Participant Briefing: Inter-School Start Up Launch Pad',
+    'A crucial briefing session for all 10 participating school teams will be held on Tuesday evening, 15 September 2026. The main competition will take place on Wednesday, 16 September 2026, 2:00 PM – 5:00 PM at AU International Lounge.',
     TRUE,
-    'IMPORTANT NOTICE'
+    'IMPORTANT BRIEFING NOTICE'
 )
 ON CONFLICT DO NOTHING;
 

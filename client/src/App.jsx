@@ -8,6 +8,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import RakhiStalls from './pages/RakhiStalls';
 import RateStall from './pages/RateStall';
+import StartupLaunchPad from './pages/StartupLaunchPad';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 
@@ -26,6 +27,10 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           
+          {/* Flagship Event: Inter-School Start Up Launch Pad */}
+          <Route path="/launchpad" element={<StartupLaunchPad />} />
+          <Route path="/startup-launchpad" element={<StartupLaunchPad />} />
+
           {/* Public Stalls Directory & Showcase */}
           <Route path="/rakhi-stalls" element={<RakhiStalls />} />
           <Route path="/stalls" element={<RakhiStalls />} />

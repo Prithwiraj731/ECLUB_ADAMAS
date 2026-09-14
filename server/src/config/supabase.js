@@ -15,16 +15,28 @@ let isMock = true;
 const mockStore = {
   events: [
     {
+      id: 'e0',
+      title: 'INTER-SCHOOL START UP LAUNCH PAD',
+      description:
+        'The Adamas University Entrepreneurship Club presents the Inter-School Start Up Launch Pad! Teams from all 10 Adamas schools compete across 3 high-stakes simulation rounds: Discover & Strategise, Build & Execute, and Crisis & Adapt. “It’s not just about having the best idea, but making the best decisions.”',
+      date: 'Wednesday, September 16, 2026 • 2:00 PM – 5:00 PM',
+      location: 'AU International Lounge, Adamas University',
+      image_url: '/assets/startup-launchpad.jpg',
+      is_featured: true,
+      registration_link: '/launchpad',
+      created_at: new Date().toISOString()
+    },
+    {
       id: 'e1',
       title: 'RAKHI STARTUP BAZAAR',
       description:
         'The Entrepreneurship Club is organising the Rakhi Startup Bazaar — a high-energy platform for students and creators to showcase, validate, and sell handcrafted products & innovative goods while experiencing entrepreneurship beyond the classroom!',
-      date: 'Upcoming Campus Exhibition',
+      date: 'Campus Exhibition Archive',
       location: 'Adamas University Campus',
       image_url: '/assets/rakhi.jpeg',
-      is_featured: true,
-      registration_link: 'https://forms.gle/W9u2ewPSW5u2tS7t9',
-      created_at: new Date().toISOString()
+      is_featured: false,
+      registration_link: '/rakhi-stalls',
+      created_at: new Date(Date.now() - 86400000).toISOString()
     },
     {
       id: 'e2',
@@ -35,7 +47,7 @@ const mockStore = {
       image_url: '/assets/hero/hero1.png',
       is_featured: false,
       registration_link: '#contact',
-      created_at: new Date(Date.now() - 86400000).toISOString()
+      created_at: new Date(Date.now() - 172800000).toISOString()
     },
     {
       id: 'e3',
@@ -46,17 +58,27 @@ const mockStore = {
       image_url: '/assets/hero/hero3.png',
       is_featured: false,
       registration_link: '#contact',
-      created_at: new Date(Date.now() - 172800000).toISOString()
+      created_at: new Date(Date.now() - 259200000).toISOString()
     }
   ],
   notices: [
     {
+      id: 'n0',
+      title: 'Mandatory Participant Briefing: Inter-School Start Up Launch Pad',
+      content: 'A crucial briefing session for all 10 participating school teams will be held on Tuesday evening, 15 September 2026. The main competition will take place on Wednesday, 16 September 2026, 2:00 PM – 5:00 PM at AU International Lounge.',
+      link_url: '/launchpad',
+      is_active: true,
+      badge_text: 'IMPORTANT BRIEFING NOTICE',
+      created_at: new Date().toISOString()
+    },
+    {
       id: 'n1',
       title: 'Spring 2026 E-Club Membership & Core Committee Recruitment Open!',
       content: 'Applications are now open for dynamic students to join the core operational wings including Innovation & Startups, Event Management, Marketing & PR, and Technical Development.',
-      is_active: true,
-      badge_text: 'IMPORTANT NOTICE',
-      created_at: new Date().toISOString()
+      link_url: '#contact',
+      is_active: false,
+      badge_text: 'RECRUITMENT NOTICE',
+      created_at: new Date(Date.now() - 172800000).toISOString()
     }
   ],
   contacts: [],

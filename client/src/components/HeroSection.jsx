@@ -158,13 +158,13 @@ export default function HeroSection() {
         </div>
 
         <div className="luxury-side-action side-right">
-          <Link to="/rakhi-stalls" className="luxury-action-pill">
-            <div className="pill-icon crimson-glow">
-              <i className="fas fa-gem"></i>
+          <Link to="/launchpad" className="luxury-action-pill">
+            <div className="pill-icon crimson-glow" style={{ background: 'rgba(245, 158, 11, 0.2)', color: '#fbbf24' }}>
+              <i className="fas fa-rocket"></i>
             </div>
             <div className="pill-text-group">
-              <span className="pill-title">Rakhi Startup Bazaar</span>
-              <span className="pill-sub">Explore 32 Stalls →</span>
+              <span className="pill-title">Start Up Launch Pad</span>
+              <span className="pill-sub">Wednesday, Sept 16 →</span>
             </div>
           </Link>
         </div>
