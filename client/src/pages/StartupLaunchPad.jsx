@@ -5,7 +5,7 @@ import '../styles/launchpad.css';
 // =========================================================================
 // CONFIGURATION: Set the official Google Form URL for Team Nominations here
 // =========================================================================
-export const GOOGLE_FORM_NOMINATION_URL = 'https://forms.gle/launchpad2026';
+export const GOOGLE_FORM_NOMINATION_URL = 'https://forms.gle/4g4WM27W9ZnzAF8x9';
 export const COORDINATOR_PHONE = '6291289553';
 export const COORDINATOR_NAME = 'Aaditya Prasad';
 
@@ -49,81 +49,66 @@ export default function StartupLaunchPad() {
       acronym: 'SOET',
       name: 'School of Engineering & Technology',
       coordinators: 'Preyashee & Soodipa Ma’am',
-      icon: 'fa-laptop-code',
-      badgeColor: '#38bdf8'
+      icon: 'fa-laptop-code'
     },
     {
       acronym: 'SOB',
       name: 'School of Business',
       coordinators: 'Aaditya Prasad',
-      icon: 'fa-chart-line',
-      badgeColor: '#f59e0b'
+      icon: 'fa-chart-line'
     },
     {
       acronym: 'SOBAS',
       name: 'School of Basic & Applied Sciences',
       coordinators: 'Soodipa Ma’am',
-      icon: 'fa-flask',
-      badgeColor: '#10b981'
+      icon: 'fa-flask'
     },
     {
       acronym: 'SOLACS',
       name: 'School of Liberal Arts & Cultural Studies',
       coordinators: 'Tathagata Sir',
-      icon: 'fa-landmark',
-      badgeColor: '#a855f7'
+      icon: 'fa-landmark'
     },
     {
       acronym: 'SOLB',
       name: 'School of Life Science & Biotechnology',
       coordinators: 'Preyashee',
-      icon: 'fa-dna',
-      badgeColor: '#ec4899'
+      icon: 'fa-dna'
     },
     {
       acronym: 'SOSA',
       name: 'School of Smart Agriculture',
       coordinators: 'Soodipa Ma’am',
-      icon: 'fa-seedling',
-      badgeColor: '#84cc16'
+      icon: 'fa-seedling'
     },
     {
       acronym: 'SOE',
       name: 'School of Education',
       coordinators: 'Tathagata Sir',
-      icon: 'fa-graduation-cap',
-      badgeColor: '#06b6d4'
+      icon: 'fa-graduation-cap'
     },
     {
       acronym: 'SOMC',
       name: 'School of Media and Communication',
       coordinators: 'Tathagata Sir',
-      icon: 'fa-bullhorn',
-      badgeColor: '#f97316'
+      icon: 'fa-bullhorn'
     },
     {
       acronym: 'SOHMS',
       name: 'School of Health & Medical Sciences',
       coordinators: 'Soodipa Ma’am',
-      icon: 'fa-heartbeat',
-      badgeColor: '#ef4444'
+      icon: 'fa-heartbeat'
     },
     {
       acronym: 'SOLJ',
       name: 'School of Law and Justice',
       coordinators: 'Aaditya Prasad',
-      icon: 'fa-balance-scale',
-      badgeColor: '#eab308'
+      icon: 'fa-balance-scale'
     }
   ];
 
   return (
     <div className="launchpad-page">
-      {/* Ambient decorative lights */}
-      <div className="lp-ambient-orb lp-orb-gold" aria-hidden="true" />
-      <div className="lp-ambient-orb lp-orb-crimson" aria-hidden="true" />
-      <div className="lp-ambient-orb lp-orb-blue" aria-hidden="true" />
-
       <div className="launchpad-container">
         {/* ================== HERO BANNER ================== */}
         <section className="lp-hero-section">
@@ -133,7 +118,7 @@ export default function StartupLaunchPad() {
             <span>/</span>
             <a href="/#events">Events</a>
             <span>/</span>
-            <span style={{ color: '#f59e0b', fontWeight: 600 }}>Start Up Launch Pad</span>
+            <span style={{ color: '#FFFFFF', fontWeight: 600 }}>Start Up Launch Pad</span>
           </nav>
 
           <div className="lp-hero-grid">
@@ -141,7 +126,7 @@ export default function StartupLaunchPad() {
             <div className="lp-hero-text-col">
               <div className="lp-badge-row">
                 <span className="lp-tag-naac">
-                  <i className="fas fa-award"></i> NAAC GRADE A • ADAMAS UNIVERSITY
+                  <i className="fas fa-university"></i> NAAC GRADE A • ADAMAS UNIVERSITY
                 </span>
                 <span className="lp-tag-live">
                   <span className="lp-pulse-dot"></span> INTER-SCHOOL COMPETITION
@@ -224,7 +209,6 @@ export default function StartupLaunchPad() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="lp-btn-secondary-action"
-                  style={{ color: '#25d366', borderColor: 'rgba(37, 211, 102, 0.3)' }}
                 >
                   <i className="fab fa-whatsapp"></i> WhatsApp
                 </a>
@@ -243,7 +227,7 @@ export default function StartupLaunchPad() {
                 <div className="lp-poster-overlay">
                   <span className="lp-poster-caption">Official Competition Poster</span>
                   <button type="button" className="lp-poster-zoom-btn">
-                    <i className="fas fa-search-plus"></i> View Full Poster
+                    <i className="fas fa-expand"></i> View Full Poster
                   </button>
                 </div>
               </div>
@@ -254,7 +238,7 @@ export default function StartupLaunchPad() {
         {/* ================== LIVE COUNTDOWN TIMER ================== */}
         <div className="lp-countdown-wrap">
           <div className="lp-countdown-header">
-            <h3>Time Remaining Until Battle Begins</h3>
+            <h3>Time Remaining Until Event</h3>
             <p>Wednesday, 16 September 2026 • 2:00 PM IST • AU International Lounge</p>
           </div>
 
@@ -293,7 +277,7 @@ export default function StartupLaunchPad() {
             <div className="lp-briefing-text">
               <h4>Mandatory Participant Briefing Session</h4>
               <p>
-                <strong>Tuesday evening, 15 September 2026:</strong> A comprehensive orientation session will be
+                <strong>Tuesday evening, 15 September 2026:</strong> An orientation session will be
                 conducted for all selected school teams to review competition mechanics, 1,000 AU Credits system, and
                 rules.
               </p>
@@ -314,7 +298,7 @@ export default function StartupLaunchPad() {
         <section className="lp-rounds-section">
           <div className="lp-section-title-wrap">
             <span className="lp-section-eyebrow">COMPETITION MECHANICS</span>
-            <h2>Three High-Stakes Rounds</h2>
+            <h2>Three Evaluation Rounds</h2>
             <p>
               Designed to test your team's strategic acumen, tactical execution in live markets, and resilience during
               unpredictable business crises.
@@ -323,10 +307,10 @@ export default function StartupLaunchPad() {
 
           <div className="lp-rounds-grid">
             {/* ROUND 1 */}
-            <div className="lp-round-card lp-round-1">
+            <div className="lp-round-card">
               <div className="lp-round-header">
                 <span className="lp-round-tag">
-                  <i className="fas fa-lightbulb"></i> Round 1
+                  Round 1
                 </span>
                 <span className="lp-round-weight">25% of Overall Score</span>
               </div>
@@ -335,28 +319,28 @@ export default function StartupLaunchPad() {
               <p className="lp-round-subtitle">“Find the opportunity.”</p>
 
               <div className="lp-time-chip">
-                <i className="fas fa-stopwatch"></i> Duration: 45 Minutes
+                <i className="fas fa-clock"></i> Duration: 45 Minutes
               </div>
 
               <ul className="lp-round-checklist">
                 <li>
-                  <i className="fas fa-search"></i>
+                  <i className="fas fa-check"></i>
                   <span>Analyse a real-world business scenario</span>
                 </li>
                 <li>
-                  <i className="fas fa-bullseye"></i>
+                  <i className="fas fa-check"></i>
                   <span>Identify the problem statement &amp; target customer persona</span>
                 </li>
                 <li>
-                  <i className="fas fa-cogs"></i>
+                  <i className="fas fa-check"></i>
                   <span>Develop a viable and scalable solution concept</span>
                 </li>
                 <li>
-                  <i className="fas fa-coins"></i>
+                  <i className="fas fa-check"></i>
                   <span>Allocate limited resources (<strong>1,000 AU Credits</strong>)</span>
                 </li>
                 <li>
-                  <i className="fas fa-sync-alt"></i>
+                  <i className="fas fa-check"></i>
                   <span>Adapt swiftly to an unexpected mid-round market update</span>
                 </li>
               </ul>
@@ -370,10 +354,10 @@ export default function StartupLaunchPad() {
             </div>
 
             {/* ROUND 2 */}
-            <div className="lp-round-card lp-round-2">
+            <div className="lp-round-card">
               <div className="lp-round-header">
                 <span className="lp-round-tag">
-                  <i className="fas fa-cogs"></i> Round 2
+                  Round 2
                 </span>
                 <span className="lp-round-weight">40% of Overall Score</span>
               </div>
@@ -382,24 +366,24 @@ export default function StartupLaunchPad() {
               <p className="lp-round-subtitle">“Turn your strategy into reality.”</p>
 
               <div className="lp-time-chip">
-                <i className="fas fa-stopwatch"></i> Duration: 65 Minutes
+                <i className="fas fa-clock"></i> Duration: 65 Minutes
               </div>
 
               <ul className="lp-round-checklist">
                 <li>
-                  <i className="fas fa-box-open"></i>
+                  <i className="fas fa-check"></i>
                   <span>Build your product/service prototype or visual mock-up</span>
                 </li>
                 <li>
-                  <i className="fas fa-bullhorn"></i>
+                  <i className="fas fa-check"></i>
                   <span>Prepare an aggressive Go-To-Market (GTM) execution plan</span>
                 </li>
                 <li>
-                  <i className="fas fa-handshake"></i>
+                  <i className="fas fa-check"></i>
                   <span>Enter the live market floor and sell/negotiate with customers</span>
                 </li>
                 <li>
-                  <i className="fas fa-chart-line"></i>
+                  <i className="fas fa-check"></i>
                   <span>Generate revenue, book sales, and create measurable business value</span>
                 </li>
               </ul>
@@ -413,10 +397,10 @@ export default function StartupLaunchPad() {
             </div>
 
             {/* ROUND 3 */}
-            <div className="lp-round-card lp-round-3">
+            <div className="lp-round-card">
               <div className="lp-round-header">
                 <span className="lp-round-tag">
-                  <i className="fas fa-exclamation-triangle"></i> Round 3
+                  Round 3
                 </span>
                 <span className="lp-round-weight">35% of Overall Score</span>
               </div>
@@ -425,24 +409,24 @@ export default function StartupLaunchPad() {
               <p className="lp-round-subtitle">“When the plan changes.”</p>
 
               <div className="lp-time-chip">
-                <i className="fas fa-stopwatch"></i> Duration: 50 Minutes
+                <i className="fas fa-clock"></i> Duration: 50 Minutes
               </div>
 
               <ul className="lp-round-checklist">
                 <li>
-                  <i className="fas fa-bomb"></i>
+                  <i className="fas fa-check"></i>
                   <span>Face a high-impact, real-world business crisis</span>
                 </li>
                 <li>
-                  <i className="fas fa-hourglass-half"></i>
+                  <i className="fas fa-check"></i>
                   <span>Make strategic survival decisions under severe time &amp; resource constraints</span>
                 </li>
                 <li>
-                  <i className="fas fa-bolt"></i>
+                  <i className="fas fa-check"></i>
                   <span>Absorb and respond to a second surprise market shock</span>
                 </li>
                 <li>
-                  <i className="fas fa-gavel"></i>
+                  <i className="fas fa-check"></i>
                   <span>Defend your decisions under cross-examination before the Grand Jury</span>
                 </li>
               </ul>
@@ -463,18 +447,15 @@ export default function StartupLaunchPad() {
             <span className="lp-section-eyebrow">CAMPUS-WIDE INVOLVEMENT</span>
             <h2>10 Schools of Adamas University</h2>
             <p>
-              Each school nominates exactly one elite team of 3 to 5 students to compete for university-wide entrepreneurship supremacy.
+              Each school nominates one team of 3 to 5 students to compete for university-wide entrepreneurship supremacy.
             </p>
           </div>
 
           <div className="lp-schools-grid">
-            {schools.map((school, index) => (
+            {schools.map((school) => (
               <div className="lp-school-card" key={school.acronym}>
                 <div className="lp-school-head">
-                  <div
-                    className="lp-school-badge"
-                    style={{ borderColor: school.badgeColor, color: school.badgeColor }}
-                  >
+                  <div className="lp-school-badge">
                     <i className={`fas ${school.icon}`}></i>
                   </div>
                   <div className="lp-school-title-wrap">
@@ -547,7 +528,7 @@ export default function StartupLaunchPad() {
 
         {/* ================== CONTACT & NOMINATION CTA DESK ================== */}
         <div className="lp-contact-box">
-          <h3>Ready to Represent Your School?</h3>
+          <h3>School Team Nominations</h3>
           <p>
             Submit your team nomination through the official Google Form or contact the coordinating team for queries,
             guidance, and briefing details.
@@ -558,7 +539,7 @@ export default function StartupLaunchPad() {
               href={GOOGLE_FORM_NOMINATION_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="lp-btn-nominate"
+              className="lp-contact-btn primary"
             >
               <i className="fas fa-paper-plane"></i> Submit Team Nomination
             </a>
@@ -578,12 +559,12 @@ export default function StartupLaunchPad() {
 
             <button
               type="button"
-              className="lp-contact-btn"
+              className="lp-contact-btn phone"
               onClick={handleCopyPhone}
-              style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', cursor: 'pointer' }}
+              style={{ cursor: 'pointer' }}
             >
               <i className={copiedPhone ? 'fas fa-check' : 'fas fa-copy'}></i>
-              {copiedPhone ? 'Phone Copied!' : 'Copy Phone'}
+              {copiedPhone ? 'Copied' : 'Copy Phone'}
             </button>
           </div>
         </div>

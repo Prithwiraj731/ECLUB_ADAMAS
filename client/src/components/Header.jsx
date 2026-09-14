@@ -67,7 +67,7 @@ export default function Header() {
               About
             </NavLink>
             <NavLink to="/launchpad" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeMenu}>
-              Launch Pad <span style={{ fontSize: '0.68rem', background: '#f59e0b', color: '#000', fontWeight: 800, padding: '2px 6px', borderRadius: '9999px', marginLeft: '4px', verticalAlign: 'middle' }}>WED</span>
+              Launch Pad
             </NavLink>
             <NavLink to="/rakhi-stalls" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeMenu}>
               Rakhi Stalls

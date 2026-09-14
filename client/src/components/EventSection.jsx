@@ -79,8 +79,8 @@ export default function EventSection() {
               <div className="event-title-row">
                 <h3>{displayEvent.title}</h3>
                 {isLaunchPad ? (
-                  <span className="stall-price-chip" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#d97706', border: '1px solid rgba(245, 158, 11, 0.4)', fontWeight: '800' }}>
-                    <i className="fas fa-fire" style={{ marginRight: '5px' }}></i> Active Competition
+                  <span className="stall-price-chip" style={{ background: 'rgba(139, 13, 26, 0.12)', color: '#8B0D1A', border: '1px solid rgba(139, 13, 26, 0.3)', fontWeight: '700' }}>
+                    <i className="fas fa-trophy" style={{ marginRight: '5px' }}></i> Inter-School Competition
                   </span>
                 ) : (
                   <span className="stall-price-chip" style={{ background: 'rgba(139, 13, 26, 0.12)', color: '#8B0D1A', border: '1px solid rgba(139, 13, 26, 0.3)', fontWeight: '700' }}>
@@ -141,7 +141,7 @@ export default function EventSection() {
                       <i className="fas fa-rocket"></i> Explore Launch Pad Arena →
                     </Link>
                     <a
-                      href="https://forms.gle/launchpad2026"
+                      href="https://forms.gle/4g4WM27W9ZnzAF8x9"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn btn-secondary"
@@ -176,7 +176,7 @@ export default function EventSection() {
                 {/* Benefit Card 1 */}
                 <div className="mini-card-enhanced">
                   <div className="mini-card-head">
-                    <div className="mini-card-icon" style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8' }}>
+                    <div className="mini-card-icon" style={{ background: 'rgba(139, 13, 26, 0.12)', color: '#8B0D1A' }}>
                       <i className="fas fa-chess-knight"></i>
                     </div>
                     <div className="mini-card-title-group">
@@ -196,7 +196,7 @@ export default function EventSection() {
                 {/* Benefit Card 2 */}
                 <div className="mini-card-enhanced">
                   <div className="mini-card-head">
-                    <div className="mini-card-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#10b981' }}>
+                    <div className="mini-card-icon" style={{ background: 'rgba(139, 13, 26, 0.12)', color: '#8B0D1A' }}>
                       <i className="fas fa-chart-line"></i>
                     </div>
                     <div className="mini-card-title-group">
@@ -216,8 +216,8 @@ export default function EventSection() {
                 {/* Benefit Card 3 */}
                 <div className="mini-card-enhanced">
                   <div className="mini-card-head">
-                    <div className="mini-card-icon" style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#ef4444' }}>
-                      <i className="fas fa-fire"></i>
+                    <div className="mini-card-icon" style={{ background: 'rgba(139, 13, 26, 0.12)', color: '#8B0D1A' }}>
+                      <i className="fas fa-shield-alt"></i>
                     </div>
                     <div className="mini-card-title-group">
                       <h4>Round 3: Crisis &amp; Adapt</h4>

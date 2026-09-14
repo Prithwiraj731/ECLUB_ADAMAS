@@ -159,7 +159,7 @@ export default function HeroSection() {
 
         <div className="luxury-side-action side-right">
           <Link to="/launchpad" className="luxury-action-pill">
-            <div className="pill-icon crimson-glow" style={{ background: 'rgba(245, 158, 11, 0.2)', color: '#fbbf24' }}>
+            <div className="pill-icon crimson-glow">
               <i className="fas fa-rocket"></i>
             </div>
             <div className="pill-text-group">
